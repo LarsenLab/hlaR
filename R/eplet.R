@@ -1,4 +1,4 @@
-#' Title
+#' CalEpletMHCI
 #' function to calculate eplet mis-match of HLA-ABC
 #' @param dat_in folder name.
 #' input data set with or without complete allele info
