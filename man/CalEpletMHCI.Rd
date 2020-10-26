@@ -2,15 +2,13 @@
 % Please edit documentation in R/eplet.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{CalEpletMHCI
-function to calculate eplet mis-match of HLA-ABC}
+\title{function to calculate eplet mis-match of HLA-ABC}
 \usage{
 CalEpletMHCI(dat_in)
 }
 \arguments{
-\item{dat_in}{folder name.
-input data set with or without complete allele info
-dat_in has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)}
+\item{dat_in}{input data set with or without complete allele info
+it has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)}
 }
 \value{
 list of data tables.
@@ -18,7 +16,6 @@ results_count: original input data appended with count mis-matched eplet of each
 results_detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
-CalEpletMHCI
 function to calculate eplet mis-match of HLA-ABC
 }
 \examples{

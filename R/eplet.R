@@ -1,8 +1,7 @@
-#' CalEpletMHCI
 #' function to calculate eplet mis-match of HLA-ABC
-#' @param dat_in folder name.
+#' @param dat_in
 #' input data set with or without complete allele info
-#' dat_in has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)
+#' it has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)
 #' @return
 #' list of data tables.
 #' results_count: original input data appended with count mis-matched eplet of each pair
