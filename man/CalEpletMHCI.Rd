@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{Title
+\title{CalEpletMHCI
 function to calculate eplet mis-match of HLA-ABC}
 \usage{
 CalEpletMHCI(dat_in)
@@ -18,7 +18,7 @@ results_count: original input data appended with count mis-matched eplet of each
 results_detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
-Title
+CalEpletMHCI
 function to calculate eplet mis-match of HLA-ABC
 }
 \examples{
