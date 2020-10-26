@@ -1,6 +1,6 @@
 Package: hlaR
 Type: Package
-Title: R project setup tool
+Title: R package for HLA mis-match
 Version: 0.1.0
 Authors@R: c(person("Christian P","Larsen",email="cpl@emory.edu", role = c("aut","cre")))
 Maintainer: Joan Zhang <joan.zhang@emory.edu>
