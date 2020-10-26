@@ -35,7 +35,12 @@
 CalEpletMHCI <- function(dat_in) {
 
   #* step 1: import reference tables *#
-  raw_eplet <- vroom("inst/extdata/MHC_I_eplet.csv")
+  # dev
+  # raw_eplet <- vroom("inst/extdata/MHC_I_eplet.csv")
+
+  # prod
+  raw_eplet <- vroom(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
+  #raw_eplet <- vroom("inst/extdata/MHC_I_eplet.csv")
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
                 setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%

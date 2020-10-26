@@ -3,7 +3,7 @@
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
 \title{Title
-funtion to set up a R project}
+function to calculate eplet mis-match of HLA-ABC}
 \usage{
 CalEpletMHCI(dat_in)
 }
@@ -19,7 +19,7 @@ results_detail: detailed mis-match eplet of each subject id, plus count and perc
 }
 \description{
 Title
-funtion to set up a R project
+function to calculate eplet mis-match of HLA-ABC
 }
 \examples{
 \dontrun{
