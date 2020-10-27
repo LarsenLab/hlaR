@@ -29,6 +29,8 @@
 # 2. raw_lookup is generated on-the-fly based on raw_eplet table
 # 3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
 # 4. check result: re$detail or re$count
+# below is an example to use globalVariables() to suppress "no visible global variable" note
+utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCI <- function(dat_in) {
 
