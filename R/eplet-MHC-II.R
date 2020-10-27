@@ -1,5 +1,5 @@
 #' Title
-#' function to calculate eplet mis-match of HLA-DRDQDP
+#' function to calculate eplet mis-match of HLA-DR-DQ-DP
 #' @param dat_in
 #' input data set with or without complete allele info
 #' it has 27 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are MHC II alleles for recipient and donor)
