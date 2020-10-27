@@ -104,7 +104,7 @@ CalEpletMHCII <- function(dat_in) {
   ###*** step 3: import records with recipient/donor MHC II pairs ***###
   #* 3a. import data *#
   # input data format has to be same as test data
-  dat <- vroom(here(dat_in)) %>%
+  dat <- vroom(dat_in) %>%
           mutate(across(where(is.character), str_trim))
 
   subj_num <- dim(dat)[1]
