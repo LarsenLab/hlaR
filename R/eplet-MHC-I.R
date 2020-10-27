@@ -1,3 +1,4 @@
+#' Title
 #' function to calculate eplet mis-match of HLA-ABC
 #' @param dat_in
 #' input data set with or without complete allele info
@@ -30,7 +31,7 @@
 # 3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
 # 4. check result: re$detail or re$count
 # below is an example to use globalVariables() to suppress "no visible global variable" note
-utils::globalVariables(c("value", "locus", "index", "type", "mm"))
+# utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCI <- function(dat_in) {
 
