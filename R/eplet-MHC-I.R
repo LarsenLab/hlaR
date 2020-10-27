@@ -23,24 +23,15 @@
 #' @examples
 #' \dontrun{
 #' re <- CalEpletMHCI(dat_in = "YourDataFile")
-#' re <- CalEpletMHCI(system.file(“extdata”, “MHC_I_test.csv”, package = “hlaR”))
+#' re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
 #' }
 #'
-# notes:
-# 1. raw_eplet is pulled from "Ep" worksheet from ABC_Eplet_Matching_3.1.xlsb (password of protected sheets: hla) from http://www.epitopes.net/index.html
-# 2. raw_lookup is generated on-the-fly based on raw_eplet table
-# 3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
-# 4. check result: re$detail or re$count
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCI <- function(dat_in) {
 
-  #* step 1: import reference tables *#
-  # dev
-  # raw_eplet <- vroom("inst/extdata/MHC_I_eplet.csv")
-
-  # prod
+  #* step 1: import raw eplet table *#
   raw_eplet <- vroom(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%

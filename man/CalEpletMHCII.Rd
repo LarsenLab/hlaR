@@ -3,7 +3,7 @@
 \name{CalEpletMHCII}
 \alias{CalEpletMHCII}
 \title{Title
-function to calculate eplet mis-match of HLA-DRDQDP}
+function to calculate eplet mis-match of HLA-DR-DQ-DP}
 \usage{
 CalEpletMHCII(dat_in)
 }
@@ -18,12 +18,12 @@ detail: detailed mis-match eplet of each subject id, plus count and percentage o
 }
 \description{
 Title
-function to calculate eplet mis-match of HLA-DRDQDP
+function to calculate eplet mis-match of HLA-DR-DQ-DP
 }
 \examples{
 \dontrun{
 re <- CalEpletMHCII(dat_in = "YourDataFile")
-re <- CalEpletMHCII(system.file(“extdata”, “MHC_II_test.csv”, package = “hlaR”))
+re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
 }
 
 }

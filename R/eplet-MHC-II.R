@@ -23,14 +23,9 @@
 #' @examples
 #' \dontrun{
 #' re <- CalEpletMHCII(dat_in = "YourDataFile")
-#' re <- CalEpletMHCII(system.file(“extdata”, “MHC_II_test.csv”, package = “hlaR”))
+#' re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
 #' }
 #'
-# notes:
-# 1. raw_eplet is pulled from worksheets "A" and "B" from DRDQDP_Antibody_Analysis_3.1.xlsb (password of protected sheets: hla) from http://www.epitopes.net/index.html
-# 2. raw_lookup is generated on-the-fly based on raw_eplet table
-# 3. result generated from this function may slightly different with result from DRDQDP_Antibody_Analysis_3.1.xlsb due to a few possible formatting issue in the excel
-# 4. check result: re$detail or re$count
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
@@ -153,16 +148,6 @@ CalEpletMHCII <- function(dat_in) {
   #*** end of step 3 ***###
 
   ###*** step 4: mis-match eplet calculation ***###
-  #* logics
-  #* if locus DQB: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)
-  #* if locus DQA: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)
-  #* if locus DRB and DRw: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)
-  #* if locus DPB
-  #*             if inter-loci eplets (av >= 22 or other <= 8) then compare donor's 1 allele to recipient's ALL B alleles (1:8)
-  #*             else compare donor's 1 allele recipient's DPB alleles (1:2)
-  #* if locus DPB: compare donor's 1 allele to recipient's ALL B alleles (1:8)
-  #* if locus DPA: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)
-
   #* 4a: A loci *#
   ep_a_mm <- ep_a %>%
              select(index, type)

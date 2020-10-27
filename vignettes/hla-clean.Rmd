@@ -21,10 +21,10 @@ library(hlaR)
 ```
 
 ## Basics
-data entry issue
-logic used for data clean
 
 ## input data
+
+## cleaned data
 
 ```{r}
 ##
