@@ -23,6 +23,7 @@
 #' @examples
 #' \dontrun{
 #' re <- CalEpletMHCI(dat_in = "YourDataFile")
+#' re <- CalEpletMHCI(system.file(“extdata”, “MHC_I_test.csv”, package = “hlaR”))
 #' }
 #'
 # notes:
