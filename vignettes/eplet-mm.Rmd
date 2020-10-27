@@ -1,0 +1,25 @@
+---
+title: "eplet-mm"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{eplet-mm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hlaR)
+```
+
+notes:
+1. raw_eplet is pulled from "Ep" worksheet from ABC_Eplet_Matching_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker] (http://www.epitopes.net/index.html)
+2. raw_lookup is generated on-the-fly based on raw_eplet table
+3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
+4. check result: re$detail or re$count

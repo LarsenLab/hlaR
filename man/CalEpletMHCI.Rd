@@ -12,15 +12,15 @@ it has to have 15 columns (first 3 columns are record id, recipient id, donor id
 }
 \value{
 list of data tables.
-results_count: original input data appended with count mis-matched eplet of each pair
-results_detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+count: original input data appended with count mis-matched eplet of each pair
+detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
 function to calculate eplet mis-match of HLA-ABC
 }
 \examples{
 \dontrun{
-re <- CalEpletMHCI(dat_in = "inst/extdata/MHC_I_test.csv")
+re <- CalEpletMHCI(dat_in = "YourDataFile")
 }
 
 }

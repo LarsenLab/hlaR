@@ -1,0 +1,36 @@
+---
+title: "hla clean"
+output: rmarkdown::html_vignette
+description: |
+  write decription here
+vignette: >
+  %\VignetteIndexEntry{hla clean}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE}
+library(hlaR)
+```
+
+## Basics
+data entry issue
+logic used for data clean
+
+## input data
+
+```{r}
+##
+```
+
+## cleaned data
+```{r}
+
+```

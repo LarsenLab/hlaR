@@ -4,8 +4,8 @@
 #' it has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)
 #' @return
 #' list of data tables.
-#' results_count: original input data appended with count mis-matched eplet of each pair
-#' results_detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+#' count: original input data appended with count mis-matched eplet of each pair
+#' detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 #' @export
 #'
 #' @import
@@ -21,15 +21,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCI(dat_in = "inst/extdata/MHC_I_test.csv")
+#' re <- CalEpletMHCI(dat_in = "YourDataFile")
 #' }
 #'
 # notes:
 # 1. raw_eplet is pulled from "Ep" worksheet from ABC_Eplet_Matching_3.1.xlsb (password of protected sheets: hla) from http://www.epitopes.net/index.html
 # 2. raw_lookup is generated on-the-fly based on raw_eplet table
 # 3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
-# 4. check result: re$results_count or re$results_count
-# Version: V1 - 10/20/2020
+# 4. check result: re$detail or re$count
 
 CalEpletMHCI <- function(dat_in) {
 
@@ -39,7 +38,6 @@ CalEpletMHCI <- function(dat_in) {
 
   # prod
   raw_eplet <- vroom(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
-  #raw_eplet <- vroom("inst/extdata/MHC_I_eplet.csv")
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
                 setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
@@ -65,7 +63,7 @@ CalEpletMHCI <- function(dat_in) {
   dat_ep <- raw_eplet %>%
             select(index, type)
 
-  #* step 4 : pull out eplet of each allele *#
+  #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
     allele <- unlist(transpose(dat[i,-c(1:3)]), use.names = F)
 
@@ -125,7 +123,7 @@ CalEpletMHCI <- function(dat_in) {
 
   #* step 6: compare mis-match with raw_look up table *#
   dat_ep_mm2 <- dat_ep_mm %>%
-    select(index, type)
+                select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
   st <- 3
@@ -135,30 +133,30 @@ CalEpletMHCI <- function(dat_in) {
     ed <- st + 5
     positions <- c(st:ed)
     tmp <- dat_ep_mm %>%
-      select(c(1,2,positions) )
+           select(c(1,2,positions) )
 
     ori_name <- colnames(tmp)[-c(1,2)]
     if(i == 1){
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-        filter(mm != "") %>%
-        left_join(tmp, ., by = c("index", "type")) %>%
-        select(-c(ori_name, "eplet", "mm")) %>%
-        setNames(c("index", "type", ori_name)) %>%
-        distinct()
+              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+              filter(mm != "") %>%
+              left_join(tmp, ., by = c("index", "type")) %>%
+              select(-c(ori_name, "eplet", "mm")) %>%
+              setNames(c("index", "type", ori_name)) %>%
+              distinct()
     }
 
     if (i > 1 ) {
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-        filter(mm != "") %>%
-        left_join(tmp, ., by = c("index", "type")) %>%
-        select(-c(ori_name, "eplet", "mm")) %>%
-        setNames(c("index", "type", ori_name)) %>%
-        distinct() %>%
-        select(-c("index", "type"))
+              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+              filter(mm != "") %>%
+              left_join(tmp, ., by = c("index", "type")) %>%
+              select(-c(ori_name, "eplet", "mm")) %>%
+              setNames(c("index", "type", ori_name)) %>%
+              distinct() %>%
+              select(-c("index", "type"))
     }
     st <- ed + 1
 
@@ -177,39 +175,39 @@ CalEpletMHCI <- function(dat_in) {
     ed <- st + 5
     positions <- c(st:ed)
     tmp <- dat_ep_mm2 %>%
-      select(c(1, 2, positions)) %>%
-      setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
-      right_join(., raw_lookup,by = c("index", "type")) %>%
-      mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
-      select(index, type, eplet, var) %>%
-      setNames(c("index", "type", "eplet", subj_names[i]))
+           select(c(1, 2, positions)) %>%
+           setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
+           right_join(., raw_lookup,by = c("index", "type")) %>%
+           mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
+           select(index, type, eplet, var) %>%
+           setNames(c("index", "type", "eplet", subj_names[i]))
 
     st <- ed + 1
     results_detail <- left_join(results_detail, tmp, by = c("index", "type", "eplet"))
   }
 
   results_detail <- results_detail %>%
-    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
-           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
+                    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
+                           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
 
-  # excel bugs
-  # type 1 bugs : columns with trailing space for mis-miss-match
+  # excel issues
+  # type 1 issues : columns with trailing space for mis-miss-match
   # example: workSheet "Results", row4 colDQ 77D, 90D row4 colBD 90D, colEG 152A, colDS 77S, colEX 184H
-  # type 2 bugs: eplet names don't match between "Ep" and "Restuls" tables
+  # type 2 issues: eplet names don't match between "Ep" and "Restuls" tables
   # example: eplet name of Abv21 is "150AHA" or "151AHA" ?
   # Abv21 in "Ep" table is Abv21 is 150AHA, it's 151AHA iin header of "Results"
 
   results_count <- results_detail %>%
-    select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-    summarise_all(funs(sum(!is.na(.)))) %>%
-    gather() %>%
-    setNames(c("subject", "mm_count")) %>%
-    select(mm_count)
+                   select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
+                   summarise_all(funs(sum(!is.na(.)))) %>%
+                   gather() %>%
+                   setNames(c("subject", "mm_count")) %>%
+                   select(mm_count)
 
   results_count <- cbind(dat ,results_count)
 
-  return(list(results_count = results_count,
-              results_detail = results_detail))
+  return(list(count = results_count,
+              detail = results_detail))
 }
 
 
