@@ -28,6 +28,7 @@ library(hlaR)
 1. raw_eplet is pulled from "Ep" worksheet from ABC_Eplet_Matching_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
 2. raw_lookup is generated on-the-fly based on raw_eplet table
 3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
+4. if allele from dat_in is not in the raw eplet table, then it will set to NA
 
 ### mm calculation logic
 compare eplet of donor's each alelle with all available recipient's eplets from A, B, and C
@@ -45,13 +46,14 @@ head(re$detail)
 1. raw_eplet is pulled from worksheets "A" and "B" from DRDQDP_Antibody_Analysis_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
 2. raw_lookup is generated on-the-fly based on raw_eplet table
 3. result generated from this function may slightly different with result from DRDQDP_Antibody_Analysis_3.1.xlsb due to a few possible formatting issue in the excel
+4. if allele from dat_in is not in the raw eplet table, then it will set to NA
 
 ### mm calculation logics
-DQB: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)
-DRB and DRw: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)
-DPB: if inter-loci eplets (av >= 22 or other <= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8), else compare donor's 1 allele with recipient's DPB alleles (1:2)
-DQA: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)
-DPA: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)
+**DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br>
+**DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br>
+**DPB**: if inter-loci eplets (av >= 22 or other <= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br>
+**DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br>
+**DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
 
 ### example
 ```{r, message = FALSE}

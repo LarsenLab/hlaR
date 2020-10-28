@@ -60,7 +60,8 @@ CalEpletMHCI <- function(dat_in) {
 
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
-    allele <- unlist(transpose(dat[i,-c(1:3)]), use.names = F)
+    allele <- toupper(unlist(transpose(dat[i,-c(1:3)]), use.names = F))
+    allele <- ifelse(allele %in% names(raw_eplet), allele, NA)
 
     for (j in 1:length(allele)) {
       varname <- paste0(tmp_names[j], ".", sep = i)

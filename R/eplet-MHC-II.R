@@ -110,7 +110,9 @@ CalEpletMHCII <- function(dat_in) {
 
   #* 3b: pull out eplet of each locus *#
   for (i in 1:subj_num) {
-    allele <- unlist(transpose(dat[i,-c(1:3)]), use.names = F)
+    allele <- toupper(unlist(transpose(dat[i,-c(1:3)]), use.names = F))
+    allele <- ifelse(allele %in% c(names(raw_eplet_A), names(raw_eplet_B)), allele, NA)
+
 
     for (j in 1:length(allele)) {
       varname <- paste0(tmp_names[j], ".", sep = i)
