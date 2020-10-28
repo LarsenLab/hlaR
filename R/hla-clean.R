@@ -20,6 +20,7 @@
 #'
 #' @examples
 #' \dontrun{
+# dat <- read_csv("~/projects/hlaclean_test/hla_typing_test.csv") %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
 #' re <- CleanHla(dat$don.a1.ori, dat$don.a2.ori, locus = "a")
 #' re <- CleanHla(dat$don.drb.ori, dat$don.drb.ori, locus = "drb")
 #' }

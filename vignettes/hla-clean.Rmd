@@ -17,16 +17,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-work in progress
-## basics
-
 ## lookup tables
-### A
-### B
-### DQB
+1. antigen - hla type lookup tables(A, B, and DQB) for special cases
+2. tables are created based on best knowledge of combination of Emory data and [IPD-IMGT/HLA Database](http://www.ebi.ac.uk/ipd/imgt/hla/dictionary.html)
 
 ## clean logic
+implement these logic in order<br>
+1. treat all "xx" "un" "N" like strings as NA<br>
+2. use lookup table for special cases. ex: 40:05:00	typing is 50, 40:06:00	is 61<br>
+3. if there is an NA antigen on either of the copies, replace it with the antigen from the non-na copy,<br>if both copies are NA, then keep them as NA<br>
+4. pull out antigen if they show up within (), [], or {}.<br>ex:15(72) -> 1572, *15[62]->1562, or 0302{18}->030218<br>
+5. keep only first 2 chars of each antigen<br>
+6. add a leading 0 if nchar = 1. ex: 2 will be 02<br>
+
+## other notes:
+1. input argument must be both chains of the locus<br>
+2. output is a list of cleaned hla string
 
 
 
