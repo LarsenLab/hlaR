@@ -2,6 +2,7 @@
 
 export(CalEpletMHCI)
 export(CalEpletMHCII)
+export(CleanHla)
 import(devtools)
 import(dplyr)
 import(purrr)

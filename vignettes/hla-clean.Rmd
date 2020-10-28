@@ -1,12 +1,13 @@
 ---
-title: "hla clean"
-output: rmarkdown::html_vignette
+title: "hla-clean"
 description: |
-  write decription here
-vignette: >
-  %\VignetteIndexEntry{hla clean}
+  This vignette shows you how to clean hla data
+output:
+  rmarkdown::html_vignette: default
+vignette: |
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{hla-clean}
+  %\usepackage[utf8]{inputenc}
 ---
 
 ```{r, include = FALSE}
@@ -16,21 +17,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, message = FALSE}
-library(hlaR)
-```
 
-## Basics
+work in progress
+## basics
 
-## input data
+## lookup tables
+### A
+### B
+### DQB
 
-## cleaned data
+## clean logic
 
-```{r}
-##
-```
 
-## cleaned data
-```{r}
 
-```
