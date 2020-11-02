@@ -1,0 +1,24 @@
+---
+title: "hla-count-mism"
+description: |
+  This vignette shows you how to count mis-match HLAs
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{hla-count-mism}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+count mis-match hla based on the input vector of allele names
+    
+
+
+

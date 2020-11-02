@@ -12,7 +12,7 @@
 
 
 
-<title>hla-clean</title>
+<title>hla-count-mism</title>
 
 <script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
 // v0.0.1
@@ -275,28 +275,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">hla-clean</h1>
+<h1 class="title toc-ignore">hla-count-mism</h1>
 
 
 
-<div id="lookup-tables" class="section level2">
-<h2>lookup tables</h2>
-<ol style="list-style-type: decimal">
-<li>antigen - hla type lookup tables(A, B, and DQB) for special cases</li>
-<li>tables are created based on best knowledge of combination of Emory data and <a href="http://www.ebi.ac.uk/ipd/imgt/hla/dictionary.html">IPD-IMGT/HLA Database</a></li>
-</ol>
-</div>
-<div id="clean-logic" class="section level2">
-<h2>clean logic</h2>
-<p>implement these logic in order<br> 1. treat all “xx” “un” “N” like strings as NA<br> 2. use lookup table for special cases. ex: 40:05:00 typing is 50, 40:06:00 is 61<br> 3. if there is an NA antigen on either of the copies, replace it with the antigen from the non-na copy,<br>if both copies are NA, then keep them as NA<br> 4. pull out antigen if they show up within (), [], or {}.<br>ex:15(72) -&gt; 1572, *15[62]-&gt;1562, or 0302{18}-&gt;030218<br> 5. keep only first 2 chars of each antigen<br> 6. add a leading 0 if nchar = 1. ex: 2 will be 02<br></p>
-</div>
-<div id="other-notes" class="section level2">
-<h2>other notes:</h2>
-<ol style="list-style-type: decimal">
-<li>input argument must be both chains of the locus<br></li>
-<li>output is a list of cleaned hla string</li>
-</ol>
-</div>
+<p>count mis-match hla based on the input vector of allele names</p>
 
 
 

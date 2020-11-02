@@ -26,5 +26,6 @@ Imports:
   tibble,
   stringr,
   purrr,
-  tidyr
+  tidyr,
+  utils
 

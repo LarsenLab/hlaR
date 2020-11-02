@@ -17,6 +17,7 @@
 #'
 #' @import
 #' tidyverse
+#' utils
 #'
 #' @examples
 #' \dontrun{
