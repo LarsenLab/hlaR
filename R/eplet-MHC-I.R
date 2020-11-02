@@ -49,7 +49,7 @@ CalEpletMHCI <- function(dat_in) {
                 distinct()
 
   #* step 2: import patient table *#
-  dat <- vroom(dat_in)
+  dat <- read.csv(dat_in, sep = ",", header = TRUE)
   subj_num <- dim(dat)[1]
   tmp_names <- names(dat[-c(1:3)])
 
