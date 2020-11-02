@@ -18,6 +18,7 @@
 #' @import
 #' tidyverse
 #' utils
+#' readr
 #'
 #' @examples
 #' \dontrun{

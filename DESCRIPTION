@@ -20,12 +20,12 @@ Imports:
   usethis,
   tidyverse,
   dplyr,
-  vroom,
   reshape2,
   schoolmath,
   tibble,
   stringr,
   purrr,
   tidyr,
-  utils
+  utils,
+  readr
 

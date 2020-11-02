@@ -36,9 +36,10 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 ### example
 ```{r, message = FALSE}
 # use the testing data in the library
-re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
-head(re$count)
-head(re$detail)
+# dat <- read_csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
+# re <- CalEpletMHCI(dat)
+# head(re$count)
+# head(re$detail)
 ```
 
 ## MHC II

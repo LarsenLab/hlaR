@@ -11,7 +11,6 @@
 #'
 #' @import
 #' devtools
-#' vroom
 #' tidyverse
 #' dplyr
 #' schoolmath
@@ -32,7 +31,7 @@
 CalEpletMHCI <- function(dat_in) {
 
   #* step 1: import raw eplet table *#
-  raw_eplet <- vroom(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
+  raw_eplet <- read_csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
                 setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%

@@ -11,7 +11,6 @@
 #'
 #' @import
 #' devtools
-#' vroom
 #' tidyverse
 #' dplyr
 #' schoolmath
@@ -31,9 +30,11 @@
 
 CalEpletMHCII <- function(dat_in) {
   ###*** step 1: import raw eplet tables ***###
-  raw_eplet_A <- vroom(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
+  # raw_eplet_A <- vroom(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
+  # raw_eplet_B <- vroom(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
 
-  raw_eplet_B <- vroom(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
+  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
+  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
   ###*** end of step 1 ***###
 
   ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###
@@ -99,7 +100,7 @@ CalEpletMHCII <- function(dat_in) {
   ###*** step 3: import records with recipient/donor MHC II pairs ***###
   #* 3a. import data *#
   # input data format has to be same as test data
-  dat <- vroom(dat_in)
+  dat <- read.csv(dat_in, sep = ",", header = TRUE)
 
   subj_num <- dim(dat)[1]
   tmp_names <- names(dat[-c(1:3)])
