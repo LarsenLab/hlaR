@@ -33,8 +33,8 @@ CalEpletMHCII <- function(dat_in) {
   # raw_eplet_A <- vroom(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
   # raw_eplet_B <- vroom(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
 
-  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
-  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
+  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"), check.names = FALSE)
   ###*** end of step 1 ***###
 
   ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###
