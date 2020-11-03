@@ -14,15 +14,17 @@
 #'
 #' @examples
 #' \dontrun{
-# hla <- read_csv("~/projects/hlaR/inst/extdata/HLA_MisMatch_count_test.csv")
+# hla <- read_csv("~/projects/hlaR/inst/extdata/HLA_MisMatch_count_test2.csv")
 #' classI <- CountMism(hla, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
 #' classII <- CountMism(hla, c("mism.dqa12", "mism.dqb11", "mism.dqb12"  ))
 #' }
 
 CountMism <- function(dat_in, names_in){
   names <- syms(names_in)
-  dat_out <- dat_in %>% select(!!!names)
-  dat_out[dat_out != 1] <- 0
-  dat_out <- dat_out %>% mutate(mism_cnt = rowSums(.))
+  len <- length(names) + 1
+  dat_out <- dat_in %>%
+             select(1, !!!names) %>%
+             mutate(mism_total = rowSums(.[2:len], na.rm = T))
+
   return(dat_out)
 }

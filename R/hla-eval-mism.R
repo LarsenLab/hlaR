@@ -31,7 +31,7 @@
 # hla$mism.a2 <- a$mism_2
 # hla$mism.b1 <- unlist(MismatchHla(hla, hla$donor.b1, hla$donor.b2,
 # hla$recipient.b1, hla$recipient.b2, "b")[1])
-# hla$mism.b2 = unlist(MismatchHla(hla, hla$donor.b1, hla$donor.b2,
+# hla$mism.b2 <- unlist(MismatchHla(hla, hla$donor.b1, hla$donor.b2,
 # hla$recipient.b1, hla$recipient.b2, "b")[2])
 #' }
 
@@ -54,21 +54,21 @@ EvalMism <- function(dat_in, don_1, don_2, recip_1, recip_2, locus)
 
   for (i in 1:len)
   {
-    # if both alleles are NA in donor or recipient, then set mis-match value to 999
+    # if both alleles are NA in donor or recipient, then set mis-match value to NA
     if ((is.na(tmp[i,1]) & is.na(tmp[i,2])) | (is.na(tmp[i,3]) & is.na(tmp[i,4]))) {
-      mis_1[i] = 999
-      mis_2[i] = 999
+      mis_1[i] <- NA
+      mis_2[i] <- NA
     }
 
     # if dornor's hla matches with any of recipient's, then mis-match is 0;  otherwise mis-match is 1
     else{
       if (tmp[i,1] %in% c(tmp[i,3],tmp[i,4]))
-        mis_1[i] = 0
-      else mis_1[i] = 1
+        mis_1[i] <- 0
+      else mis_1[i] <- 1
 
       if (tmp[i,2] %in% c(tmp[i,3],tmp[i,4]))
-        mis_2[i] = 0
-      else mis_2[i] = 1
+        mis_2[i] <- 0
+      else mis_2[i] <- 1
     }
   }
   # end of calculating mis-match #
