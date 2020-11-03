@@ -1,5 +1,5 @@
 #' Title
-#' function to count number of mis-match HLAs
+#' function to count mis-match hla based on the input vector of allele names
 #' @param dat_in
 #' a dataframe with HLAs mis-match flags
 #' @param names_in

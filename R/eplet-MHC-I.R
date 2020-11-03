@@ -31,7 +31,8 @@
 CalEpletMHCI <- function(dat_in) {
 
   #* step 1: import raw eplet table *#
-  raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"), check.names = FALSE)
+  # raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet <- read_csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
                 setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
@@ -49,7 +50,8 @@ CalEpletMHCI <- function(dat_in) {
                 distinct()
 
   #* step 2: import patient table *#
-  dat <- read.csv(dat_in, sep = ",", header = TRUE)
+  # dat <- read.csv(dat_in, sep = ",", header = TRUE)
+  dat <- read_csv(dat_in)
   subj_num <- dim(dat)[1]
   tmp_names <- names(dat[-c(1:3)])
 

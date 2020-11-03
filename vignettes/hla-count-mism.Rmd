@@ -33,12 +33,12 @@ hla_mm_cnt <- read_csv(here("inst", "extdata", "HLA_MisMatch_count_test.csv"))
 ```
 
 @jz Query =======
-can functions load with library?
+can functions load with library? - yes
 can we have output append to the original df as option? or have id from original df with the classI output?
 
 ```{r}
 
-source(here("R/hla-count-mism.R"))
+# source(here("R/hla-count-mism.R"))
 
 classI <- CountMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
 

@@ -3,7 +3,7 @@
 \name{CountMism}
 \alias{CountMism}
 \title{Title
-function to count number of mis-match HLAs}
+function to count mis-match hla based on the input vector of allele names}
 \usage{
 CountMism(dat_in, names_in)
 }
@@ -17,7 +17,7 @@ dat_in with count of mismatches appended on the last column
 }
 \description{
 Title
-function to count number of mis-match HLAs
+function to count mis-match hla based on the input vector of allele names
 }
 \examples{
 \dontrun{
