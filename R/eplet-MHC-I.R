@@ -31,33 +31,31 @@
 CalEpletMHCI <- function(dat_in) {
 
   #* step 1: import raw eplet table *#
-  # raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"), check.names = FALSE)
-  raw_eplet <- read_csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"))
+  raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"), check.names = FALSE)
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
-                setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
-                rownames_to_column(var = "locus") %>%
-                mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
-                filter(!locus %in% c("index", "type") ) %>%
-                distinct() %>%
-                reshape2::melt(id.vars = "locus") %>%
-                filter(value != "" ) %>%
-                distinct() %>%
-                mutate(index = as.numeric(sub(".*\\_", "", variable)),
-                       type = sub("\\_.*", "", variable)) %>%
-                dplyr::rename(eplet = value) %>%
-                select(index, type, eplet) %>%
-                distinct()
+    setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
+    rownames_to_column(var = "locus") %>%
+    mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
+    filter(!locus %in% c("index", "type") ) %>%
+    distinct() %>%
+    reshape2::melt(id.vars = "locus") %>%
+    filter(value != "" ) %>%
+    distinct() %>%
+    mutate(index = as.numeric(sub(".*\\_", "", variable)),
+           type = sub("\\_.*", "", variable)) %>%
+    dplyr::rename(eplet = value) %>%
+    select(index, type, eplet) %>%
+    distinct()
 
   #* step 2: import patient table *#
-  # dat <- read.csv(dat_in, sep = ",", header = TRUE)
-  dat <- read_csv(dat_in)
+  dat <- read.csv(dat_in, sep = ",", header = TRUE)
   subj_num <- dim(dat)[1]
   tmp_names <- names(dat[-c(1:3)])
 
   #* step 3: initial eplet data frame *#
   dat_ep <- raw_eplet %>%
-            select(index, type)
+    select(index, type)
 
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
@@ -67,22 +65,22 @@ CalEpletMHCI <- function(dat_in) {
     for (j in 1:length(allele)) {
       varname <- paste0(tmp_names[j], ".", sep = i)
       if (!is.na(allele[j])) {
-          tmp <- raw_eplet %>%
-                 select(index, type, allele[j])
-          tmp <- tmp %>%
-                 setNames(c("index", "type", varname))
-          dat_ep <- dat_ep %>%
-                    left_join(., tmp, by = c("index", "type"))
+        tmp <- raw_eplet %>%
+          select(index, type, allele[j])
+        tmp <- tmp %>%
+          setNames(c("index", "type", varname))
+        dat_ep <- dat_ep %>%
+          left_join(., tmp, by = c("index", "type"))
       } else{
         dat_ep <- dat_ep %>%
-                  mutate(!!varname := NA)
+          mutate(!!varname := NA)
       }
     }
   }
 
   #* step 5: mark mis-matches *#
   dat_ep_mm <- dat_ep %>%
-               select(index, type)
+    select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
   st <- 3
@@ -120,7 +118,7 @@ CalEpletMHCI <- function(dat_in) {
 
   #* step 6: compare mis-match with raw_look up table *#
   dat_ep_mm2 <- dat_ep_mm %>%
-                select(index, type)
+    select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
   st <- 3
@@ -130,30 +128,30 @@ CalEpletMHCI <- function(dat_in) {
     ed <- st + 5
     positions <- c(st:ed)
     tmp <- dat_ep_mm %>%
-           select(c(1,2,positions) )
+      select(c(1,2,positions) )
 
     ori_name <- colnames(tmp)[-c(1,2)]
     if(i == 1){
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-              filter(mm != "") %>%
-              left_join(tmp, ., by = c("index", "type")) %>%
-              select(-c(ori_name, "eplet", "mm")) %>%
-              setNames(c("index", "type", ori_name)) %>%
-              distinct()
+        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+        filter(mm != "") %>%
+        left_join(tmp, ., by = c("index", "type")) %>%
+        select(-c(ori_name, "eplet", "mm")) %>%
+        setNames(c("index", "type", ori_name)) %>%
+        distinct()
     }
 
     if (i > 1 ) {
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-              filter(mm != "") %>%
-              left_join(tmp, ., by = c("index", "type")) %>%
-              select(-c(ori_name, "eplet", "mm")) %>%
-              setNames(c("index", "type", ori_name)) %>%
-              distinct() %>%
-              select(-c("index", "type"))
+        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+        filter(mm != "") %>%
+        left_join(tmp, ., by = c("index", "type")) %>%
+        select(-c(ori_name, "eplet", "mm")) %>%
+        setNames(c("index", "type", ori_name)) %>%
+        distinct() %>%
+        select(-c("index", "type"))
     }
     st <- ed + 1
 
@@ -172,20 +170,20 @@ CalEpletMHCI <- function(dat_in) {
     ed <- st + 5
     positions <- c(st:ed)
     tmp <- dat_ep_mm2 %>%
-           select(c(1, 2, positions)) %>%
-           setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
-           right_join(., raw_lookup,by = c("index", "type")) %>%
-           mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
-           select(index, type, eplet, var) %>%
-           setNames(c("index", "type", "eplet", subj_names[i]))
+      select(c(1, 2, positions)) %>%
+      setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
+      right_join(., raw_lookup,by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
 
     st <- ed + 1
     results_detail <- left_join(results_detail, tmp, by = c("index", "type", "eplet"))
   }
 
   results_detail <- results_detail %>%
-                    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
-                           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
+    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
+           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
 
   # excel issues
   # type 1 issues : columns with trailing space for mis-miss-match
@@ -195,18 +193,17 @@ CalEpletMHCI <- function(dat_in) {
   # Abv21 in "Ep" table is Abv21 is 150AHA, it's 151AHA iin header of "Results"
 
   results_count <- results_detail %>%
-                   select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-                   summarise_all(funs(sum(!is.na(.)))) %>%
-                   gather() %>%
-                   setNames(c("subject", "mm_count")) %>%
-                   select(mm_count)
+    select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
+    summarise_all(funs(sum(!is.na(.)))) %>%
+    gather() %>%
+    setNames(c("subject", "mm_count")) %>%
+    select(mm_count)
 
   results_count <- cbind(dat ,results_count)
 
   return(list(count = results_count,
               detail = results_detail))
 }
-
 
 
 

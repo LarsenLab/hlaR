@@ -444,9 +444,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-31"><a href="#cb3-31"></a><span class="co">#&gt; 2 DQA1*06:02 DQA1*03:01  DPB1*31:01  DPB1*37:01 DPA1*02:01                   0</span></span>
 <span id="cb3-32"><a href="#cb3-32"></a><span class="co">#&gt; 3 DQA1*05:04 DQA1*03:02 DPB1*106:01 DPB1*107:01 DPA1*01:06 DPA1*02:01        0</span></span>
 <span id="cb3-33"><a href="#cb3-33"></a><span class="co">#&gt;   mm_count mm_count mm_count mm_count</span></span>
-<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt; 1        0        0        0        0</span></span>
-<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; 2        0        0        0        0</span></span>
-<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; 3        0        0        0        0</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt; 1        0        1        0        3</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; 2        0        8        0        3</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; 3        0        3        0        0</span></span>
 <span id="cb3-37"><a href="#cb3-37"></a><span class="kw">head</span>(re<span class="op">$</span>detail)</span>
 <span id="cb3-38"><a href="#cb3-38"></a><span class="co">#&gt; $drb</span></span>
 <span id="cb3-39"><a href="#cb3-39"></a><span class="co">#&gt; [1] index   type    eplet   subj1   subj2   subj3   mm_cnt  mm_pect</span></span>
@@ -457,16 +457,48 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-44"><a href="#cb3-44"></a><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
 <span id="cb3-45"><a href="#cb3-45"></a><span class="co">#&gt; </span></span>
 <span id="cb3-46"><a href="#cb3-46"></a><span class="co">#&gt; $dqa</span></span>
-<span id="cb3-47"><a href="#cb3-47"></a><span class="co">#&gt; [1] index   type    eplet   subj1   subj2   subj3   mm_cnt  mm_pect</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
-<span id="cb3-49"><a href="#cb3-49"></a><span class="co">#&gt; </span></span>
-<span id="cb3-50"><a href="#cb3-50"></a><span class="co">#&gt; $dpb</span></span>
-<span id="cb3-51"><a href="#cb3-51"></a><span class="co">#&gt; [1] index   type    eplet   subj1   subj2   subj3   mm_cnt  mm_pect</span></span>
-<span id="cb3-52"><a href="#cb3-52"></a><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
-<span id="cb3-53"><a href="#cb3-53"></a><span class="co">#&gt; </span></span>
-<span id="cb3-54"><a href="#cb3-54"></a><span class="co">#&gt; $dpa</span></span>
-<span id="cb3-55"><a href="#cb3-55"></a><span class="co">#&gt; [1] index   type    eplet   subj1   subj2   subj3   mm_cnt  mm_pect</span></span>
-<span id="cb3-56"><a href="#cb3-56"></a><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
+<span id="cb3-47"><a href="#cb3-47"></a><span class="co">#&gt;    index  type eplet subj1 subj2 subj3 mm_cnt mm_pect</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a><span class="co">#&gt; 1      1   AbV    2D  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-49"><a href="#cb3-49"></a><span class="co">#&gt; 2      2   AbV   40E  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-50"><a href="#cb3-50"></a><span class="co">#&gt; 3      2   AbV  40GR  &lt;NA&gt;  40GR  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-51"><a href="#cb3-51"></a><span class="co">#&gt; 4      3   AbV  52SK  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-52"><a href="#cb3-52"></a><span class="co">#&gt; 5      4   AbV 47KHL 47KHL  &lt;NA&gt;  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-53"><a href="#cb3-53"></a><span class="co">#&gt; 6      4   AbV   76V  &lt;NA&gt;   76V   76V      2   66.7%</span></span>
+<span id="cb3-54"><a href="#cb3-54"></a><span class="co">#&gt; 7      5   AbV  61GR  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-55"><a href="#cb3-55"></a><span class="co">#&gt; 8      5   AbV  61FT  &lt;NA&gt;  61FT  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-56"><a href="#cb3-56"></a><span class="co">#&gt; 9      6   AbV   75S  &lt;NA&gt;  &lt;NA&gt;   75S      1   33.3%</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a><span class="co">#&gt; 10     1 other pq34Q  &lt;NA&gt; pq34Q  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-58"><a href="#cb3-58"></a><span class="co">#&gt; 11     3   oth    2G  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-59"><a href="#cb3-59"></a><span class="co">#&gt; 12     4   oth   69L  &lt;NA&gt;   69L  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-60"><a href="#cb3-60"></a><span class="co">#&gt; 13     4   oth   69T  &lt;NA&gt;   69T  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-61"><a href="#cb3-61"></a><span class="co">#&gt; 14     5   oth   75I  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-62"><a href="#cb3-62"></a><span class="co">#&gt; 15     6   oth  130A  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-63"><a href="#cb3-63"></a><span class="co">#&gt; 16     6   oth   76L  &lt;NA&gt;   76L  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-64"><a href="#cb3-64"></a><span class="co">#&gt; 17     7   oth  129Q  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-65"><a href="#cb3-65"></a><span class="co">#&gt; 18     7   oth  129H  &lt;NA&gt;  129H  &lt;NA&gt;      1   33.3%</span></span>
+<span id="cb3-66"><a href="#cb3-66"></a><span class="co">#&gt; 19     8   oth  130S  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-67"><a href="#cb3-67"></a><span class="co">#&gt; 20     9   oth  160A  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-68"><a href="#cb3-68"></a><span class="co">#&gt; 21     9   oth  160D  &lt;NA&gt;  &lt;NA&gt;  160D      1   33.3%</span></span>
+<span id="cb3-69"><a href="#cb3-69"></a><span class="co">#&gt; 22     9   oth  160S  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-70"><a href="#cb3-70"></a><span class="co">#&gt; 23    10   oth 161DI  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0      0%</span></span>
+<span id="cb3-71"><a href="#cb3-71"></a><span class="co">#&gt; </span></span>
+<span id="cb3-72"><a href="#cb3-72"></a><span class="co">#&gt; $dpb</span></span>
+<span id="cb3-73"><a href="#cb3-73"></a><span class="co">#&gt; [1] index   type    eplet   subj1   subj2   subj3   mm_cnt  mm_pect</span></span>
+<span id="cb3-74"><a href="#cb3-74"></a><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span id="cb3-75"><a href="#cb3-75"></a><span class="co">#&gt; </span></span>
+<span id="cb3-76"><a href="#cb3-76"></a><span class="co">#&gt; $dpa</span></span>
+<span id="cb3-77"><a href="#cb3-77"></a><span class="co">#&gt;    index  type eplet subj1 subj2 subj3 mm_cnt mm_pect</span></span>
+<span id="cb3-78"><a href="#cb3-78"></a><span class="co">#&gt; 1      5   AbV   50Q  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-79"><a href="#cb3-79"></a><span class="co">#&gt; 2      5   AbV   50R   50R  &lt;NA&gt;    NA      1   33.3%</span></span>
+<span id="cb3-80"><a href="#cb3-80"></a><span class="co">#&gt; 3      1 other pq34Q  &lt;NA&gt; pq34Q    NA      1   33.3%</span></span>
+<span id="cb3-81"><a href="#cb3-81"></a><span class="co">#&gt; 4      3   oth   66L  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-82"><a href="#cb3-82"></a><span class="co">#&gt; 5      3   oth   66S  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-83"><a href="#cb3-83"></a><span class="co">#&gt; 6      4   oth   83A  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-84"><a href="#cb3-84"></a><span class="co">#&gt; 7      7   oth  111R  111R  111R    NA      2   66.7%</span></span>
+<span id="cb3-85"><a href="#cb3-85"></a><span class="co">#&gt; 8      8   oth  127L  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-86"><a href="#cb3-86"></a><span class="co">#&gt; 9      8   oth  127P  127P  127P    NA      2   66.7%</span></span>
+<span id="cb3-87"><a href="#cb3-87"></a><span class="co">#&gt; 10     9   oth  160F  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span>
+<span id="cb3-88"><a href="#cb3-88"></a><span class="co">#&gt; 11     9   oth  190A  &lt;NA&gt;  &lt;NA&gt;    NA      0      0%</span></span></code></pre></div>
 </div>
 </div>
 

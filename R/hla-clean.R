@@ -429,4 +429,3 @@ CleanHla <- function(var_1, var_2, locus) {
   }
 
 }
-
