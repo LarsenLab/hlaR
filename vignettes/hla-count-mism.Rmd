@@ -18,7 +18,29 @@ knitr::opts_chunk$set(
 ```
 
 count mis-match hla based on the input vector of allele names
-    
 
+@jz query should we add dependency on readr and use read_csv
+I used here but we can probably avoid this
 
+```{r}
+library(hlaR)
+library(tidyverse)
+library(here)
+```
+
+```{r}
+hla_mm_cnt <- read_csv(here("inst", "extdata", "HLA_MisMatch_count_test.csv"))
+```
+
+@jz Query =======
+can functions load with library?
+can we have output append to the original df as option? or have id from original df with the classI output?
+
+```{r}
+
+source(here("R/hla-count-mism.R"))
+
+classI <- CountMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
+
+```
 
