@@ -24,12 +24,12 @@ I used here but we can probably avoid this
 
 ```{r}
 library(hlaR)
-library(tidyverse)
+library(readr)
 library(here)
 ```
 
 ```{r}
-# hla_mm_cnt <- read_csv(here("inst", "extdata", "HLA_MisMatch_count_test.csv"))
+hla_mm_cnt <- read_csv(here("inst", "extdata", "HLA_MisMatch_count_test.csv"))
 ```
 
 @jz Query =======
@@ -40,7 +40,7 @@ can we have output append to the original df as option? or have id from original
 
 # source(here("R/hla-count-mism.R"))
 
-# classI <- CountMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
+classI <- CountMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
 
 ```
 
