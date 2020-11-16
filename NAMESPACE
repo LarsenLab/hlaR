@@ -3,6 +3,7 @@
 export(CalEpletMHCI)
 export(CalEpletMHCII)
 export(CleanHla)
+export(CountFreq)
 export(CountMism)
 export(EvalMism)
 import(devtools)

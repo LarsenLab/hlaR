@@ -1,0 +1,24 @@
+---
+title: "hla-stats"
+description: |
+  most frequent count by allele; most frequent donor allel that is mis-match to recipients
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{hla-stats}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## work in progress
+    
+
+
+
