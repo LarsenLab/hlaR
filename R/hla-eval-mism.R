@@ -1,5 +1,4 @@
 
-#' Title
 #' function to evaluate mis-match HLAs
 #' @param dat_in
 #' a dataframe with HLAs

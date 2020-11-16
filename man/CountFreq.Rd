@@ -2,8 +2,7 @@
 % Please edit documentation in R/hla-stats.R
 \name{CountFreq}
 \alias{CountFreq}
-\title{Title
-frequency of allele(s)}
+\title{top N frequency of allele(s)}
 \usage{
 CountFreq(dat_in, names_in, top_n = 5)
 }
@@ -18,8 +17,7 @@ CountFreq(dat_in, names_in, top_n = 5)
 dataframe of top_n most frequent alleles
 }
 \description{
-Title
-frequency of allele(s)
+top N frequency of allele(s)
 }
 \examples{
 \dontrun{

@@ -2,8 +2,7 @@
 % Please edit documentation in R/hla-clean.R
 \name{CleanHla}
 \alias{CleanHla}
-\title{Title
-function to clean HLAs}
+\title{function to clean HLAs}
 \usage{
 CleanHla(var_1, var_2, locus)
 }
@@ -23,7 +22,6 @@ returns alpha1 and alpha2 for HLA class I
 returns alpha and beta for HLA class II
 }
 \description{
-Title
 function to clean HLAs
 }
 \examples{

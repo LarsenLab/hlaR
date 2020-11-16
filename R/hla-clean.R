@@ -1,4 +1,3 @@
-#' Title
 #' function to clean HLAs
 #' @param var_1
 #' alpha1 domain we want to clean

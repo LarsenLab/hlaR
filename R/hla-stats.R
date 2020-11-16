@@ -1,6 +1,5 @@
 
-#' Title
-#' frequency of allele(s)
+#' top N frequency of allele(s)
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param names_in
