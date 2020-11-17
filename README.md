@@ -34,7 +34,10 @@
 #### most frequent alleles
 * dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
 * nms <- c("recipient.a1", "recipient.a2", "donor.a1","donor.a2")
-* re <- CountFreq(dat_in = dat, names_in = nms, top_n = 2)
+* result <- CountFreq(dat_in = dat, names_in = nms, top_n = 2)
 #### most frequent donor allele that is mis-match to recipients
-* coming soon
+* dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
+* don <- c("donor.a1", "donor.a2")
+* rcpt <- c("recipient.a1", "recipient.a2")
+* result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt) 
 
