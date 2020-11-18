@@ -29,9 +29,6 @@
 
 CalEpletMHCII <- function(dat_in) {
   ###*** step 1: import raw eplet tables ***###
-  # raw_eplet_A <- vroom(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"))
-  # raw_eplet_B <- vroom(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"))
-
   raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"), check.names = FALSE)
   raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"), check.names = FALSE)
   ###*** end of step 1 ***###
@@ -51,22 +48,25 @@ CalEpletMHCII <- function(dat_in) {
   lkup_b <- as.data.frame(t(raw_eplet_B)) %>%
     setNames(paste(raw_eplet_B$type, raw_eplet_B$index, sep = "_" )) %>%
     rownames_to_column(var = "locus") %>%
-    mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
+    mutate(locus = ifelse(str_detect(locus, "\\."), sub("\\..*", "", locus), locus)) %>%
     filter(!locus %in% c("index", "type") ) %>%
     distinct() %>%
     reshape2::melt(id.vars = "locus") %>%
-    filter(value != "" ) %>%
-    distinct()
+    filter(value != "")%>%
+    distinct() %>%
+    filter(value != " " )
+
   #* end of 2a *#
 
   # 2b: sub-lookup tables, these tables are used for mis-match comparison of each locus #
-  GenerateLookup <- function(dat_in, locus_in){
-    dat_out <- dat_in %>%
+  GenerateLookup <- function(lkup_in, locus_in){
+    dat_out <- lkup_in %>%
       filter(locus %in% locus_in) %>%
       mutate(index = as.numeric(sub(".*\\_", "", variable)),
              type = sub("\\_.*", "", variable)) %>%
       select(index, type, value) %>%
       dplyr::rename(eplet = value) %>%
+      filter(eplet != "") %>%
       distinct()
 
     return(dat_out)
@@ -257,7 +257,7 @@ CalEpletMHCII <- function(dat_in) {
     ed <- st + 3
     positions <- c(st:ed)
     tmp <- ep_a_mm %>%
-      select(c(1, 2, positions)) %>%
+      select(c(1, 2, all_of(positions))) %>%
       setNames(c("index", "type", "dqa1_mm", "dqa2_mm", "dpa1_mm", "dpa2_mm"))
 
     # dqa, join lkup_dqa
@@ -292,7 +292,7 @@ CalEpletMHCII <- function(dat_in) {
 
     cnt <- dtl %>%
       select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-      summarise_all(funs(sum(!is.na(.)))) %>%
+      summarise_all(list(~sum(!is.na(.)))) %>%
       gather() %>%
       setNames(c("subject", "mm_count")) %>%
       select(mm_count)
