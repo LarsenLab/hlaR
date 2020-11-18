@@ -22,8 +22,10 @@ CountMism <- function(dat_in, names_in){
   names <- syms(names_in)
   len <- length(names) + 1
   dat_out <- dat_in %>%
-             select(1, !!!names) %>%
-             mutate(mism_total = rowSums(.[2:len], na.rm = T))
+              select(1, !!!names) %>%
+              mutate(num_nas = apply(is.na(.), 1, sum)) %>%
+              mutate(mism_total = ifelse(num_nas == length(names), NA, rowSums(.[2:len], na.rm = T))) %>%
+              select(-num_nas)
 
   return(dat_out)
 }
