@@ -79,20 +79,6 @@ CalEpletMHCII <- function(dat_in) {
   lkup_dqb <- GenerateLookup(lkup_b, "DQB1")
   lkup_drb <- GenerateLookup(lkup_b, c("DRB1", "DRB3", "DRB4", "DRB5"))
 
-  # compare the result with original excel table, need confirm 4 eplets below
-  # DQA
-  # DQA1 oth_10 161DI - it's 161D in the excel
-  # DQA1 oth_5 75I - it's 75 in the excel
-  # DQA1 oth_10 161DI - it's 160D in the excel
-  # DPA
-  # DPA1 other_1 pq34Q - it's 34Qx in the excel
-
-  # some known issues cause incorrect mis-match result in the excel file
-  # 1. extra space: "108M "
-  # 2. missing letters:
-  # 3. mis-spell of eplet name: "rq70RK/R" supposed to be "rq70RR/K"
-  # 4. mis-match column number: "185I" col"FU4" supposed to be "col "FT4"
-
   #* end of 2b *#
   ###*** end of step 2 ***###
 

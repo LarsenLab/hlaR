@@ -184,13 +184,6 @@ CalEpletMHCI <- function(dat_in) {
     mutate(mm_cnt = subj_num - rowSums(is.na(.)),
            mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
 
-  # excel issues
-  # type 1 issues : columns with trailing space for mis-miss-match
-  # example: workSheet "Results", row4 colDQ 77D, 90D row4 colBD 90D, colEG 152A, colDS 77S, colEX 184H
-  # type 2 issues: eplet names don't match between "Ep" and "Restuls" tables
-  # example: eplet name of Abv21 is "150AHA" or "151AHA" ?
-  # Abv21 in "Ep" table is Abv21 is 150AHA, it's 151AHA iin header of "Results"
-
   results_count <- results_detail %>%
     select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
     summarise_all(list(~sum(!is.na(.)))) %>%
