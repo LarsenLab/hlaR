@@ -2,9 +2,10 @@ Package: hlaR
 Type: Package
 Title: R package for HLA mis-match and data cleaning
 Version: 0.1.0
-Authors@R: c(person("Christian P","Larsen",email="cpl@emory.edu", role = c("aut","cre")))
-Maintainer: Joan Zhang <joan.zhang@emory.edu>
-Description: setup folder structures for R project.
+Description: R package for eplet and HLA mis-match evaluation.
+Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),
+             person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("aut")),
+             person("Christian P","Larsen",email = "cpl@emory.edu", role = c("cph")))
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

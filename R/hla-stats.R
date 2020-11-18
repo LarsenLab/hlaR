@@ -1,5 +1,5 @@
-
-#' tcalculate op N frequency of allele(s)
+#' @name hla-stats
+#' @title calculate topN most frequent allele(s)
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param names_in
@@ -8,7 +8,6 @@
 #' names of top N most frequent alleles, default is 5
 #' @return
 #' dataframe of top_n most frequent alleles
-#' @export
 #'
 #' @import
 #' tidyverse
@@ -19,6 +18,8 @@
 #  names <- c("recipient.a1", "recipient.a2", "donor.a1","donor.a2")
 #' result <- CalFreq(dat_in = dat), names_in =  names, top_n = 2)
 #' }
+#' @rdname hla-stats
+#' @export
 
 CalFreq <- function(dat_in, names_in, top_n = 5){
   names <- syms(names_in)
@@ -36,7 +37,8 @@ CalFreq <- function(dat_in, names_in, top_n = 5){
   return(dat_out)
 }
 
-#' calculate mis-match frequency of donor's alleles to recipient's
+
+#' @title calculate frequency of donor mis-match alleles to recipient's
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param names_don
@@ -44,9 +46,7 @@ CalFreq <- function(dat_in, names_in, top_n = 5){
 #' @param names_rcpt
 #' column names of recipient's alleles, must be length of 2
 #' @return
-#' dataframe of donor's mis-match alleles with frequent > 1
-#' @export
-#'
+#' dataframe of donor's mis-match alleles with frequency > 1
 #' @import
 #' tidyverse
 #'
@@ -57,8 +57,8 @@ CalFreq <- function(dat_in, names_in, top_n = 5){
 # rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt)
 #' }
-#'
-#'
+#' @rdname hla-stats
+#' @export
 #'
 CalMismFreq <- function(dat_in, names_don, names_rcpt){
   #* start of data prep *#
@@ -117,3 +117,4 @@ CalMismFreq <- function(dat_in, names_don, names_rcpt){
 
   return(dat_out)
 }
+
