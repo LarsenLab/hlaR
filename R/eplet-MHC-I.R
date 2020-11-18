@@ -193,7 +193,7 @@ CalEpletMHCI <- function(dat_in) {
 
   results_count <- results_detail %>%
     select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-    summarise_all(funs(sum(!is.na(.)))) %>%
+    summarise_all(list(~sum(!is.na(.)))) %>%
     gather() %>%
     setNames(c("subject", "mm_count")) %>%
     select(mm_count)
