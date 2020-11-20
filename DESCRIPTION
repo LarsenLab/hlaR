@@ -4,8 +4,8 @@ Title: R package for HLA mis-match and data cleaning
 Version: 0.1.0
 Description: R package for eplet and HLA mis-match evaluation.
 Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),
-             person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("ctb")),
-             person("Christian P","Larsen",email = "cpl@emory.edu", role = c("cph")))
+             person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("aut")),
+             person("Christian P","Larsen",email = "clarsen@emory.edu", role = c("cph", "aut")))
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8

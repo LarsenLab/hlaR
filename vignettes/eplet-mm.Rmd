@@ -57,9 +57,13 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 **DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
 
 ### example
+#### example 1
 ```{r, message = FALSE}
 # use the testing data in the library
 re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
 head(re$count)
 head(re$detail)
 ```
+
+#### example 2(clinical....)
+
