@@ -8,20 +8,16 @@
 \usage{
 CalFreq(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 
-CalMismFreq(dat_in, names_don, names_rcpt)
+CalMismFreq(dat_in, nms_don = c(), nms_rcpt = c())
 }
 \arguments{
 \item{dat_in}{dataframe of clean HLA}
 
-\item{nms_don}{donor's allele name(s) frequency count}
+\item{nms_don}{column names of donor's alleles, must be length of 2}
 
-\item{nms_rcpt}{recipient's allele name(s) of frequency count}
+\item{nms_rcpt}{column names of recipient's alleles, must be length of 2}
 
 \item{top_n}{names of top N most frequent alleles, default is 5}
-
-\item{names_don}{column names of donor's alleles, must be length of 2}
-
-\item{names_rcpt}{column names of recipient's alleles, must be length of 2}
 }
 \value{
 dataframe of top_n most frequent alleles
@@ -38,6 +34,6 @@ calculate frequency of donor mis-match alleles to recipient's
 result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
 }
 \dontrun{
-result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt)
+result <- CalMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
 }
 }

@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' \dontrun{
-#  dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR")
+#  dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
 #  don <- c("donor.a1", "donor.a2")
 #  rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
@@ -48,9 +48,9 @@ CalFreq <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
 #' @title calculate frequency of donor mis-match alleles to recipient's
 #' @param dat_in
 #' dataframe of clean HLA
-#' @param names_don
+#' @param nms_don
 #' column names of donor's alleles, must be length of 2
-#' @param names_rcpt
+#' @param nms_rcpt
 #' column names of recipient's alleles, must be length of 2
 #' @return
 #' dataframe of donor's mis-match alleles with frequency > 1
@@ -62,17 +62,17 @@ CalFreq <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
 # dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
 # don <- c("donor.a1", "donor.a2")
 # rcpt <- c("recipient.a1", "recipient.a2")
-#' result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt)
+#' result <- CalMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
 #' }
 #' @rdname hla-stats
 #' @export
 #'
-CalMismFreq <- function(dat_in, names_don, names_rcpt){
+CalMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
   #* start of data prep *#
   dat_don <- dat_in %>%
-    select(all_of(names_don))
+    select(all_of(nms_don))
   dat_rcpt <- dat_in %>%
-    select(all_of(names_rcpt))
+    select(all_of(nms_rcpt))
 
   # tmp[,c(1,2)] are donor's alleles
   # tmp[,c(3,4)] are recipient's alleles
@@ -113,14 +113,15 @@ CalMismFreq <- function(dat_in, names_don, names_rcpt){
 
   #* start of calculate mis-match frequency for donor *#
   dat_out <- tmp %>%
-    select(names_don) %>%
+    select(all_of(nms_don)) %>%
     mutate_all(as.character) %>%
     gather(., name, allele) %>%
-    group_by(name, allele) %>%
-    summarise(freq = n()) %>%
+    filter(!is.na(allele)) %>%
+    group_by(allele) %>%
+    summarise(freq = n(), .groups = 'drop') %>%
     filter(!is.na(allele) & freq > 1) %>%
     ungroup() %>%
-    arrange(name, allele, freq)
+    arrange(-freq)
 
   return(dat_out)
 }
