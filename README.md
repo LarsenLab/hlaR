@@ -31,10 +31,12 @@
 * hla_mm_cnt <- read_csv(system.file("extdata", "HLA_MisMatch_count_test.csv", package = "hlaR"))
 * classI <- CountMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
 * classII <- CountMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"  ))
-#### topN most frequent alleles
+#### topN most frequent recipient/donor alleles 
 * dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
-* nms <- c("recipient.a1", "recipient.a2", "donor.a1","donor.a2")
-* result <- CalFreq(dat_in = dat, names_in = nms, top_n = 2)
+* don <- c("donor.a1", "donor.a2")
+* rcpt <- c("recipient.a1",    "recipient.a2")
+* result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
+* result
 #### frequency(freq count > 1) of donor mis-match alleles to recipients
 * dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
 * don <- c("donor.a1", "donor.a2")
