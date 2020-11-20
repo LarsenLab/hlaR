@@ -1,5 +1,5 @@
 ## Installation
-library(devtools)<br>   
+library(devtools)<br>
 install_github("LarsenLab/hlaR")<br>
 library(hlaR)<br> 
 
@@ -7,10 +7,10 @@ library(hlaR)<br>
 ### eplet mis-match
 #### MHC class I
 eplet_mm1 <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))<br>
-eplet_mm1$count<br>  
+eplet_mm1$count<br>
 eplet_mm1$detail<br>
 #### MHC class II
-eplet_mm2 <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
+eplet_mm2 <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))<br>
 eplet_mm2$count<br> 
 eplet_mm2$detail<br>
 
