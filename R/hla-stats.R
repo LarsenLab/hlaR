@@ -2,8 +2,10 @@
 #' @title calculate topN most frequent allele(s)
 #' @param dat_in
 #' dataframe of clean HLA
-#' @param names_in
-#' allele name(s) of which we want to count frequency
+#' @param nms_don
+#' donor's allele name(s) frequency count
+#' @param nms_rcpt
+#' recipient's allele name(s) of frequency count
 #' @param top_n
 #' names of top N most frequent alleles, default is 5
 #' @return
@@ -15,28 +17,33 @@
 #' @examples
 #' \dontrun{
 #  dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR")
-#  names <- c("recipient.a1", "recipient.a2", "donor.a1","donor.a2")
-#' result <- CalFreq(dat_in = dat), names_in =  names, top_n = 2)
+#  don <- c("donor.a1", "donor.a2")
+#  rcpt <- c("recipient.a1", "recipient.a2")
+#' result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
 #' }
 #' @rdname hla-stats
 #' @export
 
-CalFreq <- function(dat_in, names_in, top_n = 5){
-  names <- syms(names_in)
+CalFreq <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
+  names <- syms(c(nms_don, nms_rcpt))
   dat_out <- dat_in %>%
               select(!!!names) %>%
               mutate_all(as.character) %>%
               gather(., name, allele, c(1:length(names)) ) %>%
-              group_by(name, allele) %>%
-              summarise(freq = n()) %>%
+              mutate(part_type = ifelse(name %in% nms_don, "don",
+                                        ifelse(name %in% nms_rcpt, "rcpt", "none"))) %>%
+              select(-name) %>%
               filter(!is.na(allele)) %>%
+              group_by(part_type, allele) %>%
+              summarise(freq = n(), .groups = 'drop') %>%
+              ungroup() %>%
+              group_by(part_type) %>%
               top_n(top_n) %>%
               ungroup() %>%
-              arrange(name, allele, freq)
+              arrange(part_type, -freq)
 
   return(dat_out)
 }
-
 
 #' @title calculate frequency of donor mis-match alleles to recipient's
 #' @param dat_in

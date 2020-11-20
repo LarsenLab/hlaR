@@ -6,14 +6,16 @@
 \alias{CalMismFreq}
 \title{calculate topN most frequent allele(s)}
 \usage{
-CalFreq(dat_in, names_in, top_n = 5)
+CalFreq(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 
 CalMismFreq(dat_in, names_don, names_rcpt)
 }
 \arguments{
 \item{dat_in}{dataframe of clean HLA}
 
-\item{names_in}{allele name(s) of which we want to count frequency}
+\item{nms_don}{donor's allele name(s) frequency count}
+
+\item{nms_rcpt}{recipient's allele name(s) of frequency count}
 
 \item{top_n}{names of top N most frequent alleles, default is 5}
 
@@ -33,7 +35,7 @@ calculate frequency of donor mis-match alleles to recipient's
 }
 \examples{
 \dontrun{
-result <- CalFreq(dat_in = dat), names_in =  names, top_n = 2)
+result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
 }
 \dontrun{
 result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt)
