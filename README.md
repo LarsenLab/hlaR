@@ -41,5 +41,5 @@
 * dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
 * don <- c("donor.a1", "donor.a2")
 * rcpt <- c("recipient.a1", "recipient.a2")
-* result <- CalMismFreq(dat_in = dat, names_don = don, names_rcpt = rcpt) 
+* result <- CalMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt) 
 
