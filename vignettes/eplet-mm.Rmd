@@ -21,19 +21,28 @@ knitr::opts_chunk$set(
 # library(devtools)
 # install_github("LarsenLab/hlaR")
 library(hlaR)
+
 ```
 
-## MHC I
-### notes
-1. raw_eplet is pulled from "Ep" worksheet from ABC_Eplet_Matching_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
-2. raw_lookup is generated on-the-fly based on raw_eplet table
-3. result generated from this function may slightly different with result from ABC_Eplet_Matching_3.1.xlsb due to a few possible formatting issue in the excel
-4. if allele from dat_in is not in the raw eplet table, then it will set to NA
+## Aims
 
-### mm calculation logic
+## Methods
+
+### MHC I
+
+#### notes
+
+1.  raw\_eplet is pulled from "Ep" worksheet from ABC\_Eplet\_Matching\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
+2.  raw\_lookup is generated on-the-fly based on raw\_eplet table
+3.  result generated from this function may slightly different with result from ABC\_Eplet\_Matching\_3.1.xlsb due to a few possible formatting issue in the excel
+4.  if allele from dat\_in is not in the raw eplet table, then it will set to NA
+
+#### mm calculation logic
+
 compare eplet of donor's each alelle with all available recipient's eplets from A, B, and C
 
 ### example
+
 ```{r, message = FALSE}
 # use the testing data in the library
 # dat <- read_csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
@@ -42,22 +51,23 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 # head(re$detail)
 ```
 
-## MHC II
-### notes
-1. raw_eplet is pulled from worksheets "A" and "B" from DRDQDP_Antibody_Analysis_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
-2. raw_lookup is generated on-the-fly based on raw_eplet table
-3. result generated from this function may slightly different with result from DRDQDP_Antibody_Analysis_3.1.xlsb due to a few possible formatting issue in the excel
-4. if allele from dat_in is not in the raw eplet table, then it will set to NA
+### MHC II
 
-### mm calculation logics
-**DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br>
-**DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br>
-**DPB**: if inter-loci eplets (av >= 22 or other <= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br>
-**DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br>
-**DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
+#### notes
 
-### example
-#### example 1
+1.  raw\_eplet is pulled from worksheets "A" and "B" from DRDQDP\_Antibody\_Analysis\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
+2.  raw\_lookup is generated on-the-fly based on raw\_eplet table
+3.  result generated from this function may slightly different with result from DRDQDP\_Antibody\_Analysis\_3.1.xlsb due to a few possible formatting issue in the excel
+4.  if allele from dat\_in is not in the raw eplet table, then it will set to NA
+
+#### mm calculation logics
+
+**DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br> **DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br> **DPB**: if inter-loci eplets (av \>= 22 or other \<= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br> **DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br> **DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
+
+## Examples
+
+### Example 1
+
 ```{r, message = FALSE}
 # use the testing data in the library
 re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
@@ -65,5 +75,76 @@ head(re$count)
 head(re$detail)
 ```
 
-#### example 2(clinical....)
+### Use case 2 Epilet MM for Transplant Cohort  (clinical.... 
 
+Use case transplant team or researcher would like to calulate the Class I and Class II epilet mismatch for a cohort of transplant recipients using high resolution or imputed four digit recipient and donor HLA typing data.
+
+##### import recipient and donor typing data
+
+[@TODO] describe import of data from package.
+
+```{r import sample cohort data}
+data(tx_cohort)
+tx_cohort <- tx_cohort
+```
+
+[@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
+
+Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.
+
+Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
+
+```{r explore data set}
+glimpse(tx_cohort)
+```
+
+Describe the function purpose, input output. Reference matchmaker
+
+```{r calculate class I and class II epilet mm}
+
+```
+
+Generate some visuals (base vs ggplot)
+
+histogram of epilet mm ? epilet mmm vs dsa at 5 years?
+
+```{r visualize mm}
+
+```
+
+### Use Case 2 Assess epilet MM for potential donors
+
+Use case transplant team would like to calulate the Class I and Class II epilet mismatch for five potential donors for a recipient.   High resolution or imputed four digit recipient and donor HLA typing data for recipient and all donors is available
+
+##### import recipient and donor typing data
+
+[@TODO] describe import of data from package.
+
+```{r import assess_donors data}
+data(assess_donors)
+assess_donors <- assess_donors
+```
+
+[@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
+
+Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.
+
+Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
+
+```{r explore data set}
+glimpse(assess_donors)
+```
+
+Describe the function purpose, input output. Reference matchmaker
+
+```{r calculate epilet mm for donors}
+
+```
+
+Generate some visuals (base vs ggplot)
+
+histogram of epilet mm ? epilet mmm vs dsa at 5 years?
+
+```{r visualize donor mm}
+
+```
