@@ -83,9 +83,22 @@ Use case transplant team or researcher would like to calulate the Class I and Cl
 
 [@TODO] describe import of data from package.
 
+```{r}
+# library(tidyverse)
+# e_tx <- readr::read_rds("~/platforms/e_tx_platform/data/proc/tidy_rds/e_tx_final_20201009.rds.gz")
+# 
+# tx_cohort <- e_tx$hla_typing %>% 
+#   filter(transplant_dt >= "2020-09-01") %>% 
+#   select(-c(patient_full_nm:transplant_dt))
+# 
+# write_csv(tx_cohort, "data/tx_cohort.csv")
+
+```
+
+
 ```{r import sample cohort data}
-data(tx_cohort)
-tx_cohort <- tx_cohort
+
+tx_cohort <- read_csv("data/tx_cohort.csv")
 ```
 
 [@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
