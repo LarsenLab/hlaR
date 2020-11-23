@@ -98,9 +98,9 @@ Use case transplant team or researcher would like to calulate the Class I and Cl
 
 ```{r import sample cohort data}
 
-data(high_res_cohort)
-
-high_res_cohort <- read_csv("add high res sample data")
+# data(high_res_cohort)
+# 
+# high_res_cohort <- read_csv("add high res sample data")
 ```
 
 [@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
@@ -110,7 +110,7 @@ Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Cla
 Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
 
 ```{r explore data set}
-glimpse(tx_cohort)
+glimpse(high_res_cohort)
 ```
 
 Describe the function purpose, input output. Reference matchmaker
