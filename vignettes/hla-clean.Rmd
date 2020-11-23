@@ -34,5 +34,37 @@ implement these logic in order<br>
 1. input argument must be both chains of the locus<br>
 2. output is a list of cleaned hla string
 
+```{r}
+library(hlaR)
+library(tidyverse)
+```
+
+
+
+```{r import sample cohort data}
+
+tx_cohort <- read_csv("data/tx_cohort.csv")
+```
+
+[@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
+
+Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.
+
+Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
+
+```{r explore data set}
+glimpse(tx_cohort)
+```
+
+Describe the function purpose, input output.
+
+```{r clean hla class I}
+
+tx_cohort <- tx_cohort %>% 
+  mutate(recipient_a1, recipient_a2, locus = "a")
+
+re <- CleanHLA(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = "a")
+```
+
 
 
