@@ -712,11 +712,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb4-6"><a href="#cb4-6"></a><span class="co">#   select(-c(patient_full_nm:transplant_dt))</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co"># </span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="co"># write_csv(tx_cohort, &quot;data/tx_cohort.csv&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># abc &lt;- read_xlsb(&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;, sheet = &quot;EnterData&quot;, skip = 1) %&gt;% </span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#   select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %&gt;% </span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#   filter(Rec1stA != &quot;x&quot;,</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#          Rec1stA != &quot;&quot;)</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>  </span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>abc &lt;-<span class="st"> </span><span class="kw">read_xlsb</span>(<span class="st">&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;EnterData&quot;</span>, <span class="dt">skip =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">   </span><span class="kw">select</span>(Rec1stA<span class="op">:</span>Rec2ndC, Don1stA<span class="op">:</span>Don2ndC) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">   </span><span class="kw">filter</span>(Rec1stA <span class="op">!=</span><span class="st"> &quot;x&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>          Rec1stA <span class="op">!=</span><span class="st"> &quot;&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co"># data(high_res_cohort)</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="co"># </span></span>

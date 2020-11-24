@@ -48,9 +48,26 @@ CalEpletMHCI <- function(dat_in) {
     distinct()
 
   #* step 2: import patient table *#
-  dat <- read.csv(dat_in, sep = ",", header = TRUE)
+  tmp1 <- read.csv(dat_in, sep = ",", header = TRUE)
+
+  nm_rec <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2")
+  nm_don <- c("don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
+
+  rcpt <- tmp1 %>%
+    filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
+    select(-donor_type) %>%
+    setNames(c("part_id", "part_type", nm_rec))
+
+  don <- tmp1 %>%
+    filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
+    select(-donor_type) %>%
+    setNames(c("part_id", "part_type", nm_don))
+
+
+  dat <- left_join(rcpt, don, by = c("part_id", "part_type"))
+
   subj_num <- dim(dat)[1]
-  tmp_names <- names(dat[-c(1:3)])
+  tmp_names <- c(nm_rec, nm_don)
 
   #* step 3: initial eplet data frame *#
   dat_ep <- raw_eplet %>%
@@ -58,7 +75,7 @@ CalEpletMHCI <- function(dat_in) {
 
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
-    allele <- toupper(unlist(transpose(dat[i,-c(1:3)]), use.names = F))
+    allele <- toupper(unlist(transpose(dat[i,-c(1:2)]), use.names = F))
     allele <- ifelse(allele %in% names(raw_eplet), allele, NA)
 
     for (j in 1:length(allele)) {
@@ -82,18 +99,17 @@ CalEpletMHCI <- function(dat_in) {
     select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
-  st <- 3
+  st1 <- 3
 
   # for each subject
   for (i in 1:subj_num) {
-    ed <- st + 11
-    positions <- c(st:ed)
+    ed <- st1 + 11
+    positions <- c(st1:ed)
     tmp <- dat_ep %>%
-      select(positions)
+      select(all_of(positions))
     subj_indx <- sub(".*\\.", "", names(tmp)[i])
 
-    colnames(tmp) <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2",
-                       "don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
+    colnames(tmp) <- c(nm_rec, nm_don)
 
     # compare each donor's allele for ALL of recipient's alleles
     tmp <- tmp %>%
@@ -112,7 +128,7 @@ CalEpletMHCI <- function(dat_in) {
                  paste0("c2_mm_subj", subj_indx)))
 
     dat_ep_mm <- cbind(dat_ep_mm, tmp)
-    st <- ed + 1
+    st1 <- ed + 1
   }
 
   #* step 6: compare mis-match with raw_look up table *#
@@ -120,14 +136,14 @@ CalEpletMHCI <- function(dat_in) {
     select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
-  st <- 3
+  st2 <- 3
 
   # for each subject
   for (i in 1:subj_num) {
-    ed <- st + 5
-    positions <- c(st:ed)
+    ed <- st2 + 5
+    positions <- c(st2:ed)
     tmp <- dat_ep_mm %>%
-      select(c(1,2,positions) )
+      select(c(1,2,all_of(positions)))
 
     ori_name <- colnames(tmp)[-c(1,2)]
     if(i == 1){
@@ -136,7 +152,7 @@ CalEpletMHCI <- function(dat_in) {
         mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
         filter(mm != "") %>%
         left_join(tmp, ., by = c("index", "type")) %>%
-        select(-c(ori_name, "eplet", "mm")) %>%
+        select(-c(all_of(ori_name), "eplet", "mm")) %>%
         setNames(c("index", "type", ori_name)) %>%
         distinct()
     }
@@ -152,7 +168,7 @@ CalEpletMHCI <- function(dat_in) {
         distinct() %>%
         select(-c("index", "type"))
     }
-    st <- ed + 1
+    st2 <- ed + 1
 
     dat_ep_mm2 <- cbind(dat_ep_mm2, tmp2)
   }
@@ -164,10 +180,10 @@ CalEpletMHCI <- function(dat_in) {
   subj_names <- unique(sub(".*\\_", "", names(dat_ep_mm2)[-c(1:2)]))
 
   results_detail <- raw_lookup
-  st <- 3
+  st3 <- 3
   for (i in 1:subj_num) {
-    ed <- st + 5
-    positions <- c(st:ed)
+    ed <- st3 + 5
+    positions <- c(st3:ed)
     tmp <- dat_ep_mm2 %>%
       select(c(1, 2, positions)) %>%
       setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
@@ -176,7 +192,7 @@ CalEpletMHCI <- function(dat_in) {
       select(index, type, eplet, var) %>%
       setNames(c("index", "type", "eplet", subj_names[i]))
 
-    st <- ed + 1
+    st3 <- ed + 1
     results_detail <- left_join(results_detail, tmp, by = c("index", "type", "eplet"))
   }
 
@@ -196,6 +212,7 @@ CalEpletMHCI <- function(dat_in) {
   return(list(count = results_count,
               detail = results_detail))
 }
+
 
 
 
