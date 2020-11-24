@@ -76,6 +76,9 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
 head(re$count)
 head(re$detail)
+
+path_test <- system.file("extdata", "MHC_I_test.csv", package="hlaR")
+test <-  read_csv(path_test)
 ```
 
 ### Use case 2 Epilet MM for Transplant Cohort  (clinical.... 
@@ -98,10 +101,18 @@ Use case transplant team or researcher would like to calulate the Class I and Cl
 ```
 
 ```{r}
-abc <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
+high_res_cohort <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
    filter(Rec1stA != "x",
-          Rec1stA != "")
+          Rec1stA != "") 
+
+high_res_cohort <- rowid_to_column(high_res_cohort, "ID")
+
+
+high_res_rename <-  high_res_cohort %>% 
+  rename_with(~ str_replace(., "Rec1st", "rec_1"), .cols = c(Rec1stA, Rec1stB, Rec1stC))
+
+
 ```
 
 ```{r import sample cohort data}
@@ -118,18 +129,18 @@ Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Cla
 Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
 
 ```{r explore data set}
-# glimpse(high_res_cohort)
+glimpse(high_res_cohort)
 ```
 
 Describe the function purpose, input output. Reference matchmaker
 
 ```{r calculate class I and class II epilet mm}
-
+out <- CalEpletMHCI(high_res_cohort)
 ```
 
 Generate some visuals (base vs ggplot)
 
-histogram of epilet mm ? epilet mmm vs dsa at 5 years?
+histogram of eplet mm ? eplet mmm vs dsa at 5 years?
 
 ```{r visualize mm}
 
