@@ -39,10 +39,7 @@ library(hlaR)
 library(tidyverse)
 ```
 
-
-
 ```{r import sample cohort data}
-
 tx_cohort <- read_csv("data/tx_cohort.csv")
 ```
 
@@ -63,7 +60,7 @@ Describe the function purpose, input output.
 tx_cohort <- tx_cohort %>% 
   mutate(recipient_a1, recipient_a2, locus = "a")
 
-re <- CleanHLA(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = "a")
+re <- CleanHla(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = "a")
 ```
 
 
