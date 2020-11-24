@@ -44,16 +44,6 @@ library(readxlsb)
 
 compare eplet of donor's each alelle with all available recipient's eplets from A, B, and C
 
-### example
-
-```{r, message = FALSE}
-# use the testing data in the library
-# dat <- read_csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
-# re <- CalEpletMHCI(dat)
-# head(re$count)
-# head(re$detail)
-```
-
 ### MHC II
 
 #### notes
@@ -73,7 +63,8 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 
 ```{r, message = FALSE}
 # use the testing data in the library
-re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
+dat <-  read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+re <- CalEpletMHCII(dat)
 head(re$count)
 head(re$detail)
 
@@ -135,7 +126,7 @@ glimpse(high_res_cohort)
 Describe the function purpose, input output. Reference matchmaker
 
 ```{r calculate class I and class II epilet mm}
-out <- CalEpletMHCI(high_res_cohort)
+# out <- CalEpletMHCI(high_res_cohort)
 ```
 
 Generate some visuals (base vs ggplot)

@@ -1,6 +1,6 @@
 #' calculate HLA class II eplet mismatch using Matchmaker algorithm
 #' @param dat_in
-#' input data set with or without complete allele info
+#' input dataframe with or without complete allele info
 #' it has 27 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are MHC II alleles for recipient and donor)
 #' @return
 #' list of data tables.
@@ -84,7 +84,7 @@ CalEpletMHCII <- function(dat_in) {
 
   ###*** step 3: import records with recipient/donor MHC II pairs ***###
   #* 3a. import data *#
-  dat <- read.csv(dat_in, sep = ",", header = TRUE)
+  dat <- dat_in
 
   nm_rec <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dqa1", "rec_dqa2", "rec_dpb1", "rec_dpb2", "rec_dpa1", "rec_dpa2")
   nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")

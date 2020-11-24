@@ -7,7 +7,7 @@
 CalEpletMHCII(dat_in)
 }
 \arguments{
-\item{dat_in}{input data set with or without complete allele info
+\item{dat_in}{input dataframe with or without complete allele info
 it has 27 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are MHC II alleles for recipient and donor)}
 }
 \value{
