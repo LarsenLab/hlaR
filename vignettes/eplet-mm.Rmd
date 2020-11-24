@@ -98,11 +98,10 @@ Use case transplant team or researcher would like to calulate the Class I and Cl
 ```
 
 ```{r}
-# abc <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
-#   select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
-#   filter(Rec1stA != "x",
-#          Rec1stA != "")
-  
+abc <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
+   select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
+   filter(Rec1stA != "x",
+          Rec1stA != "")
 ```
 
 ```{r import sample cohort data}
