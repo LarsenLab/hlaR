@@ -1,5 +1,5 @@
 
-#' function to evaluate mis-match HLAs
+#' evaluate mis-match HLAs
 #' @param dat_in
 #' a dataframe with HLAs
 #' @param don_1

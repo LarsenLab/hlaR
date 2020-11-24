@@ -2,7 +2,7 @@
 % Please edit documentation in R/hla-eval-mism.R
 \name{EvalMism}
 \alias{EvalMism}
-\title{function to evaluate mis-match HLAs}
+\title{evaluate mis-match HLAs}
 \usage{
 EvalMism(dat_in, don_1, don_2, recip_1, recip_2, locus)
 }
@@ -25,7 +25,7 @@ mism_1 is mis-match flag of alpha1
 mism_2 is mis-match flag of alpha2 or beta
 }
 \description{
-function to evaluate mis-match HLAs
+evaluate mis-match HLAs
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet-MHC-II.R
 \name{CalEpletMHCII}
 \alias{CalEpletMHCII}
-\title{function to calculate eplet mis-match of HLA-DR-DQ-DP}
+\title{calculate HLA II eplet mismatch using Matchmaker algorithm}
 \usage{
 CalEpletMHCII(dat_in)
 }
@@ -16,7 +16,7 @@ count: original input data appended with count mis-matched eplet of each pair
 detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
-function to calculate eplet mis-match of HLA-DR-DQ-DP
+calculate HLA II eplet mismatch using Matchmaker algorithm
 }
 \examples{
 \dontrun{

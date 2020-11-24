@@ -1,7 +1,8 @@
-#' function to calculate eplet mis-match of HLA-ABC
+#' calculate HLA Class I eplet mismatch using Matchmaker algorithm
 #' @param dat_in
 #' input data set with or without complete allele info
-#' it has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)
+#' it has 9 columns, first 3 columns are paticipant info, last 6 columns are allele info of A/B/C)
+#' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
 #' @return
 #' list of data tables.
 #' count: original input data appended with count mis-matched eplet of each pair

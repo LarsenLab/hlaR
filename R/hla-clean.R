@@ -1,4 +1,4 @@
-#' function to clean HLAs
+#' clean messy HLA typing for downstream analysis
 #' @param var_1
 #' alpha1 domain we want to clean
 #' @param var_2

@@ -2,13 +2,14 @@
 % Please edit documentation in R/eplet-MHC-I.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{function to calculate eplet mis-match of HLA-ABC}
+\title{calculate HLA Class I eplet mismatch using Matchmaker algorithm}
 \usage{
 CalEpletMHCI(dat_in)
 }
 \arguments{
 \item{dat_in}{input data set with or without complete allele info
-it has to have 15 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are A/B/C alleles for recipient and donor)}
+it has 9 columns, first 3 columns are paticipant info, last 6 columns are allele info of A/B/C)
+each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 }
 \value{
 list of data tables.
@@ -16,7 +17,7 @@ count: original input data appended with count mis-matched eplet of each pair
 detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
-function to calculate eplet mis-match of HLA-ABC
+calculate HLA Class I eplet mismatch using Matchmaker algorithm
 }
 \examples{
 \dontrun{

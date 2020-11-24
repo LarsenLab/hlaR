@@ -2,7 +2,7 @@
 % Please edit documentation in R/hla-count-mism.R
 \name{CountMism}
 \alias{CountMism}
-\title{function to count number of mis-match HLAs}
+\title{count number of mis-match HLAs}
 \usage{
 CountMism(dat_in, names_in)
 }
@@ -15,7 +15,7 @@ CountMism(dat_in, names_in)
 dat_in with count of mismatches appended on the last column
 }
 \description{
-function to count number of mis-match HLAs
+count number of mis-match HLAs
 }
 \examples{
 \dontrun{

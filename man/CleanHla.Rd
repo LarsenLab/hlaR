@@ -2,7 +2,7 @@
 % Please edit documentation in R/hla-clean.R
 \name{CleanHla}
 \alias{CleanHla}
-\title{function to clean HLAs}
+\title{clean messy HLA typing for downstream analysis}
 \usage{
 CleanHla(var_1, var_2, locus)
 }
@@ -22,7 +22,7 @@ returns alpha1 and alpha2 for HLA class I
 returns alpha and beta for HLA class II
 }
 \description{
-function to clean HLAs
+clean messy HLA typing for downstream analysis
 }
 \examples{
 \dontrun{

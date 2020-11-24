@@ -1,5 +1,5 @@
 
-#' function to count number of mis-match HLAs
+#' count number of mis-match HLAs
 #' @param dat_in
 #' a dataframe with HLAs mis-match flags
 #' @param names_in
