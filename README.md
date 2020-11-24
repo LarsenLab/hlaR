@@ -11,7 +11,8 @@ eplet_mm1 <- CalEpletMHCI(dat)<br>
 eplet_mm1$count<br>
 eplet_mm1$detail<br>
 #### - MHC class II
-eplet_mm2 <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))<br>
+dat <- read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)
+eplet_mm2 <- CalEpletMHCII(dat)<br>
 eplet_mm2$count<br> 
 eplet_mm2$detail<br>
 
