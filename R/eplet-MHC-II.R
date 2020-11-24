@@ -1,4 +1,4 @@
-#' calculate HLA II eplet mismatch using Matchmaker algorithm
+#' calculate HLA class II eplet mismatch using Matchmaker algorithm
 #' @param dat_in
 #' input data set with or without complete allele info
 #' it has 27 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are MHC II alleles for recipient and donor)
@@ -84,11 +84,25 @@ CalEpletMHCII <- function(dat_in) {
 
   ###*** step 3: import records with recipient/donor MHC II pairs ***###
   #* 3a. import data *#
-  # input data format has to be same as test data
   dat <- read.csv(dat_in, sep = ",", header = TRUE)
 
+  nm_rec <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dqa1", "rec_dqa2", "rec_dpb1", "rec_dpb2", "rec_dpa1", "rec_dpa2")
+  nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")
+
+  rcpt <- dat %>%
+    filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
+    select(-donor_type) %>%
+    setNames(c("part_id", "part_type", nm_rec))
+
+  don <- dat %>%
+    filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
+    select(-donor_type) %>%
+    setNames(c("part_id", "part_type", nm_don))
+
+  dat <- left_join(rcpt, don, by = c("part_id", "part_type"))
+
   subj_num <- dim(dat)[1]
-  tmp_names <- names(dat[-c(1:3)])
+  tmp_names <- c(nm_rec, nm_don)
 
   ep_a <- raw_eplet_A %>% select(index, type)
   ep_b <- raw_eplet_B %>% select(index, type)
@@ -96,7 +110,7 @@ CalEpletMHCII <- function(dat_in) {
 
   #* 3b: pull out eplet of each locus *#
   for (i in 1:subj_num) {
-    allele <- toupper(unlist(transpose(dat[i,-c(1:3)]), use.names = F))
+    allele <- toupper(unlist(transpose(dat[i,-c(1:2)]), use.names = F))
     allele <- ifelse(allele %in% c(names(raw_eplet_A), names(raw_eplet_B)), allele, NA)
 
 
@@ -150,7 +164,7 @@ CalEpletMHCII <- function(dat_in) {
     ed <- st + 7
     pos <- c(st:ed)
     tmp <- ep_a %>%
-      select(pos)
+      select(all_of(pos))
     subj_indx <- sub(".*\\.", "", names(tmp)[i])
 
     colnames(tmp) <- c("rec_dqa1", "rec_dqa2", "rec_dpa1", "rec_dpa2",
@@ -187,14 +201,14 @@ CalEpletMHCII <- function(dat_in) {
   # B alleles : DRB, DRw, DQB, DPB
   b_len <- subj_num * 16
   # exclude index and type, pulling data starting from the 3rd position
-  st <- 3
+  st1 <- 3
 
   # for each subject
   for (i in 1:subj_num) {
-    ed <- st + 15
-    pos <- c(st:ed)
+    ed <- st1 + 15
+    pos <- c(st1:ed)
     tmp <- ep_b %>%
-      select(pos)
+      select(all_of(pos))
 
     subj_indx <- sub(".*\\.", "", names(tmp)[i])
 
@@ -226,7 +240,7 @@ CalEpletMHCII <- function(dat_in) {
                  paste0("dpb2_mm_subj", subj_indx)))
 
     ep_b_mm <- cbind(ep_b_mm, tmp)
-    st <- ed + 1
+    st1 <- ed + 1
   }
   #* end of 4b *#
   ###*** end of step 4 ***###
@@ -237,11 +251,11 @@ CalEpletMHCII <- function(dat_in) {
 
   re_dqa <- lkup_dqa
   re_dpa <- lkup_dpa
-  st <- 3
+  st2 <- 3
 
   for (i in 1:subj_num) {
-    ed <- st + 3
-    positions <- c(st:ed)
+    ed <- st2 + 3
+    positions <- c(st2:ed)
     tmp <- ep_a_mm %>%
       select(c(1, 2, all_of(positions))) %>%
       setNames(c("index", "type", "dqa1_mm", "dqa2_mm", "dpa1_mm", "dpa2_mm"))
@@ -264,15 +278,15 @@ CalEpletMHCII <- function(dat_in) {
       select(index, type, eplet, var) %>%
       setNames(c("index", "type", "eplet", subj_names[i]))
 
-    st <- ed + 1
+    st2 <- ed + 1
     re_dqa <- left_join(re_dqa, tmp_dqa, by = c("index", "type", "eplet"))
     re_dpa <- left_join(re_dpa, tmp_dpa, by = c("index", "type", "eplet"))
   }
   #* end of 5a *#
 
   #* 5b. generate result tables *#
-  GenerateResult <- function(dat_in){
-    dtl <- dat_in %>%
+  GenerateResult <- function(tmp_in){
+    dtl <- tmp_in %>%
       mutate(mm_cnt = subj_num - rowSums(is.na(.)),
              mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
 
@@ -298,20 +312,20 @@ CalEpletMHCII <- function(dat_in) {
   re_dqb <- lkup_dqb
   re_drb <- lkup_drb
 
-  st <- 3
+  st3 <- 3
 
   for (i in 1:subj_num) {
-    ed <- st + 7
-    positions <- c(st:ed)
+    ed <- st3 + 7
+    pos <- c(st3:ed)
     tmp <- ep_b_mm %>%
-      select(c(1, 2, positions)) %>%
+      select(all_of(c(1, 2, pos))) %>%
       setNames(c("index", "type", "drb1_mm", "drb2_mm", "drw1_mm", "drw2_mm", "dqb1_mm", "dqb2_mm", "dpb1_mm", "dpb2_mm"))
 
     # dpb
     lkup <- lkup_dpb
     cols <- c("index", "type", "dpb1_mm", "dpb2_mm")
     tmp_dpb <- tmp %>%
-      select(cols) %>%
+      select(all_of(cols)) %>%
       right_join(., lkup, by = c("index", "type")) %>%
       mutate(var = ifelse(eplet %in% c(dpb1_mm, dpb2_mm), eplet, NA)) %>%
       select(index, type, eplet, var) %>%
@@ -331,13 +345,13 @@ CalEpletMHCII <- function(dat_in) {
     lkup <- lkup_drb
     cols <- c("index", "type", "drb1_mm", "drb2_mm", "drw1_mm", "drw2_mm")
     tmp_drb <- tmp %>%
-      select(cols) %>%
+      select(all_of(cols)) %>%
       right_join(., lkup, by = c("index", "type")) %>%
       mutate(var = ifelse(eplet %in% c(drb1_mm, drb2_mm, drw1_mm, drw2_mm), eplet, NA)) %>%
       select(index, type, eplet, var) %>%
       setNames(c("index", "type", "eplet", subj_names[i]))
 
-    st <- ed + 1
+    st3 <- ed + 1
 
     re_dpb <- left_join(re_dpb, tmp_dpb, by = c("index", "type", "eplet"))
     re_dqb <- left_join(re_dqb, tmp_dqb, by = c("index", "type", "eplet"))
