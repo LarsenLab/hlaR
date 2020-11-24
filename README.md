@@ -6,7 +6,8 @@ library(hlaR)<br>
 ## Usage example
 ### eplet mis-match
 #### - MHC class I
-eplet_mm1 <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))<br>
+dat <- read.csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)
+eplet_mm1 <- CalEpletMHCI(dat)<br>
 eplet_mm1$count<br>
 eplet_mm1$detail<br>
 #### - MHC class II
