@@ -7,7 +7,7 @@
 CalEpletMHCI(dat_in)
 }
 \arguments{
-\item{dat_in}{input data set with or without complete allele info
+\item{dat_in}{input dataframe with or without complete allele info
 it has 9 columns, first 3 columns are paticipant info, last 6 columns are allele info of A/B/C)
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 }

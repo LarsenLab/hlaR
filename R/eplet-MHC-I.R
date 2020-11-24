@@ -1,6 +1,6 @@
 #' calculate HLA Class I eplet mismatch using Matchmaker algorithm
 #' @param dat_in
-#' input data set with or without complete allele info
+#' input dataframe with or without complete allele info
 #' it has 9 columns, first 3 columns are paticipant info, last 6 columns are allele info of A/B/C)
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
 #' @return
@@ -49,17 +49,15 @@ CalEpletMHCI <- function(dat_in) {
     distinct()
 
   #* step 2: import patient table *#
-  tmp1 <- read.csv(dat_in, sep = ",", header = TRUE)
-
   nm_rec <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2")
   nm_don <- c("don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
 
-  rcpt <- tmp1 %>%
+  rcpt <- dat_in %>%
     filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
     select(-donor_type) %>%
     setNames(c("part_id", "part_type", nm_rec))
 
-  don <- tmp1 %>%
+  don <- dat_in %>%
     filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
     select(-donor_type) %>%
     setNames(c("part_id", "part_type", nm_don))
