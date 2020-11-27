@@ -1,0 +1,36 @@
+---
+title: "haplo-stats"
+description: |
+  impute high resolution (four digit) alleles; using haplo-stats algorithm
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{hla-stats}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## work in progress
+
+```{r}
+library(hlaR)
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+haplo_stats <- read_xlsx("data/A~C~B~DRB3-4-5~DRB1~DQB1.xlsx")
+
+```
+
+    
+
+
+
