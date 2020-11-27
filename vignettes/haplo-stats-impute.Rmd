@@ -25,12 +25,23 @@ library(tidyverse)
 library(readxl)
 ```
 
+## import haplostats reference data
+
+Provide references and links.  Describe data and approach
+
 ```{r}
 haplo_stats <- read_xlsx("data/A~C~B~DRB3-4-5~DRB1~DQB1.xlsx")
 
 ```
 
     
+## Brief exploration of Haplostats 
 
+most common haplotypes by geography and ethnicity
 
+## Describe function
+
+## Run sample data
+
+## 
 
