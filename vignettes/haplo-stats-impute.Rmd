@@ -39,6 +39,27 @@ haplo_stats <- read_xlsx("data/A~C~B~DRB3-4-5~DRB1~DQB1.xlsx")
 
 most common haplotypes by geography and ethnicity
 
+
+
+```{r}
+
+hla_common <- haplo_stats %>% 
+  select(A:DQB1, AAFA_rank, EURCAU_rank, EURCAU_rank, MSWHIS_rank, NCHI_rank) %>% 
+  mutate(across(contains("rank"), as.integer)) %>% 
+  filter(AAFA_rank <= 10 | EURCAU_rank <= 10 | MSWHIS_rank<= 10 | NCHI_rank<= 10)
+
+
+```
+
+##  create some sample subjects
+
+For each group create hypothetical subject by pairing the haplo ranks 1/2, 3/4, 5/6 for each ethnicity/geo
+3 EURCAU - 
+3 AAFA - ranks 1/2, 3/4, 5/6
+3 HIS
+3 NCHI
+
+
 ## Describe function
 
 ## Run sample data
