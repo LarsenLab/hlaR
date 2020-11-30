@@ -106,7 +106,7 @@ CalEpletMHCI <- function(dat_in) {
     positions <- c(st1:ed)
     tmp <- dat_ep %>%
       select(all_of(positions))
-    subj_indx <- sub(".*\\.", "", names(tmp)[i])
+    subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c(nm_rec, nm_don)
 

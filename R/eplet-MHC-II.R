@@ -165,7 +165,7 @@ CalEpletMHCII <- function(dat_in) {
     pos <- c(st:ed)
     tmp <- ep_a %>%
       select(all_of(pos))
-    subj_indx <- sub(".*\\.", "", names(tmp)[i])
+    subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c("rec_dqa1", "rec_dqa2", "rec_dpa1", "rec_dpa2",
                        "don_dqa1", "don_dqa2", "don_dpa1", "don_dpa2")
@@ -210,7 +210,7 @@ CalEpletMHCII <- function(dat_in) {
     tmp <- ep_b %>%
       select(all_of(pos))
 
-    subj_indx <- sub(".*\\.", "", names(tmp)[i])
+    subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dpb1","rec_dpb2",
                        "don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dpb1","don_dpb2")
