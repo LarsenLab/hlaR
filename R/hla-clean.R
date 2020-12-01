@@ -323,7 +323,8 @@ CleanHla <- function(var_1, var_2, locus) {
 
   # vector of NA definition based on the unique XX pattern from all of the locus in the existing data
   # 2 values (DONOR_B1 0.796527778, DONOR_DQB11 0.175) we can't identify, set then to NA
-  vec_na <- c("xx", "(*XX)", "**XX", "*XX", "*XX#", "*XXXX", "XX", "XXXX", "XXXXX", "NOT TESTED", "unk", "", " ",
+  vec_na <- c("xx", "(*xx)", "**xx", "*xx", "*xx#", "*xxxx", "xx", "xxxx", "xxxxx",
+              "(*XX)", "**XX", "*XX", "*XX#", "*XXXX", "XX", "XXXX", "XXXXX", "NOT TESTED", "unk", "", " ",
               "0.796527778", "0.175", "un", "N/", "n/")
 
   # create a temp data frame to hold input antigens
