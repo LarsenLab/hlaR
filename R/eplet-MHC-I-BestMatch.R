@@ -215,6 +215,8 @@ CalEpletMHCI_best <- function(dat_in, id_don, id_rcpt) {
 
   results_count <- cbind(dat ,results_count)
 
+  results_count <- results_count %>% arrange(mm_count)
+
   return(results_count)
 }
 
