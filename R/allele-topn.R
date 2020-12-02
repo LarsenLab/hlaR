@@ -1,4 +1,4 @@
-#' @name hla-stats
+#' @name CalAlleleTopN
 #' @title calculate topN most frequent allele(s)
 #' @param dat_in
 #' dataframe of clean HLA
