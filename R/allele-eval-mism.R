@@ -35,15 +35,15 @@
 
 EvalAlleleMism <- function(dat_in, don_1, don_2, recip_1, recip_2, locus)
 {
-  # start of calling CleanHla() to clean hla value #
-  don_1_c <- unlist(CleanHla(don_1, don_2, locus)[1])
-  don_2_c <- unlist(CleanHla(don_1, don_2, locus)[2])
-  recip_1_c <- unlist(CleanHla(recip_1, recip_2, locus)[1])
-  recip_2_c <- unlist(CleanHla(recip_1, recip_2, locus)[2])
+  # start of calling CleanAllele() to clean hla value #
+  don_1_c <- unlist(CleanAllele(don_1, don_2, locus)[1])
+  don_2_c <- unlist(CleanAllele(don_1, don_2, locus)[2])
+  recip_1_c <- unlist(CleanAllele(recip_1, recip_2, locus)[1])
+  recip_2_c <- unlist(CleanAllele(recip_1, recip_2, locus)[2])
 
   tmp <- as.data.frame(cbind(don_1_c, don_2_c, recip_1_c, recip_2_c)) %>%
     mutate_all(as.character)
-  # end of calling CleanHla() #
+  # end of calling CleanAllele() #
 
   # start of calculating mis-match of donor's hla in recipient #
   len <- dim(dat_in)[1]
