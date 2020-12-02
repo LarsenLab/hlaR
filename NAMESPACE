@@ -2,7 +2,6 @@
 
 export(CalEpletMHCI)
 export(CalEpletMHCII)
-export(CalEpletMHCI_best)
 export(CalFreq)
 export(CalMismFreq)
 export(CleanHla)

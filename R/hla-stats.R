@@ -21,7 +21,7 @@
 #  rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
 #' }
-#' @rdname hla-stats
+#' @rdname CalFreq
 #' @export
 
 CalFreq <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
@@ -64,7 +64,7 @@ CalFreq <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
 # rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
 #' }
-#' @rdname hla-stats
+#' @rdname CalMismFreq
 #' @export
 #'
 CalMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
