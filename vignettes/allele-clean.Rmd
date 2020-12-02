@@ -60,7 +60,7 @@ Describe the function purpose, input output.
 tx_cohort <- tx_cohort %>% 
   mutate(recipient_a1, recipient_a2, locus = "a")
 
-re <- CleanHla(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = "a")
+re <- CleanAllele(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = "a")
 ```
 
 

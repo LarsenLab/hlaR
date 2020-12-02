@@ -1,12 +1,12 @@
 ---
-title: "hla-stats"
+title: "allele-topn"
 description: |
-  most frequent count by allele; most frequent donor allel that is mis-match to recipients
+   topN most frequent allele(s)
 output:
   rmarkdown::html_vignette: default
 vignette: |
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{hla-stats}
+  %\VignetteIndexEntry{allele-topn}
   %\usepackage[utf8]{inputenc}
 ---
 
@@ -17,8 +17,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## work in progress
-CalFreq() and CalMismFreq()
+CalAlleleTopN()
     
 
 
