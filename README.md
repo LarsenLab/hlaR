@@ -16,7 +16,7 @@ eplet_mm2 <- CalEpletMHCII(dat)<br>
 eplet_mm2$count<br> 
 eplet_mm2$detail<br>
 
-### HLA clean and mis-match
+### Allele clean and mis-match
 #### - clean
 library(readr)<br>
 clean <- read_csv(system.file("extdata", "HLA_Clean_test.csv", package = "hlaR"))<br>
