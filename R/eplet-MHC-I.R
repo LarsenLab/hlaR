@@ -61,8 +61,9 @@ CalEpletMHCI <- function(dat_in) {
     select(-donor_type) %>%
     setNames(c("part_id", "part_type", nm_don))
 
-
-  dat <- left_join(rcpt, don, by = c("part_id"))
+  dat <- left_join(rcpt, don, by = c("part_id")) %>%
+         select(-part_type.y) %>%
+    dplyr::rename(part_type = part_type.x)
 
   subj_num <- dim(dat)[1]
   tmp_names <- c(nm_rec, nm_don)
