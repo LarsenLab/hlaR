@@ -14,7 +14,7 @@ CalAlleleMismFreq(dat_in, nms_don = c(), nms_rcpt = c())
 \item{nms_rcpt}{column names of recipient's alleles, must be length of 2}
 }
 \value{
-dataframe of donor's mis-match alleles with frequency > 1
+a dataframe of donor's mis-match alleles with frequency > 1
 }
 \description{
 calculate frequency of donor mis-match alleles to recipient's

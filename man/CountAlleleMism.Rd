@@ -7,9 +7,9 @@
 CountAlleleMism(dat_in, names_in)
 }
 \arguments{
-\item{dat_in}{a dataframe with HLAs mis-match flags}
+\item{dat_in}{dataframe with mis-match flags of allele}
 
-\item{names_in}{column names of which we want count mis-matches}
+\item{names_in}{column names of which to count mis-matches}
 }
 \value{
 dat_in with count of mismatches appended on the last column

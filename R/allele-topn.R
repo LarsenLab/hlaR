@@ -3,13 +3,13 @@
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param nms_don
-#' donor's allele name(s) frequency count
+#' donor's allele name(s) to count for frequency
 #' @param nms_rcpt
-#' recipient's allele name(s) of frequency count
+#' recipient's allele name(s) to count frequency count
 #' @param top_n
 #' names of top N most frequent alleles, default is 5
 #' @return
-#' dataframe of top_n most frequent alleles
+#' a dataframe of top_n most frequent alleles
 #'
 #' @import
 #' tidyverse

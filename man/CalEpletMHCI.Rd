@@ -7,14 +7,13 @@
 CalEpletMHCI(dat_in)
 }
 \arguments{
-\item{dat_in}{input dataframe with or without complete allele info
-it has 9 columns, first 3 columns are paticipant info, last 6 columns are allele info of A/B/C)
+\item{dat_in}{dataframe with subject info(first 3 columns) and MHC I allele info
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 }
 \value{
-list of data tables.
-count: original input data appended with count mis-matched eplet of each pair
-detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+a list of data tables
+count table: original input data appended with count mis-matched eplet of each pair
+detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
 calculate HLA Class I eplet mismatch using Matchmaker algorithm

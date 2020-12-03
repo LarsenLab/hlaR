@@ -1,6 +1,6 @@
 #' evaluate mis-match alleles
 #' @param dat_in
-#' a dataframe with HLAs
+#' dataframe with allele info
 #' @param don_1
 #' donor's alpha1 domain
 #' @param don_2
@@ -12,7 +12,7 @@
 #' @param locus
 #' locus of domains
 #' @return
-#' list of mis-match vectors
+#' a list of mis-match vectors
 #' mism_1 is mis-match flag of alpha1
 #' mism_2 is mis-match flag of alpha2 or beta
 #' @export

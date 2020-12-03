@@ -6,7 +6,7 @@
 #' @param nms_rcpt
 #' column names of recipient's alleles, must be length of 2
 #' @return
-#' dataframe of donor's mis-match alleles with frequency > 1
+#' a dataframe of donor's mis-match alleles with frequency > 1
 #' @import
 #' tidyverse
 #'
@@ -65,15 +65,18 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
 
   #* start of calculate mis-match frequency for donor *#
   dat_out <- tmp %>%
-    select(all_of(nms_don)) %>%
-    mutate_all(as.character) %>%
-    gather(., name, allele) %>%
-    filter(!is.na(allele)) %>%
-    group_by(allele) %>%
-    summarise(freq = n(), .groups = 'drop') %>%
-    filter(!is.na(allele) & freq > 1) %>%
-    ungroup() %>%
-    arrange(-freq)
+              select(-all_of(nms_rcpt)) %>%
+              setNames(c("d1", "d2", "m1", "m2")) %>%
+              mutate(d1 = ifelse(m1 == 1, d1, 0 ),
+                     d2 = ifelse(m2 == 1, d2, 0)) %>%
+              select(d1, d2) %>%
+              gather(., name, allele) %>%
+              filter(allele > 0) %>%
+              group_by(allele) %>%
+              summarise(freq = n(), .groups = 'drop') %>%
+              filter(!is.na(allele)) %>%
+              ungroup() %>%
+              arrange(-freq)
 
   return(dat_out)
 }

@@ -1,8 +1,8 @@
 #' count number of mis-match alleles
 #' @param dat_in
-#' a dataframe with HLAs mis-match flags
+#' dataframe with mis-match flags of allele
 #' @param names_in
-#' column names of which we want count mis-matches
+#' column names of which to count mis-matches
 #' @return
 #' dat_in with count of mismatches appended on the last column
 #' @export

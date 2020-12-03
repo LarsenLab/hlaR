@@ -1,11 +1,10 @@
 #' calculate HLA class II eplet mismatch using Matchmaker algorithm
 #' @param dat_in
-#' input dataframe with or without complete allele info
-#' it has 27 columns (first 3 columns are record id, recipient id, donor id; the rest of columns are MHC II alleles for recipient and donor)
+#' dataframe with subject info (first 3 columns) and MHC II allele info
 #' @return
-#' list of data tables.
-#' count: original input data appended with count mis-matched eplet of each pair
-#' detail: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+#' a list of data tables
+#' count table: original input data appended with count mis-matched eplet of each pair
+#' detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 #' @export
 #'
 #' @import

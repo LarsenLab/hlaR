@@ -7,7 +7,7 @@
 EvalAlleleMism(dat_in, don_1, don_2, recip_1, recip_2, locus)
 }
 \arguments{
-\item{dat_in}{a dataframe with HLAs}
+\item{dat_in}{dataframe with allele info}
 
 \item{don_1}{donor's alpha1 domain}
 
@@ -20,7 +20,7 @@ EvalAlleleMism(dat_in, don_1, don_2, recip_1, recip_2, locus)
 \item{locus}{locus of domains}
 }
 \value{
-list of mis-match vectors
+a list of mis-match vectors
 mism_1 is mis-match flag of alpha1
 mism_2 is mis-match flag of alpha2 or beta
 }
