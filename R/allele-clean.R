@@ -6,7 +6,7 @@
 #' @param locus
 #' locus of which we want to work
 #' var_1 is hla of alpha1(or alpha for class II) allele
-#' var_2 is hal of alpha2(or beta for class II) allele
+#' var_2 is hla of alpha2(or beta for class II) allele
 #' locus is indicator of which locus we are working on
 #' @return
 #' list of data cleaned hla of the locus
@@ -423,9 +423,9 @@ CleanAllele <- function(var_1, var_2, locus) {
   rm(var_1_c1,var_1_c2,var_1_c3,var_2_c1,var_2_c2,var_2_c3,tmp)
 
   if (locus %in% c("A", "a", "B", "b", "C", "c")) {
-    return(list(alpha1 = var_1_out, alpha2 = var_2_out))
+    return(list(locus1 = var_1_out, locus2 = var_2_out))
   } else{
-    return(list(alpha = var_1_out, beta = var_2_out))
+    return(list(locus1 = var_1_out, locus2 = var_2_out))
   }
 
 }
