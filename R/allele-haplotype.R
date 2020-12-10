@@ -70,17 +70,11 @@ ht <- function(dat_in){
   #          flagC = ifelse(!is.na(fstC) & !is.na(lstC), 1, 0),
   #          flagDRB = ifelse(!is.na(fstDRB1) & !is.na(lstDRB1), 1, 0),
   #          flagDQB = ifelse(!is.na(fstDQB1) & !is.na(fstDQB1), 1, 0)) %>%
-  #   select(-c(id, A, B, C, DRB1, DQB1))
+  #   select(-c(A, B, C, DRB1, DQB1))
   #
-  # # dat %>%
-  # #   mutate(across(c(Afst, Alst, Bfst, Blst, Cfst, Clst, DRB1fst, DRB1lst, DQB1fst, DQB1lst), is.na)) %>%  # replace all NA with TRUE and else FALSE
-  # #   pivot_longer(-id, names_to = "var") %>%  # pivot longer
-  # #   filter(value) %>%   # remove the FALSE rows
-  # #   group_by(id) %>%    # group by the ID
-  # #   summarise(`Missing Variables` = toString(var)) # convert the variable names to a string column
-  #
+  # # combination of !is.na inputs - 11/09/2020
   # tmpFunc <- function(dat_in) {
-  #   idx = c()
+  #   tmp_indx <- c()
   #   if (dat_in$flagA == 1){
   #     tmp <- ori %>% filter(fstA == dat_in$fstA & lstA == dat_in$lstA) %>% pull(idx)
   #   } else {
@@ -88,7 +82,7 @@ ht <- function(dat_in){
   #   }
   #
   #   if (length(tmp > 0))
-  #     idx <- c(idx, tmp)
+  #     tmp_indx <- c(tmp_indx, tmp)
   #
   #   if (dat_in$flagB == 1) {
   #     tmp <- ori %>% filter(fstB == dat_in$fstB & lstB == dat_in$lstB) %>% pull(idx)
@@ -97,7 +91,7 @@ ht <- function(dat_in){
   #   }
   #
   #   if (length(tmp > 0))
-  #     idx <- c(idx, tmp)
+  #     tmp_indx <- c(tmp_indx, tmp)
   #
   #   if (dat_in$flagC == 1) {
   #     tmp <- ori %>% filter(fstC == dat_in$fstC & lstC == dat_in$lstC) %>% pull(idx)
@@ -106,7 +100,7 @@ ht <- function(dat_in){
   #   }
   #
   #   if (length(tmp > 0))
-  #     idx <- c(idx, tmp)
+  #     tmp_indx <- c(tmp_indx, tmp)
   #
   #   if (dat_in$flagDRB == 1) {
   #     tmp <- ori %>% filter(fstDRB1 == dat_in$fstDRB1 & lstDRB1 == dat_in$lstDRB1) %>% pull(idx)
@@ -115,7 +109,7 @@ ht <- function(dat_in){
   #   }
   #
   #   if (length(tmp > 0))
-  #     idx <- c(idx, tmp)
+  #     tmp_indx <- c(tmp_indx, tmp)
   #
   #   if (dat_in$flagDQB == 1) {
   #     tmp <- ori %>% filter(fstDQB1 == dat_in$fstDQB1 & lstDQB1 == dat_in$lstDQB1) %>% pull(idx)
@@ -124,15 +118,17 @@ ht <- function(dat_in){
   #   }
   #
   #   if (length(tmp > 0))
-  #     idx <- c(idx, tmp)
+  #     tmp_indx <- c(tmp_indx, tmp)
   #
-  #   idx <- unique(idx)
+  #   tmp_indx <- unique(tmp_indx)
   #
   #   subdat <- ori %>%
-  #     filter(idx %in% idx)  %>%
+  #     filter(idx %in% tmp_indx)  %>%
   #     # rank w/o NA
   #     # filter(rank(AFA_rank) <= 20 | rank(API_rank) <= 20 | rank(CAU_rank) <= 20 | rank(HIS_rank) <= 20  | rank(NAM_rank) <= 20) %>%
-  #     select(A, C, B, DRB1, DQB1, AFA_freq, AFA_rank, API_freq, API_rank, CAU_freq, CAU_rank, HIS_freq, HIS_rank, NAM_freq, NAM_rank)
+  #     select(A, C, B, DRB1, DQB1,
+  #            fstA, lstA, fstB, lstB, fstC, lstC, fstDRB1, lstDRB1, fstDQB1, lstDQB1,
+  #            AFA_freq, AFA_rank, API_freq, API_rank, CAU_freq, CAU_rank, HIS_freq, HIS_rank, NAM_freq, NAM_rank)
   #
   #   return(subdat)
   # }
@@ -145,5 +141,28 @@ ht <- function(dat_in){
   #
   # ck1 <- l[[1]]
   # ck2 <- l[[2]]
+  #
+  # # check ck1
+  #
+  # tmp <- dat[1,]
+  # colnms <- tmp %>%
+  #   select(id, fstA, lstA, fstB, lstB, fstC, lstC, fstDRB1, lstDRB1, fstDQB1, lstDQB1) %>%
+  #   mutate(across(c(fstA, lstA, fstB, lstB, fstC, lstC, fstDRB1, lstDRB1, fstDQB1, lstDQB1), is.na)) %>%  # replace all NA with TRUE and else FALSE
+  #   pivot_longer(-id, names_to = "var") %>%  # pivot longer
+  #   filter(value != 1) %>%
+  #   pull(var)
+  #
+  # ck_ck1 <- ck1 %>% left_join(., tmp, by = colnms) %>%
+  #   filter(!is.na(id)) %>%
+  #   # filter_at(vars(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank), all_vars(!is.na(.))) %>%
+  #   filter_at(vars(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank), any_vars(!is.na(.))) %>%
+  #   select(c(A, C, B, DRB1, DQB1, AFA_freq, AFA_rank, API_freq, API_rank, CAU_freq, CAU_rank, HIS_freq, HIS_rank, NAM_freq, NAM_rank))
+  #
+  # ck1 <- ck1 %>%
+  #   mutate(flag = ifelse(AFA_rank %in% ck_ck1$AFA_rank[!is.na(ck_ck1$AFA_rank)] |
+  #                          API_rank %in% ck_ck1$API_rank[!is.na(ck_ck1$API_rank)] |
+  #                          CAU_rank %in% ck_ck1$CAU_rank[!is.na(ck_ck1$CAU_rank)] |
+  #                          HIS_rank %in% ck_ck1$HIS_rank[!is.na(ck_ck1$HIS_rank)] |
+  #                          NAM_rank %in% ck_ck1$NAM_rank[!is.na(ck_ck1$NAM_rank)], "yes", "no"))
 }
 
