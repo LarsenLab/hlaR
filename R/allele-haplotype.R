@@ -190,10 +190,11 @@ ht <- function(dat_in){
   #     select(c(A, C, B, DRB1, DQB1, AFA_freq, AFA_rank, API_freq, API_rank, CAU_freq, CAU_rank, HIS_freq, HIS_rank, NAM_freq, NAM_rank)) %>%
   #     filter_at(vars(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank), any_vars(!is.na(.))) %>%
   #     gather(., pop, poprank, c(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank)) %>%
-  #     group_by(pop) %>%
-  #     mutate(rank = row_number()) %>%
-  #     ungroup() %>%
   #     filter(!is.na(poprank)) %>%
+  #     arrange(poprank) %>%
+  #     group_by(pop) %>%
+  #     mutate(rank = order(poprank)) %>%
+  #     ungroup() %>%
   #     mutate(note = "full")
   #
   #   re_comb <- datin2 %>% filter(flag == "no") %>%
@@ -201,15 +202,15 @@ ht <- function(dat_in){
   #     filter_at(vars(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank), any_vars(!is.na(.))) %>%
   #     gather(., pop, poprank, c(AFA_rank, API_rank, CAU_rank, HIS_rank, NAM_rank)) %>%
   #     filter(!is.na(poprank)) %>%
+  #     arrange(poprank) %>%
   #     group_by(pop) %>%
-  #     mutate(rank = row_number()) %>%
+  #     mutate(rank = order(poprank)) %>%
   #     ungroup() %>%
-  #     filter(rank <= 100) %>%
+  #     filter(rank <= 150) %>%
   #     mutate(note = "comb")
   #
   #   re <- rbind(re_full, re_comb)
   #   return(re)
   # }
-  #
 }
 
