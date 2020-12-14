@@ -7,6 +7,8 @@
 FuncForCompHaplo(tbl_in, dat, cut_freq = 1e-04, cut_rank = 10)
 }
 \arguments{
+\item{tbl_in}{raw haplotype frequency table downloaded from NMDP website}
+
 \item{dat}{dataframe of alleles}
 
 \item{cut_freq}{cutoff frequence value of the population}

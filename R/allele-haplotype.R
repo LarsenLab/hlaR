@@ -55,7 +55,7 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
   rcpt <- dat_in %>%
            rename_all(. %>% tolower) %>%
            select(contains(c("id", "ethnicity","race","rcpt"))) %>%
-           rename_at(vars(contains('rcpt_')), funs(sub('rcpt_', '', .))) %>%
+           rename_at(vars(contains('rcpt_')), list(~sub('rcpt_', '', .))) %>%
            mutate(id = paste("rcpt", rowid, sep = "_"),
                   a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1)) %>%
            select(id, everything())
@@ -63,7 +63,7 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
   don <- dat_in %>%
           rename_all(. %>% tolower) %>%
           select(contains(c("id", "ethnicity","race","don"))) %>%
-          rename_at(vars(contains('don_')), funs(sub('don_', '', .))) %>%
+          rename_at(vars(contains('don_')), list(~sub('don_', '', .))) %>%
           mutate(id = paste("don", rowid, sep = "_")) %>%
           select(id, everything())
 
@@ -90,6 +90,7 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
     result[[i]] <- FuncForCompHaplo(tbl_in = raw_hap_tbl, dat = dat_in[i, ], cut_freq = cut_p, cut_rank = cut_r)
   }
   #* end of step 3 *#
+  names(result) <- dat_in$id
   return(result)
 }
 

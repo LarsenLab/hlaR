@@ -1,5 +1,7 @@
 #' @name FuncForCompHaplo
 #' @title extracts combinations from halpo frequency table, it's called within CompHaploTbl()
+#' @param tbl_in
+#' raw haplotype frequency table downloaded from NMDP website
 #' @param dat
 #' dataframe of alleles
 #' @param cut_freq
@@ -9,7 +11,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo <- function(tbl_in,dat, cut_freq = 0.0001, cut_rank = 10) {
+FuncForCompHaplo <- function(tbl_in, dat, cut_freq = 0.0001, cut_rank = 10) {
   # index holder
   tmp_indx <- c()
 
@@ -54,7 +56,7 @@ FuncForCompHaplo <- function(tbl_in,dat, cut_freq = 0.0001, cut_rank = 10) {
         select(id, idx, a, b, c, drb1, dqb1, cau_freq, cau_rank, cnt) %>%
         arrange(cnt, cau_rank) %>%
         group_by(cnt) %>%
-        mutate(rank = 1:n()) %>%
+        mutate(rank = 1:n()) %>% # rank of each count group
         ungroup() %>%
         filter(cau_freq > cut_freq & rank < 10) %>%
         select(-idx) %>%
