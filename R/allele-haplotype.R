@@ -67,7 +67,7 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
           mutate(id = paste("don", rowid, sep = "_")) %>%
           select(id, everything())
 
-  dat_in <- rbind(rcpt, don) %>% arrange(rowid) %>%
+  dat2 <- rbind(rcpt, don) %>% arrange(rowid) %>%
     mutate_all(as.character) %>%
     mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
            a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
@@ -79,18 +79,19 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
            drb2 = ifelse(nchar(drb2) == 1, paste0("0", drb2), drb2),
            dqb1 = ifelse(nchar(dqb1) == 1, paste0("0", dqb1), dqb1),
            dqb2 = ifelse(nchar(dqb2) == 1, paste0("0", dqb2), dqb2))
+
   rm(rcpt, don)
   #* end of step 2 *#
 
   #* step 3: call FuncForCompHaplo() for each subjects and get top combination of alleles *#
-  num_subj <- dim(dat_in)[1]
+  num_subj <- dim(dat2)[1]
   result <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
-    result[[i]] <- FuncForCompHaplo(tbl_in = raw_hap_tbl, dat = dat_in[i, ], cut_freq = cut_p, cut_rank = cut_r)
+    result[[i]] <- FuncForCompHaplo(tbl_in1 = raw_hap_tbl, tbl_in2 = dat2[i, ], cut_freq = cut_p, cut_rank = cut_r)
   }
   #* end of step 3 *#
-  names(result) <- dat_in$id
+  names(result) <- dat2$id
   return(result)
 }
 
