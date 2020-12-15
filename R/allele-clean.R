@@ -1,13 +1,10 @@
 #' clean messy HLA typing for downstream analysis
 #' @param var_1
-#' alpha1 domain we want to clean
+#' gene on locus 1
 #' @param var_2
-#' alpha2 or beta1 domain we want to clean
+#' gene on locus 2
 #' @param locus
 #' locus of which we want to work
-#' var_1 is hla of alpha1(or alpha for class II) allele
-#' var_2 is hla of alpha2(or beta for class II) allele
-#' locus is indicator of which locus we are working on
 #' @return
 #' list of data cleaned hla of the locus
 #' returns alpha1 and alpha2 for HLA class I
@@ -323,9 +320,7 @@ CleanAllele <- function(var_1, var_2, locus) {
 
   # vector of NA definition based on the unique XX pattern from all of the locus in the existing data
   # 2 values (DONOR_B1 0.796527778, DONOR_DQB11 0.175) we can't identify, set then to NA
-  vec_na <- c("xx", "(*xx)", "**xx", "*xx", "*xx#", "*xxxx", "xx", "xxxx", "xxxxx",
-              "(*XX)", "**XX", "*XX", "*XX#", "*XXXX", "XX", "XXXX", "XXXXX", "NOT TESTED", "unk", "", " ",
-              "0.796527778", "0.175", "un", "N/", "n/")
+  vec_na <- c("0.796527778", "0.175")
 
   # create a temp data frame to hold input antigens
   tmp <- data.frame(cbind(var_1,var_2))
@@ -373,7 +368,7 @@ CleanAllele <- function(var_1, var_2, locus) {
     tmp <- TempFunction()
   }
 
-  if (locus == "drb1" | locus == "DRB1")
+  if (locus == "drb" | locus == "DRB")
   {
     tmp2 <-  tmp
     tmp2[] <- LookupDRB1$type[match(unlist(tmp), LookupDRB1$antigen)]
@@ -383,13 +378,16 @@ CleanAllele <- function(var_1, var_2, locus) {
   # step 2 : fill out NA antigen with non-na antigen within a locus to assume homozygosity
   # logic : if there is an NA antigen on either of the copies, replace it with the antigen from the non-na copy
   #         if both copies are NA, then keep them as NA
-  #var_1 <- ifelse(is.na(tmp$var_1) | tmp$var_1 %in% vec_na & tmp$var_2 != "", tmp$var_2, tmp$var_1)
-  #var_2 <- ifelse(is.na(tmp$var_2) | tmp$var_2 %in% vec_na & tmp$var_1 != "", tmp$var_1, tmp$var_2)
 
-  var_1 <- ifelse((is.na(tmp$var_1) | tmp$var_1 %in% vec_na) & (is.na(tmp$var_2) | tmp$var_2 %in% vec_na), "",
-                  ifelse(is.na(tmp$var_1) | tmp$var_1 %in% vec_na & tmp$var_2 != "", tmp$var_2, tmp$var_1))
-  var_2 <- ifelse((is.na(tmp$var_2) | tmp$var_2 %in% vec_na) & (is.na(tmp$var_1) | tmp$var_1 %in% vec_na), "",
-                  ifelse(is.na(tmp$var_2) | tmp$var_2 %in% vec_na & tmp$var_1 != "", tmp$var_1, tmp$var_2))
+  # var_1 <- ifelse((is.na(tmp$var_1) | tmp$var_1 %in% vec_na) & (is.na(tmp$var_2) | tmp$var_2 %in% vec_na), "",
+  #                 ifelse(is.na(tmp$var_1) | tmp$var_1 %in% vec_na & tmp$var_2 != "", tmp$var_2, tmp$var_1))
+  # var_2 <- ifelse((is.na(tmp$var_2) | tmp$var_2 %in% vec_na) & (is.na(tmp$var_1) | tmp$var_1 %in% vec_na), "",
+  #                 ifelse(is.na(tmp$var_2) | tmp$var_2 %in% vec_na & tmp$var_1 != "", tmp$var_1, tmp$var_2))
+  var_1 <- ifelse((is.na(tmp$var_1) | tmp$var_1 %in% vec_na | str_detect(tmp$var_1, '[A-Za-z]')) & (is.na(tmp$var_2) | tmp$var_2 %in% vec_na | str_detect(tmp$var_2, '[A-Za-z]')), "",
+                  ifelse(is.na(tmp$var_1) | tmp$var_1 %in% vec_na | str_detect(tmp$var_1, '[A-Za-z]') & tmp$var_2 != "", tmp$var_2, tmp$var_1))
+
+  var_2 <- ifelse((is.na(tmp$var_2) | tmp$var_2 %in% vec_na | str_detect(tmp$var_2, '[A-Za-z]')) & (is.na(tmp$var_1) | tmp$var_1 %in% vec_na | str_detect(tmp$var_1, '[A-Za-z]')), "",
+                  ifelse(is.na(tmp$var_2) | tmp$var_2 %in% vec_na | str_detect(tmp$var_2, '[A-Za-z]') & tmp$var_1 != "", tmp$var_1, tmp$var_2))
 
   # step 3 : pull out antigen if they show up within (), [], or {}
   # rationale: some of antigen are within (), [], or {}
@@ -420,12 +418,11 @@ CleanAllele <- function(var_1, var_2, locus) {
   var_2_out <- map_chr(var_2_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
 
   # step 7: remove temporary variable holders
-  rm(var_1_c1,var_1_c2,var_1_c3,var_2_c1,var_2_c2,var_2_c3,tmp)
+  rm(var_1_c1, var_1_c2, var_1_c3, var_2_c1, var_2_c2, var_2_c3, tmp)
 
   if (locus %in% c("A", "a", "B", "b", "C", "c")) {
     return(list(locus1 = var_1_out, locus2 = var_2_out))
   } else{
     return(list(locus1 = var_1_out, locus2 = var_2_out))
   }
-
 }

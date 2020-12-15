@@ -7,14 +7,11 @@
 CleanAllele(var_1, var_2, locus)
 }
 \arguments{
-\item{var_1}{alpha1 domain we want to clean}
+\item{var_1}{gene on locus 1}
 
-\item{var_2}{alpha2 or beta1 domain we want to clean}
+\item{var_2}{gene on locus 2}
 
-\item{locus}{locus of which we want to work
-var_1 is hla of alpha1(or alpha for class II) allele
-var_2 is hla of alpha2(or beta for class II) allele
-locus is indicator of which locus we are working on}
+\item{locus}{locus of which we want to work}
 }
 \value{
 list of data cleaned hla of the locus
