@@ -46,7 +46,7 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 
 ### - haplotype
-dat <- read.csv("~/projects/DEV/haplostats_dev/data/csv/tx_cohort_clean.csv")<br>
+dat <- read.csv("~/projects/DEV/haplostats_dev/data/csv/tx_cohort_clean_full.csv")<br>
 re <- CompHaploTbl(dat_in = dat, cut_p = 0.0001, cut_r = 10)<br>
 check recipient and donor of subject id 116 <br>
 re$rcpt_116<br>
