@@ -20,7 +20,6 @@
 
 CompHaploTbl <- function(dat_in, cut_p, cut_r){
   #* step 1: import raw haplotype frequenc table and do a brief cleaning *#
-  # raw_hap_tbl <- read.csv("~/projects/hlaR/inst/extdata/A_C_B_DRB345_DRB1_DQB1.csv") %>%
   raw_hap_tbl <- read.csv(system.file("extdata", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
