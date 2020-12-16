@@ -83,8 +83,12 @@ CompHaploTbl <- function(dat_in, cut_p, cut_r){
            drb2 = ifelse(nchar(drb2) == 1, paste0("0", drb2), drb2),
            dqb1 = ifelse(nchar(dqb1) == 1, paste0("0", dqb1), dqb1),
            dqb2 = ifelse(nchar(dqb2) == 1, paste0("0", dqb2), dqb2),
-           drb345_1 = ifelse(nchar(drb345_1) == 1, paste0("0", drb345_1), drb345_1),
-           drb345_2 = ifelse(nchar(drb345_2) == 1, paste0("0", drb345_2), drb345_2))
+           drb31 = ifelse(nchar(drb31) == 1, paste0("0", drb31), drb31),
+           drb32 = ifelse(nchar(drb32) == 1, paste0("0", drb32), drb32),
+           drb41 = ifelse(nchar(drb41) == 1, paste0("0", drb41), drb41),
+           drb42 = ifelse(nchar(drb42) == 1, paste0("0", drb42), drb42),
+           drb51 = ifelse(nchar(drb51) == 1, paste0("0", drb51), drb51),
+           drb52 = ifelse(nchar(drb52) == 1, paste0("0", drb52), drb52))
 
   rm(rcpt, don)
   #* end of step 2 *#
