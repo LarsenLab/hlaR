@@ -69,7 +69,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in, cut_freq = 0.0001, cut_num = 10) {
                cnt_drb3 = ifelse(fst_drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
                cnt_drb4 = ifelse(fst_drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
                cnt_drb5 = ifelse(fst_drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0)) %>%
-        mutate(cnt = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb3 + cnt_drb4 + cnt_drb5) %>%
+        mutate(cnt_drb345 = ifelse(cnt_drb3 + cnt_drb4 + cnt_drb5 > 1, 1, 0) %>%
+        mutate(cnt = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb345) %>%
         filter(cnt > 1 & !is.na(cau_rank) & cau_freq > cut_freq) %>%
         select(id, idx, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt) %>%
         arrange(-cnt, cau_rank) %>%
