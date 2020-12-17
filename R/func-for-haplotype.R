@@ -11,7 +11,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo <- function(tbl_raw, tbl_in, cut_freq = 0.0001, cut_num = 10) {
+FuncForCompHaplo <- function(tbl_raw, tbl_in, cut_freq = 0, cut_num = 10) {
   # index holder
   tmp_indx <- c()
 
