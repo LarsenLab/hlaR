@@ -74,7 +74,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in, cut_freq = 0.0001, cut_num = 10) {
         select(id, idx, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt) %>%
         arrange(-cnt, cau_rank) %>%
         slice(1:cut_num) %>%
-        select(-c(idx, cnt))
+        select(-c(idx))
     } else if(tbl_in$ethnicity == "afa"){
       subdat <- tbl_raw %>%
         mutate(id = tbl_in$id,
@@ -91,7 +91,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in, cut_freq = 0.0001, cut_num = 10) {
         select(id, idx, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt) %>%
         arrange(-cnt, afa_rank) %>%
         slice(1:cut_num) %>%
-        select(-c(idx, cnt))
+        select(-c(idx))
     }
   } else{
     subdat <- data.frame(id = tbl_in$id)
