@@ -389,16 +389,14 @@ CleanAllele <- function(var_1, var_2, locus) {
   var_2 <- ifelse((is.na(tmp$var_2) | tmp$var_2 %in% vec_na | str_detect(tmp$var_2, '[A-Za-z]')) & (is.na(tmp$var_1) | tmp$var_1 %in% vec_na | str_detect(tmp$var_1, '[A-Za-z]')), "",
                   ifelse(is.na(tmp$var_2) | tmp$var_2 %in% vec_na | str_detect(tmp$var_2, '[A-Za-z]') & tmp$var_1 != "", tmp$var_1, tmp$var_2))
 
-  # step 3 : pull out antigen if they show up within (), [], or {}
-  # rationale: some of antigen are within (), [], or {}
-  # example : 15(72), *15[62] , or 0302{18}
-  var_1_c1 <- ifelse(grepl("\\[", var_1), sub(".*\\[", "", var_1),
-                     ifelse(grepl("\\(", var_1), sub(".*\\(", "", var_1),
-                            ifelse(grepl("\\{", var_1), sub(".*\\{", "", var_1),var_1)))
-
-  var_2_c1 <- ifelse(grepl("\\[", var_2), sub(".*\\[", "", var_2),
-                     ifelse(grepl("\\(", var_2), sub(".*\\(", "", var_2),
-                            ifelse(grepl("\\{", var_1), sub(".*\\{", "", var_2),var_2)))
+  # step 3 : remove everything within a brackets. numbers within a brackets could be either expert or WHO typing, we keep numbers outside of brackets as low resolution typing to feed into haplotype reference table
+  # example : keep 15 for 15{72}, keep 40 for 40[60]
+  var_1_c1 <- ifelse(str_detect(var_1, "\\("), str_replace(var_1, "\\s*\\([^\\)]+\\)", ""),
+                     ifelse(str_detect(var_1, "\\["), str_replace(var_1, "\\s*\\[[^\\]]+\\]", ""),
+                            ifelse(str_detect(var_1, "\\{"), str_replace(var_1, "\\s*\\{[^\\}]+\\}", ""), var_1)))
+  var_2_c1 <- ifelse(str_detect(var_2, "\\("), str_replace(var_2, "\\s*\\([^\\)]+\\)", ""),
+                     ifelse(str_detect(var_2, "\\["), str_replace(var_2, "\\s*\\[[^\\]]+\\]", ""),
+                            ifelse(str_detect(var_2, "\\{"), str_replace(var_2, "\\s*\\{[^\\}]+\\}", ""), var_2)))
 
   # step 4 : remove other special symbols like *, #, :., ), ], }, (., and {. , then drop non-numeric characters
   var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\:.*|\\(.*|\\{.*", '', var_1_c1)
