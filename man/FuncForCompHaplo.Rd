@@ -4,7 +4,7 @@
 \alias{FuncForCompHaplo}
 \title{extracts combinations from halpo frequency table, it's called within CompHaploTbl()}
 \usage{
-FuncForCompHaplo(tbl_raw, tbl_in, cut_freq = 1e-04, cut_num = 10)
+FuncForCompHaplo(tbl_raw, tbl_in, cut_freq, cut_num)
 }
 \arguments{
 \item{tbl_raw}{raw haplotype frequency table downloaded from NMDP website}

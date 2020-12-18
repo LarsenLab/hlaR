@@ -4,7 +4,7 @@
 \alias{CompHaploTbl}
 \title{compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs}
 \usage{
-CompHaploTbl(dat_in, cut_p, cut_n)
+CompHaploTbl(dat_in, cut_p = 0, cut_n = 10)
 }
 \arguments{
 \item{dat_in}{dataframe with recipient/donor alleles info}
