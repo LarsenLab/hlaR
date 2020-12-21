@@ -4,16 +4,12 @@
 \alias{FuncForCompHaplo}
 \title{extracts combinations from halpo frequency table, it's called within CompHaploTbl()}
 \usage{
-FuncForCompHaplo(tbl_raw, tbl_in, cut_freq, cut_num)
+FuncForCompHaplo(tbl_raw, tbl_in)
 }
 \arguments{
 \item{tbl_raw}{raw haplotype frequency table downloaded from NMDP website}
 
 \item{tbl_in}{data frame with alleles info}
-
-\item{cut_freq}{cutoff frequence value of the population}
-
-\item{cut_num}{cutoff number of how many top combinations will be kept in the final table}
 }
 \description{
 extracts combinations from halpo frequency table, it's called within CompHaploTbl()

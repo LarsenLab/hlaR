@@ -2,10 +2,6 @@
 #' @title compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs
 #' @param dat_in
 #' dataframe with recipient/donor alleles info
-#' @param cut_p
-#' cutoff frequence value of the population, it's passed to FuncForCompHaplo()
-#' @param cut_n
-#' cutoff number of how many top combinations will be kept in the final table, it's passed to FuncForCompHaplo()
 #' @return
 #' a list of dataframe of most matched allele combination of each subject
 #' @import
@@ -18,7 +14,7 @@
 #' }
 #' @export
 
-CompHaploTbl <- function(dat_in, cut_p = 0, cut_n = 10){
+CompHaploTbl <- function(dat_in){
   #* step 1: import raw haplotype frequenc table and do a brief cleaning *#
   raw_hap_tbl <- read.csv(system.file("extdata", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
@@ -70,7 +66,7 @@ CompHaploTbl <- function(dat_in, cut_p = 0, cut_n = 10){
     mutate(id = paste("don", rowid, sep = "_")) %>%
     select(id, everything())
 
-  dat2 <- rbind(rcpt, don) %>% arrange(rowid) %>%
+  dat_ready <- rbind(rcpt, don) %>% arrange(rowid) %>%
     mutate_all(as.character) %>%
     mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
            a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
@@ -93,15 +89,16 @@ CompHaploTbl <- function(dat_in, cut_p = 0, cut_n = 10){
   #* end of step 2 *#
 
   #* step 3: call FuncForCompHaplo() for each subjects and get top combination of alleles *#
-  num_subj <- dim(dat2)[1]
+  num_subj <- dim(dat_ready)[1]
   result <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
-    result[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat2[i, ], cut_freq = cut_p, cut_num = cut_n)
+    print(i)
+    result[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
   }
 
   #* end of step 3 *#
-  names(result) <- dat2$id
+  names(result) <- dat_ready$id
   return(result)
 }
 

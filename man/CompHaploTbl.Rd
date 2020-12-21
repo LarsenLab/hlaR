@@ -4,14 +4,10 @@
 \alias{CompHaploTbl}
 \title{compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs}
 \usage{
-CompHaploTbl(dat_in, cut_p = 0, cut_n = 10)
+CompHaploTbl(dat_in)
 }
 \arguments{
 \item{dat_in}{dataframe with recipient/donor alleles info}
-
-\item{cut_p}{cutoff frequence value of the population, it's passed to FuncForCompHaplo()}
-
-\item{cut_n}{cutoff number of how many top combinations will be kept in the final table, it's passed to FuncForCompHaplo()}
 }
 \value{
 a list of dataframe of most matched allele combination of each subject
