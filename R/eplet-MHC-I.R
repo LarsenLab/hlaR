@@ -195,6 +195,18 @@ CalEpletMHCI <- function(dat_in) {
     results_detail <- left_join(results_detail, tmp, by = c("index", "type", "eplet"))
   }
 
+  # code of single molecular summary output - 2021-01-06
+  # results_detail <-  data.frame(t(dat_ep_mm2)) %>%
+  #   tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
+  #   setNames("mm_eplets") %>%
+  #   mutate(subject = colnames(dat_ep_mm2),
+  #          mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
+  #   mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
+  #   mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
+  #                          ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+  #   filter(!subject %in% c("index", "type")) %>%
+  #   select(subject, mm_eplets, mm_cnt)
+  #
   results_detail <- results_detail %>%
     mutate(mm_cnt = subj_num - rowSums(is.na(.)),
            mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
