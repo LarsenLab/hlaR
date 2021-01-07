@@ -2,7 +2,9 @@
 #' @param dat_in
 #' dataframe with subject info (first 3 columns) and MHC II allele info
 #' @return
-#' data table with detailed single molecular level mis-match eplet info of each subject
+#' a list of data tables
+#' count table: original input data appended with count mis-matched eplet of each pair
+#' detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 #' @export
 #'
 #' @import
@@ -148,9 +150,8 @@ CalEpletMHCII <- function(dat_in) {
 
   ###*** step 4: mis-match eplet calculation ***###
   #* 4a: A loci *#
-  results_a <- data.frame(subject = character(),
-                          mm_eplets = character(),
-                          mm_cnt = integer())
+  ep_a_mm <- ep_a %>%
+    select(index, type)
 
   # A alleles : DQA, DPA
   a_len <- subj_num * 8
@@ -179,27 +180,12 @@ CalEpletMHCII <- function(dat_in) {
                  paste0("dpa1_mm_subj", subj_indx),
                  paste0("dpa2_mm_subj", subj_indx)))
 
-    result_a <-  data.frame(t(tmp)) %>%
-      tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-      setNames("mm_eplets") %>%
-      mutate(subject = colnames(tmp),
-             mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-      mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-      mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-                             ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-      filter(!subject %in% c("index", "type")) %>%
-      select(subject, mm_eplets, mm_cnt)
-
-    results_a <- rbind(results_a, result_a)
+    ep_a_mm <- cbind(ep_a_mm, tmp)
     st <- ed + 1
   }
   #* end of 4a *#
 
   #* 4b. B loci *#
-  results_b <- data.frame(subject = character(),
-                          mm_eplets = character(),
-                          mm_cnt = integer())
-
   ep_b_mm <- ep_b %>%
     select(index, type)
   ep_b_rownames <- paste(ep_b_mm$type, ep_b_mm$index, sep = "")
@@ -252,32 +238,151 @@ CalEpletMHCII <- function(dat_in) {
                  paste0("dpb1_mm_subj", subj_indx),
                  paste0("dpb2_mm_subj", subj_indx)))
 
-    result_b <-  data.frame(t(tmp)) %>%
-      tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-      setNames("mm_eplets") %>%
-      mutate(subject = colnames(tmp),
-             mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-      mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-      mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-                             ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-      filter(!subject %in% c("index", "type")) %>%
-      select(subject, mm_eplets, mm_cnt)
-
-    results_b <- rbind(results_b, result_b)
-
+    ep_b_mm <- cbind(ep_b_mm, tmp)
     st1 <- ed + 1
   }
   #* end of 4b *#
   ###*** end of step 4 ***###
 
-  ###*** step 5: generate output table ***###
-  dat_out <- rbind(results_a, results_b) %>%
-             mutate(name = gsub(".*\\_","", subject),
-                    gene = gsub("\\_.*", "", subject)) %>%
-             select(name, gene, mm_eplets, mm_cnt) %>%
-             arrange(name, gene)
+  ###*** step 5: mis-match calculation of A loci ***###
+  #* 5a. generate mm tables *#
+  subj_names <- unique(sub(".*\\_", "", names(ep_a_mm)[-c(1:2)]))
+
+  re_dqa <- lkup_dqa
+  re_dpa <- lkup_dpa
+  st2 <- 3
+
+  for (i in 1:subj_num) {
+    ed <- st2 + 3
+    positions <- c(st2:ed)
+    tmp <- ep_a_mm %>%
+      select(c(1, 2, all_of(positions))) %>%
+      setNames(c("index", "type", "dqa1_mm", "dqa2_mm", "dpa1_mm", "dpa2_mm"))
+
+    # dqa, join lkup_dqa
+    lkup <- lkup_dqa
+    tmp_dqa <- tmp %>%
+      select(c(index, type, dqa1_mm, dqa2_mm)) %>%
+      right_join(., lkup, by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(dqa1_mm, dqa2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    # dpa, join lkup_dpa
+    lkup <- lkup_dpa
+    tmp_dpa <- tmp %>%
+      select(c(index, type, dpa1_mm, dpa2_mm)) %>%
+      right_join(., lkup, by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(dpa1_mm, dpa1_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    st2 <- ed + 1
+    re_dqa <- left_join(re_dqa, tmp_dqa, by = c("index", "type", "eplet"))
+    re_dpa <- left_join(re_dpa, tmp_dpa, by = c("index", "type", "eplet"))
+  }
+  #* end of 5a *#
+
+  #* 5b. generate result tables *#
+  GenerateResult <- function(tmp_in){
+    dtl <- tmp_in %>%
+      mutate(mm_cnt = subj_num - rowSums(is.na(.)),
+             mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
+
+    cnt <- dtl %>%
+      select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
+      summarise_all(list(~sum(!is.na(.)))) %>%
+      gather() %>%
+      setNames(c("subject", "mm_count")) %>%
+      select(mm_count)
+    return(list(detail = dtl, count = cnt))
+  }
+
+  dpa <- GenerateResult(re_dpa)
+  dqa <- GenerateResult(re_dqa)
+
+  #* end of 5b *#
+  ###*** end of step 5 ***###
+
+  ###* step 6: mis-match calculation of B loci ***###
+
+  #* 6a. generate mm tables *#
+  re_dpb <- lkup_dpb
+  re_dqb <- lkup_dqb
+  re_drb <- lkup_drb
+
+  st3 <- 3
+
+  for (i in 1:subj_num) {
+    ed <- st3 + 7
+    pos <- c(st3:ed)
+    tmp <- ep_b_mm %>%
+      select(all_of(c(1, 2, pos))) %>%
+      setNames(c("index", "type", "drb1_mm", "drb2_mm", "drw1_mm", "drw2_mm", "dqb1_mm", "dqb2_mm", "dpb1_mm", "dpb2_mm"))
+
+    # dpb
+    lkup <- lkup_dpb
+    cols <- c("index", "type", "dpb1_mm", "dpb2_mm")
+    tmp_dpb <- tmp %>%
+      select(all_of(cols)) %>%
+      right_join(., lkup, by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(dpb1_mm, dpb2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    # dqb
+    lkup <- lkup_dqb
+    cols <- c("index", "type", "dqb1_mm", "dqb2_mm")
+    tmp_dqb <- tmp %>%
+      select(cols) %>%
+      right_join(., lkup, by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(dqb1_mm, dqb2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    # drb
+    lkup <- lkup_drb
+    cols <- c("index", "type", "drb1_mm", "drb2_mm", "drw1_mm", "drw2_mm")
+    tmp_drb <- tmp %>%
+      select(all_of(cols)) %>%
+      right_join(., lkup, by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(drb1_mm, drb2_mm, drw1_mm, drw2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    st3 <- ed + 1
+
+    re_dpb <- left_join(re_dpb, tmp_dpb, by = c("index", "type", "eplet"))
+    re_dqb <- left_join(re_dqb, tmp_dqb, by = c("index", "type", "eplet"))
+    re_drb <- left_join(re_drb, tmp_drb, by = c("index", "type", "eplet"))
+  }
+  #* end of 76a *#
+
+  #* 6b. generate result tables *#
+  #*
+  dpb <- GenerateResult(re_dpb)
+  dqb <- GenerateResult(re_dqb)
+  drb <- GenerateResult(re_drb)
+
+  #* end of 6b *#
+  ###* end of step 6 ***###
+
+  ###*** step 7: final mm table ***#
+  dat_result <- dat %>%
+    mutate(mm_drb = drb$count,
+           mm_dqb = dqb$count,
+           mm_dqa = dqa$count,
+           mm_dpb = dpb$count,
+           mm_dpa = dpa$count)
+
+  dat_out <- list(count = dat_result,
+                  detail = list(drb = drb$detail,
+                                dqb = dqb$detail,
+                                dqa = dqa$detail,
+                                dpb = dpb$detail,
+                                dpa = dpa$detail)
+  )
 
   return(dat_out)
-  ###*** end of step 5 ***###
+  ###*** end of step 7 ***###
 }
-
