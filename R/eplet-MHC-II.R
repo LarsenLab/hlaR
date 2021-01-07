@@ -1,8 +1,10 @@
 #' calculate HLA class II eplet mismatch using Matchmaker algorithm
 #' @param dat_in
 #' dataframe with subject info (first 3 columns) and MHC II allele info
+#'
 #' @return
 #' data table with detailed single molecular level mis-match eplet info of each subject
+#'
 #' @export
 #'
 #' @import
@@ -271,13 +273,13 @@ CalEpletMHCII <- function(dat_in) {
   ###*** end of step 4 ***###
 
   ###*** step 5: generate output table ***###
-  dat_out <- rbind(results_a, results_b) %>%
+  results <- rbind(results_a, results_b) %>%
              mutate(name = gsub(".*\\_","", subject),
                     gene = gsub("\\_.*", "", subject)) %>%
              select(name, gene, mm_eplets, mm_cnt) %>%
              arrange(name, gene)
 
-  return(dat_out)
+  return(results)
   ###*** end of step 5 ***###
 }
 

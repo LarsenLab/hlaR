@@ -12,8 +12,7 @@ eplet_mm1
 #### - MHC class II
 dat <- read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2 <- CalEpletMHCII(dat)<br>
-eplet_mm2$count<br> 
-eplet_mm2$detail<br>
+eplet_mm2
 
 ### Allele clean and mis-match
 #### - clean

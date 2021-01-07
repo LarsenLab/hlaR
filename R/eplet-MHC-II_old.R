@@ -19,14 +19,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCII(dat_in = "YourDataFile")
-#' re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
+#' re <- CalEpletMHCII_old(dat_in = "YourDataFile")
+#' re <- CalEpletMHCII_old(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
-CalEpletMHCII <- function(dat_in) {
+CalEpletMHCII_old <- function(dat_in) {
   ###*** step 1: import raw eplet tables ***###
   raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"), check.names = FALSE)
   raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"), check.names = FALSE)
