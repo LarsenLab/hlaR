@@ -209,13 +209,13 @@ CalEpletMHCI <- function(dat_in) {
     select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
     pivot_longer(cols = starts_with("don_"),
                  names_to = "gene",
-                 values_to = "allele_don") %>%
+                 values_to = "don_type") %>%
     mutate(gene = str_replace(gene, "don_", ""),
            part_id = as.character(part_id))
 
   result <- result %>%
     left_join(., don_allele, by =c("part_id", "gene") ) %>%
-    select(subject, allele_don, mm_eplets, mm_cnt)
+    select(subject, don_type, mm_eplets, mm_cnt)
 
   return(result)
 }
