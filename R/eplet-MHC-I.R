@@ -3,9 +3,7 @@
 #' dataframe with subject info(first 3 columns) and MHC I allele info
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
 #' @return
-#' a list of data tables
-#' count table: original input data appended with count mis-matched eplet of each pair
-#' detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+#' data table with detailed single molecular level mis-match eplet info of each subject
 #' @export
 #'
 #' @import
@@ -63,14 +61,14 @@ CalEpletMHCI <- function(dat_in) {
 
   dat <- left_join(rcpt, don, by = c("part_id")) %>%
          select(-part_type.y) %>%
-    dplyr::rename(part_type = part_type.x)
+         dplyr::rename(part_type = part_type.x)
 
   subj_num <- dim(dat)[1]
   tmp_names <- c(nm_rec, nm_don)
 
   #* step 3: initial eplet data frame *#
   dat_ep <- raw_eplet %>%
-    select(index, type)
+            select(index, type)
 
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
@@ -175,10 +173,9 @@ CalEpletMHCI <- function(dat_in) {
   dat_ep_mm2 <- dat_ep_mm2 %>% select(-c(1:2))
 
   #* step 7: final result *#
-  # subject names
   subj_names <- unique(sub(".*\\_", "", names(dat_ep_mm2)[-c(1:2)]))
 
-  results_detail <- raw_lookup
+  result <- raw_lookup
   st3 <- 3
   for (i in 1:subj_num) {
     ed <- st3 + 5
@@ -192,36 +189,35 @@ CalEpletMHCI <- function(dat_in) {
       setNames(c("index", "type", "eplet", subj_names[i]))
 
     st3 <- ed + 1
-    results_detail <- left_join(results_detail, tmp, by = c("index", "type", "eplet"))
+    result <- left_join(result, tmp, by = c("index", "type", "eplet"))
   }
 
-  # code of single molecular summary output - 2021-01-06
-  # results_detail <-  data.frame(t(dat_ep_mm2)) %>%
-  #   tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-  #   setNames("mm_eplets") %>%
-  #   mutate(subject = colnames(dat_ep_mm2),
-  #          mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-  #   mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-  #   mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-  #                          ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-  #   filter(!subject %in% c("index", "type")) %>%
-  #   select(subject, mm_eplets, mm_cnt)
-  #
-  results_detail <- results_detail %>%
-    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
-           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
+  result <-  data.frame(t(dat_ep_mm2)) %>%
+    tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
+    setNames("mm_eplets") %>%
+    mutate(subject = colnames(dat_ep_mm2),
+           mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
+    mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
+    mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
+                           ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+    filter(!subject %in% c("index", "type")) %>%
+    select(subject, mm_eplets, mm_cnt) %>%
+    mutate(part_id = gsub(".*subj", "", subject),
+           gene = gsub("\\_.*","",subject) )
 
-  results_count <- results_detail %>%
-    select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-    summarise_all(list(~sum(!is.na(.)))) %>%
-    gather() %>%
-    setNames(c("subject", "mm_count")) %>%
-    select(mm_count)
+  don_allele <- dat %>%
+    select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
+    pivot_longer(cols = starts_with("don_"),
+                 names_to = "gene",
+                 values_to = "allele_don") %>%
+    mutate(gene = str_replace(gene, "don_", ""),
+           part_id = as.character(part_id))
 
-  results_count <- cbind(dat ,results_count)
+  result <- result %>%
+    left_join(., don_allele, by =c("part_id", "gene") ) %>%
+    select(subject, allele_don, mm_eplets, mm_cnt)
 
-  return(list(count = results_count,
-              detail = results_detail))
+  return(result)
 }
 
 

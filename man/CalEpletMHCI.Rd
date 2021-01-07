@@ -11,9 +11,7 @@ CalEpletMHCI(dat_in)
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 }
 \value{
-a list of data tables
-count table: original input data appended with count mis-matched eplet of each pair
-detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
+data table with detailed single molecular level mis-match eplet info of each subject
 }
 \description{
 calculate HLA Class I eplet mismatch using Matchmaker algorithm
