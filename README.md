@@ -4,7 +4,7 @@ install_github("LarsenLab/hlaR")<br>
 library(hlaR)<br> 
 
 ## Usage example
-### single molecular level eplet mis-match
+### single molecule level eplet mis-match
 #### - MHC class I
 dat <- read.csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm1 <- CalEpletMHCI(dat)<br>

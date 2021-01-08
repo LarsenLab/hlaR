@@ -3,7 +3,7 @@
 #' dataframe with subject info (first 3 columns) and MHC II allele info
 #'
 #' @return
-#' data table with detailed single molecular level mis-match eplet info of each subject
+#' data table with detailed single molecule level mis-match eplet info of each subject
 #'
 #' @export
 #'
