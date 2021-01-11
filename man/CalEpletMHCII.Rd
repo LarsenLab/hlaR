@@ -10,7 +10,7 @@ CalEpletMHCII(dat_in)
 \item{dat_in}{dataframe with subject info (first 3 columns) and MHC II allele info}
 }
 \value{
-data table with detailed single molecular level mis-match eplet info of each subject
+data table with detailed single molecule level mis-match eplet info of each subject
 }
 \description{
 calculate HLA class II eplet mismatch using Matchmaker algorithm

@@ -93,7 +93,6 @@ CompHaploTbl <- function(dat_in){
   result <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
-    print(i)
     result[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
   }
 
