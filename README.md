@@ -46,7 +46,7 @@ result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br>
 ### - haplotype
 dat <- read_csv(system.file("extdata", "Haplotype_test.csv", package = "hlaR"))<br>
 re <- CompHaploTbl(dat_in = dat)<br>
-check recipient and donor of subject id 116 <br>
-re$rcpt_116<br>
-re$don_116<br>
+check results of recipient2 <br>
+re$hpl_tp_raw$rcpt_2<br>
+re$hpl_tp_pairs$rcpt_2
 

@@ -11,6 +11,8 @@ CompHaploTbl(dat_in)
 }
 \value{
 a list of dataframe of most matched allele combination of each subject
+hpl_tp_raw is raw haplotypes of haplotype-freq table
+hpl_tp_pairs is paired combinations of raw haplotypes
 }
 \description{
 compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs

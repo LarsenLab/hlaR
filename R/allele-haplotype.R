@@ -4,6 +4,8 @@
 #' dataframe with recipient/donor alleles info
 #' @return
 #' a list of dataframe of most matched allele combination of each subject
+#' hpl_tp_raw is raw haplotypes of haplotype-freq table
+#' hpl_tp_pairs is paired combinations of raw haplotypes
 #' @import
 #' tidyverse
 #'
@@ -90,14 +92,19 @@ CompHaploTbl <- function(dat_in){
 
   #* step 3: call FuncForCompHaplo() for each subjects and get top combination of alleles *#
   num_subj <- dim(dat_ready)[1]
-  result <- vector(mode = "list", length = num_subj)
+  hpl_tp_raw <- vector(mode = "list", length = num_subj)
+  hpl_tp_pairs <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
-    result[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
+    print(i)
+    hpl_tp_raw[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])$hpl_tp_raw
+    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])$hpl_tp_pairs
   }
 
   #* end of step 3 *#
-  names(result) <- dat_ready$id
-  return(result)
+  names(hpl_tp_raw) <- dat_ready$id
+  names(hpl_tp_pairs) <- dat_ready$id
+
+  return(list(hpl_tp_raw = hpl_tp_raw, hpl_tp_pairs = hpl_tp_pairs))
 }
 

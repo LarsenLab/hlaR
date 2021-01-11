@@ -66,7 +66,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
   #* step 3: pull out high res combinations of max goupr count *#
   if(length(tmp_indx) > 0 & num_na > 3) {
-      subdat <- tbl_raw %>%
+      hpl_tp_raw <- tbl_raw %>%
         mutate(id = tbl_in$id,
                cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
                cnt_b = ifelse(fst_b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
@@ -81,18 +81,40 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
         filter(cnt == max(cnt))
 
       if(tbl_in$ethnicity == "cau"){
-            subdat <- subdat %>%
+            hpl_tp_raw <- hpl_tp_raw %>%
                       arrange(cau_rank) %>%
                        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt)
+
+            tmp <- hpl_tp_raw %>%
+              mutate(indx = row_number())
+
+            hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+              setNames(c("indx1", "indx2")) %>%
+              mutate(pair = row_number()) %>%
+              pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+              left_join(., tmp, by = c("value" = "indx")) %>%
+              select(-index)
+
+
       } else if(tbl_in$ethnicity == "afa"){
-      subdat <- subdat %>%
+      hpl_tp_raw <- hpl_tp_raw %>%
                 arrange(afa_rank) %>%
                 select(id, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt)
+
+      tmp <- hpl_tp_raw %>%
+        mutate(indx = row_number())
+
+      hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+        setNames(c("indx1", "indx2")) %>%
+        mutate(pair = row_number()) %>%
+        pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+        left_join(., tmp, by = c("value" = "indx")) %>%
+        select(-index)
       }
   } else{
-    subdat <- data.frame(id = tbl_in$id)
+    hpl_tp_raw <- data.frame(id = tbl_in$id)
+    hpl_tp_pairs <- data.frame(id = tbl_in$id)
   }
   #* end of step 3 *#
-
-  return(subdat)
+  return(list(hpl_tp_raw = hpl_tp_raw, hpl_tp_pairs = hpl_tp_pairs))
 }
