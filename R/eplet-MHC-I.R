@@ -2,6 +2,8 @@
 #' @param dat_in
 #' dataframe with subject info(first 3 columns) and MHC I allele info
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
+#' @param ver
+#' version of eplet mis-match table from epitopes.net to use
 #' @return
 #' data table with detailed single molecule level mis-match eplet info of each subject
 #' @export
@@ -18,17 +20,21 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCI(dat_in = "YourDataFile")
-#' re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
+#' re <- CalEpletMHCI(dat_in = "YourDataFile", ver = 2)
+#' re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), ver = 2)
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
-CalEpletMHCI <- function(dat_in) {
+CalEpletMHCI <- function(dat_in, ver) {
 
   #* step 1: import raw eplet table *#
-  raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v3.csv", package = "hlaR"), check.names = FALSE)
+  if(ver == 2){
+    raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v2.csv", package = "hlaR"), check.names = FALSE)
+  } else{
+    raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v3.csv", package = "hlaR"), check.names = FALSE)
+  }
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
     setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%

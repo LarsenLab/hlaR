@@ -7,8 +7,10 @@ library(hlaR)<br>
 ### single molecule level eplet mis-match
 #### - MHC class I
 dat <- read.csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
-eplet_mm1 <- CalEpletMHCI(dat)<br>
-eplet_mm1
+eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
+eplet_mm1_v2<br>
+eplet_mm1_v3 <- CalEpletMHCI(dat, ver = 3)<br>
+eplet_mm1_v3
 #### - MHC class II
 dat <- read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2 <- CalEpletMHCII(dat)<br>

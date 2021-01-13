@@ -4,11 +4,13 @@
 \alias{CalEpletMHCI}
 \title{calculate HLA Class I eplet mismatch using Matchmaker algorithm}
 \usage{
-CalEpletMHCI(dat_in)
+CalEpletMHCI(dat_in, ver)
 }
 \arguments{
 \item{dat_in}{dataframe with subject info(first 3 columns) and MHC I allele info
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
+
+\item{ver}{version of eplet mis-match table from epitopes.net}
 }
 \value{
 data table with detailed single molecule level mis-match eplet info of each subject
@@ -18,8 +20,8 @@ calculate HLA Class I eplet mismatch using Matchmaker algorithm
 }
 \examples{
 \dontrun{
-re <- CalEpletMHCI(dat_in = "YourDataFile")
-re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"))
+re <- CalEpletMHCI(dat_in = "YourDataFile", ver = 2)
+re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), ver = 2)
 }
 
 }
