@@ -28,8 +28,8 @@
 
 CalEpletMHCII <- function(dat_in) {
   ###*** step 1: import raw eplet tables ***###
-  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A.csv", package = "hlaR"), check.names = FALSE)
-  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
   ###*** end of step 1 ***###
 
   ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###

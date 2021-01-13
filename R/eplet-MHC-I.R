@@ -28,7 +28,7 @@
 CalEpletMHCI <- function(dat_in) {
 
   #* step 1: import raw eplet table *#
-  raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v3.csv", package = "hlaR"), check.names = FALSE)
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
     setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
