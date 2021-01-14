@@ -10,7 +10,7 @@ CalEpletMHCI(dat_in, ver)
 \item{dat_in}{dataframe with subject info(first 3 columns) and MHC I allele info
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 
-\item{ver}{version of eplet mis-match table from epitopes.net}
+\item{ver}{version of eplet mis-match table from epitopes.net to use}
 }
 \value{
 data table with detailed single molecule level mis-match eplet info of each subject
