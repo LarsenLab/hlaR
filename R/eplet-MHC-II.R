@@ -1,7 +1,9 @@
 #' calculate HLA class II eplet mismatch using Matchmaker algorithm
 #' @param dat_in
 #' dataframe with subject info (first 3 columns) and MHC II allele info
-#'
+#' @param ver
+#' version number of eplet mis-match table from epitopes.net to use
+#  note: interlocus info only available in table v3
 #' @return
 #' data table with detailed single molecule level mis-match eplet info of each subject
 #'
@@ -19,17 +21,22 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCII(dat_in = "YourDataFile")
-#' re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
+#' re <- CalEpletMHCII(dat_in = "YourDataFile", ver = 2)
+#' re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), ver = 3)
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
-CalEpletMHCII <- function(dat_in) {
+CalEpletMHCII <- function(dat_in, ver = 3) {
   ###*** step 1: import raw eplet tables ***###
-  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
-  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
+  if(ver == 2){
+  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v2.csv", package = "hlaR"), check.names = FALSE)
+  } else{
+    raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
+    raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
+  }
   ###*** end of step 1 ***###
 
   ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###

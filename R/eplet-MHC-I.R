@@ -3,7 +3,7 @@
 #' dataframe with subject info(first 3 columns) and MHC I allele info
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
 #' @param ver
-#' version of eplet mis-match table from epitopes.net to use
+#' version number of eplet mis-match table from epitopes.net to use
 #' @return
 #' data table with detailed single molecule level mis-match eplet info of each subject
 #' @export
@@ -27,7 +27,7 @@
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
-CalEpletMHCI <- function(dat_in, ver) {
+CalEpletMHCI <- function(dat_in, ver = 3) {
 
   #* step 1: import raw eplet table *#
   if(ver == 2){

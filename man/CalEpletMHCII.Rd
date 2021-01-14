@@ -4,10 +4,12 @@
 \alias{CalEpletMHCII}
 \title{calculate HLA class II eplet mismatch using Matchmaker algorithm}
 \usage{
-CalEpletMHCII(dat_in)
+CalEpletMHCII(dat_in, ver = 3)
 }
 \arguments{
 \item{dat_in}{dataframe with subject info (first 3 columns) and MHC II allele info}
+
+\item{ver}{version number of eplet mis-match table from epitopes.net to use}
 }
 \value{
 data table with detailed single molecule level mis-match eplet info of each subject
@@ -17,8 +19,8 @@ calculate HLA class II eplet mismatch using Matchmaker algorithm
 }
 \examples{
 \dontrun{
-re <- CalEpletMHCII(dat_in = "YourDataFile")
-re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"))
+re <- CalEpletMHCII(dat_in = "YourDataFile", ver = 2)
+re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), ver = 3)
 }
 
 }
