@@ -29,7 +29,7 @@ library(here)
 ```
 
 ```{r}
-hla_mm_cnt <- read_csv(here("inst", "extdata", "HLA_MisMatch_count_test.csv"))
+hla_mm_cnt <- read_csv(here("inst", "extdata/example", "HLA_MisMatch_count_test.csv"))
 ```
 
 @jz Query =======

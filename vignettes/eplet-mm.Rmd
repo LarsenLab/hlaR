@@ -63,12 +63,12 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 
 ```{r, message = FALSE}
 # use the testing data in the library
-dat <-  read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+dat <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
 re <- CalEpletMHCII(dat)
 head(re$count)
 head(re$detail)
 
-path_test <- system.file("extdata", "MHC_I_test.csv", package="hlaR")
+path_test <- system.file("extdata/example", "MHC_I_test.csv", package="hlaR")
 test <-  read_csv(path_test)
 ```
 

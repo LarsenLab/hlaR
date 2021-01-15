@@ -30,45 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
-});
-</script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -168,6 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -387,91 +349,24 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(hlaR)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; ✓ ggplot2 3.3.2     ✓ purrr   0.3.4</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; ✓ ggplot2 3.3.3     ✓ purrr   0.3.4</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; ✓ tibble  3.0.4     ✓ dplyr   1.0.2</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; ✓ tidyr   1.1.2     ✓ stringr 1.4.0</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; ✓ readr   1.4.0     ✓ forcats 0.5.0</span></span>
 <span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
 <span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; x dplyr::filter() masks hlaR::filter(), stats::filter()</span></span>
 <span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; x dplyr::lag()    masks hlaR::lag(), stats::lag()</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tx_cohort &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/tx_cohort.csv&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; </span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;   .default = col_character(),</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;   recipient_bw1 = col_double(),</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;   recipient_drb31 = col_double(),</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;   recipient_drb41 = col_double(),</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;   recipient_drb51 = col_double(),</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;   recipient_drb52 = col_double(),</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;   donor_a1 = col_double(),</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;   donor_bw1 = col_double(),</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;   donor_drb31 = col_double(),</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt;   donor_drb42 = col_double(),</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt;   donor_drb51 = col_double(),</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;   donor_dpa11 = col_double()</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; )</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># tx_cohort &lt;- read_csv(&quot;data/tx_cohort.csv&quot;)</span></span></code></pre></div>
 <p><span class="citation">[@TODO]</span> Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).</p>
 <p>Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.</p>
 <p>Describe the variables. recip_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">glimpse</span>(tx_cohort)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; Rows: 40</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; Columns: 48</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; $ recipient_a1    &lt;chr&gt; &quot;2&quot;, &quot;2&quot;, &quot;30&quot;, &quot;1&quot;, &quot;11&quot;, &quot;2&quot;, &quot;1&quot;, &quot;2&quot;, &quot;74&quot;, &quot;2&quot;, …</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; $ recipient_a2    &lt;chr&gt; &quot;1&quot;, &quot;74&quot;, &quot;33&quot;, &quot;24&quot;, &quot;26&quot;, &quot;25&quot;, &quot;30&quot;, &quot;24&quot;, &quot;xx&quot;, …</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; $ recipient_b1    &lt;chr&gt; &quot;44&quot;, &quot;15(72)&quot;, &quot;7&quot;, &quot;15(62)&quot;, &quot;7&quot;, &quot;18&quot;, &quot;8&quot;, &quot;13&quot;, …</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt; $ recipient_b2    &lt;chr&gt; &quot;7&quot;, &quot;53&quot;, &quot;78:01:00&quot;, &quot;27&quot;, &quot;44&quot;, &quot;44&quot;, &quot;42&quot;, &quot;44&quot;, …</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt; $ recipient_c1    &lt;chr&gt; &quot;5&quot;, &quot;2&quot;, &quot;7&quot;, &quot;2&quot;, &quot;12&quot;, &quot;12&quot;, &quot;7&quot;, &quot;6&quot;, &quot;03(10)&quot;, &quot;…</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt; $ recipient_c2    &lt;chr&gt; &quot;7&quot;, &quot;4&quot;, &quot;16&quot;, &quot;03(9)&quot;, &quot;xx&quot;, &quot;5&quot;, &quot;17&quot;, &quot;14:03&quot;, &quot;4…</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt; $ recipient_bw1   &lt;dbl&gt; 4, 6, 6, 6, 6, 6, 6, 4, 6, 6, 6, 6, 4, 6, 6, 6, 6, 6,…</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt; $ recipient_bw2   &lt;chr&gt; &quot;6&quot;, &quot;4&quot;, &quot;6&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;6&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;…</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt; $ recipient_drb11 &lt;chr&gt; &quot;4&quot;, &quot;7&quot;, &quot;13&quot;, &quot;1&quot;, &quot;7&quot;, &quot;4:01&quot;, &quot;03(17)&quot;, &quot;11:01&quot;, …</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt; $ recipient_drb12 &lt;chr&gt; &quot;15&quot;, &quot;8&quot;, &quot;15&quot;, &quot;4&quot;, &quot;15&quot;, &quot;15&quot;, &quot;03(17)&quot;, &quot;12&quot;, &quot;7&quot;…</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; $ recipient_drb31 &lt;dbl&gt; NA, NA, 3, NA, NA, NA, 1, 2, 2, 1, 2, NA, 2, 2, 2, NA…</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt; $ recipient_drb32 &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;2&quot;, &quot;xx&quot;, NA, &quot;2&quot;, NA, &quot;3&quot;, …</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt; $ recipient_drb41 &lt;dbl&gt; 1, 1, NA, NA, 1, 1, NA, NA, NA, NA, NA, 1, NA, NA, NA…</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; $ recipient_drb42 &lt;chr&gt; NA, NA, NA, &quot;1&quot;, NA, NA, NA, NA, &quot;1&quot;, NA, &quot;1&quot;, NA, NA…</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; $ recipient_drb51 &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#&gt; $ recipient_drb52 &lt;dbl&gt; 1, NA, 1, NA, 1, 1, NA, NA, NA, NA, NA, NA, NA, NA, 1…</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="co">#&gt; $ recipient_dqb11 &lt;chr&gt; &quot;03(7)&quot;, &quot;2&quot;, &quot;6&quot;, &quot;03(8)&quot;, &quot;2&quot;, &quot;6&quot;, &quot;2&quot;, &quot;5&quot;, &quot;2&quot;, …</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a><span class="co">#&gt; $ recipient_dqb12 &lt;chr&gt; &quot;6&quot;, &quot;03(7)&quot;, &quot;6&quot;, &quot;5&quot;, &quot;5&quot;, &quot;03(7)&quot;, &quot;2&quot;, &quot;6:49&quot;, &quot;2…</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a><span class="co">#&gt; $ recipient_dqa11 &lt;chr&gt; &quot;3&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;5&quot;, &quot;1&quot;, &quot;3&quot;, &quot;1&quot;, &quot;3&quot;…</span></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="co">#&gt; $ recipient_dqa12 &lt;chr&gt; &quot;1&quot;, &quot;4&quot;, &quot;xx&quot;, &quot;3&quot;, &quot;2:01&quot;, &quot;3&quot;, &quot;5&quot;, &quot;1&quot;, &quot;5:01&quot;, &quot;…</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a><span class="co">#&gt; $ recipient_dpa11 &lt;chr&gt; &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1:03&quot;, &quot;1:03&quot;, &quot;2:01&quot;, &quot;2:01&quot;, &quot;…</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a><span class="co">#&gt; $ recipient_dpa12 &lt;chr&gt; &quot;xx&quot;, &quot;3:01&quot;, &quot;2&quot;, &quot;xx&quot;, &quot;xx&quot;, &quot;2:01&quot;, &quot;2&quot;, &quot;2:02&quot;, &quot;…</span></span>
-<span id="cb3-26"><a href="#cb3-26"></a><span class="co">#&gt; $ recipient_dpb11 &lt;chr&gt; &quot;04:01g&quot;, &quot;01:01g&quot;, &quot;01:01g&quot;, &quot;04:01g&quot;, &quot;04:01g&quot;, &quot;23…</span></span>
-<span id="cb3-27"><a href="#cb3-27"></a><span class="co">#&gt; $ recipient_dpb12 &lt;chr&gt; &quot;xx&quot;, &quot;04:01g&quot;, &quot;xx&quot;, &quot;04:02g&quot;, &quot;04:02g&quot;, &quot;13:01g&quot;, &quot;…</span></span>
-<span id="cb3-28"><a href="#cb3-28"></a><span class="co">#&gt; $ donor_a1        &lt;dbl&gt; 3, NA, 23, 11, 24, 2, 24, 23, 1, 23, 1, 2, 23, 24, 3,…</span></span>
-<span id="cb3-29"><a href="#cb3-29"></a><span class="co">#&gt; $ donor_a2        &lt;chr&gt; &quot;68&quot;, NA, &quot;68&quot;, &quot;29&quot;, &quot;31&quot;, &quot;25&quot;, &quot;26&quot;, &quot;74&quot;, &quot;xx&quot;, &quot;…</span></span>
-<span id="cb3-30"><a href="#cb3-30"></a><span class="co">#&gt; $ donor_b1        &lt;chr&gt; &quot;37&quot;, NA, &quot;14(65)&quot;, &quot;44&quot;, &quot;49&quot;, &quot;18&quot;, &quot;8&quot;, &quot;7&quot;, &quot;8&quot;, …</span></span>
-<span id="cb3-31"><a href="#cb3-31"></a><span class="co">#&gt; $ donor_b2        &lt;chr&gt; &quot;58&quot;, NA, &quot;53&quot;, &quot;51&quot;, &quot;51&quot;, &quot;44&quot;, &quot;18&quot;, &quot;81&quot;, &quot;xx&quot;, &quot;…</span></span>
-<span id="cb3-32"><a href="#cb3-32"></a><span class="co">#&gt; $ donor_c1        &lt;chr&gt; &quot;6&quot;, NA, &quot;4&quot;, &quot;15&quot;, &quot;7&quot;, &quot;5&quot;, &quot;7&quot;, &quot;7&quot;, &quot;7&quot;, &quot;4&quot;, &quot;7&quot;…</span></span>
-<span id="cb3-33"><a href="#cb3-33"></a><span class="co">#&gt; $ donor_c2        &lt;chr&gt; &quot;7&quot;, NA, &quot;18&quot;, &quot;16&quot;, &quot;15&quot;, &quot;12&quot;, &quot;12&quot;, &quot;8&quot;, &quot;xx&quot;, &quot;xx…</span></span>
-<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt; $ donor_bw1       &lt;dbl&gt; 4, NA, 6, 4, 4, 6, 6, 6, 6, 4, 6, 6, 6, 6, 4, NA, 6, …</span></span>
-<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; $ donor_bw2       &lt;chr&gt; &quot;4&quot;, NA, &quot;4&quot;, &quot;4&quot;, &quot;xx&quot;, &quot;4&quot;, &quot;6&quot;, &quot;6&quot;, &quot;xx&quot;, &quot;6&quot;, &quot;x…</span></span>
-<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; $ donor_drb11     &lt;chr&gt; &quot;9&quot;, NA, &quot;7&quot;, &quot;7&quot;, &quot;1&quot;, &quot;4&quot;, &quot;03(17)&quot;, &quot;7&quot;, &quot;03(17)&quot;,…</span></span>
-<span id="cb3-37"><a href="#cb3-37"></a><span class="co">#&gt; $ donor_drb12     &lt;chr&gt; &quot;13&quot;, NA, &quot;13&quot;, &quot;12&quot;, &quot;13&quot;, &quot;15&quot;, &quot;11&quot;, &quot;12&quot;, &quot;7&quot;, &quot;1…</span></span>
-<span id="cb3-38"><a href="#cb3-38"></a><span class="co">#&gt; $ donor_drb31     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 2, NA, 1, 2, 1, NA, NA, 2, 1,…</span></span>
-<span id="cb3-39"><a href="#cb3-39"></a><span class="co">#&gt; $ donor_drb32     &lt;chr&gt; &quot;1&quot;, NA, &quot;2&quot;, &quot;2&quot;, &quot;2&quot;, NA, &quot;2&quot;, &quot;1&quot;, NA, NA, NA, NA,…</span></span>
-<span id="cb3-40"><a href="#cb3-40"></a><span class="co">#&gt; $ donor_drb41     &lt;chr&gt; &quot;1&quot;, NA, &quot;1&quot;, &quot;1&quot;, NA, &quot;1&quot;, NA, &quot;1&quot;, NA, NA, NA, &quot;1&quot;,…</span></span>
-<span id="cb3-41"><a href="#cb3-41"></a><span class="co">#&gt; $ donor_drb42     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, 1, NA, 1, NA, NA, NA,…</span></span>
-<span id="cb3-42"><a href="#cb3-42"></a><span class="co">#&gt; $ donor_drb51     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</span></span>
-<span id="cb3-43"><a href="#cb3-43"></a><span class="co">#&gt; $ donor_drb52     &lt;chr&gt; NA, NA, NA, NA, NA, &quot;1&quot;, NA, NA, NA, &quot;1&quot;, NA, &quot;1&quot;, NA…</span></span>
-<span id="cb3-44"><a href="#cb3-44"></a><span class="co">#&gt; $ donor_dqb11     &lt;chr&gt; &quot;03(9)&quot;, NA, &quot;2&quot;, &quot;2&quot;, &quot;03(7)&quot;, &quot;03(7)&quot;, &quot;2&quot;, &quot;2&quot;, &quot;2…</span></span>
-<span id="cb3-45"><a href="#cb3-45"></a><span class="co">#&gt; $ donor_dqb12     &lt;chr&gt; &quot;6&quot;, NA, &quot;xx&quot;, &quot;03(7)&quot;, &quot;5&quot;, &quot;6&quot;, &quot;03(7)&quot;, &quot;5&quot;, &quot;xx&quot;,…</span></span>
-<span id="cb3-46"><a href="#cb3-46"></a><span class="co">#&gt; $ donor_dqa11     &lt;chr&gt; &quot;1&quot;, NA, &quot;2&quot;, &quot;2:01&quot;, &quot;1&quot;, &quot;1&quot;, &quot;5&quot;, &quot;1&quot;, &quot;2&quot;, &quot;1&quot;, &quot;…</span></span>
-<span id="cb3-47"><a href="#cb3-47"></a><span class="co">#&gt; $ donor_dqa12     &lt;chr&gt; &quot;3&quot;, NA, &quot;xx&quot;, &quot;5&quot;, &quot;5&quot;, &quot;3&quot;, &quot;xx&quot;, &quot;2&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5…</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a><span class="co">#&gt; $ donor_dpa11     &lt;dbl&gt; 1, NA, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 1, 1, NA, 1, …</span></span>
-<span id="cb3-49"><a href="#cb3-49"></a><span class="co">#&gt; $ donor_dpa12     &lt;chr&gt; &quot;xx&quot;, NA, &quot;xx&quot;, &quot;xx&quot;, &quot;xx&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;xx&quot;, &quot;2&quot;,…</span></span>
-<span id="cb3-50"><a href="#cb3-50"></a><span class="co">#&gt; $ donor_dpb11     &lt;chr&gt; &quot;04:01g&quot;, NA, &quot;01:01g&quot;, &quot;04:01g&quot;, &quot;03:01g&quot;, &quot;04:02g&quot;,…</span></span>
-<span id="cb3-51"><a href="#cb3-51"></a><span class="co">#&gt; $ donor_dpb12     &lt;chr&gt; &quot;04:02g&quot;, NA, &quot;17:01g&quot;, &quot;16:01g&quot;, &quot;04:01g&quot;, &quot;14:01g&quot;,…</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># glimpse(tx_cohort)</span></span></code></pre></div>
 <p>Describe the function purpose, input output.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2"></a>tx_cohort &lt;-<span class="st"> </span>tx_cohort <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span><span class="kw">mutate</span>(recipient_a1, recipient_a2, <span class="dt">locus =</span> <span class="st">&quot;a&quot;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4"></a></span>
-<span id="cb4-5"><a href="#cb4-5"></a>re &lt;-<span class="st"> </span><span class="kw">CleanAllele</span>(tx_cohort<span class="op">$</span>recipient_a1, tx_cohort<span class="op">$</span>recipient_a2, <span class="dt">locus =</span> <span class="st">&quot;a&quot;</span>)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># tx_cohort &lt;- tx_cohort %&gt;% </span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#   mutate(recipient_a1, recipient_a2, locus = &quot;a&quot;)</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co"># re &lt;- CleanAllele(tx_cohort$recipient_a1, tx_cohort$recipient_a2, locus = &quot;a&quot;)</span></span></code></pre></div>
 </div>
 
 
