@@ -10,14 +10,14 @@ dat <- read.csv(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), sep 
 eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
 eplet_mm1_v2<br>
 eplet_mm1_v3 <- CalEpletMHCI(dat, ver = 3)<br>
-* or simply eplet_mm1_v3 <- CalEpletMHCI(dat)<br>
+(or simply eplet_mm1_v3 <- CalEpletMHCI(dat) )<br>
 eplet_mm1_v3
 #### - MHC class II
 dat <- read.csv(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
 eplet_mm2_v2<br>
 eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
-*or simply eplet_mm2_v3 <- CalEpletMHCII(dat)<br>
+(or simply eplet_mm2_v3 <- CalEpletMHCII(dat) )<br>
 eplet_mm2_v3
 
 ### Allele clean and mis-match
