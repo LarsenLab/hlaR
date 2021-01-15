@@ -31,9 +31,9 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
 
   #* step 1: import raw eplet table *#
   if(ver == 2){
-    raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v2.csv", package = "hlaR"), check.names = FALSE)
+    raw_eplet <- read.csv(system.file("extdata/ref", "MHC_I_eplet_v2.csv", package = "hlaR"), check.names = FALSE)
   } else{
-    raw_eplet <- read.csv(system.file("extdata", "MHC_I_eplet_v3.csv", package = "hlaR"), check.names = FALSE)
+    raw_eplet <- read.csv(system.file("extdata/ref", "MHC_I_eplet_v3.csv", package = "hlaR"), check.names = FALSE)
   }
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%

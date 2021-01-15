@@ -31,11 +31,11 @@
 CalEpletMHCII <- function(dat_in, ver = 3) {
   ###*** step 1: import raw eplet tables ***###
   if(ver == 2){
-  raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)
-  raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v2.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)
+  raw_eplet_B <- read.csv(system.file("extdata/ref", "MHC_II_eplet_B_v2.csv", package = "hlaR"), check.names = FALSE)
   } else{
-    raw_eplet_A <- read.csv(system.file("extdata", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
-    raw_eplet_B <- read.csv(system.file("extdata", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
+    raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
+    raw_eplet_B <- read.csv(system.file("extdata/ref", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
   }
   ###*** end of step 1 ***###
 
