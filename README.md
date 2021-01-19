@@ -38,7 +38,7 @@ hla_mm_cnt <- read_csv(system.file("extdata/example", "HLA_MisMatch_count_test.c
 classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))<br>
 classII <- CountAlleleMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))<br>
 #### - topN most frequent recipient/donor alleles 
-dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
+dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
 don <- c("donor.a1", "donor.a2")<br>
 rcpt <- c("recipient.a1", "recipient.a2")<br>
 result <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)<br>
