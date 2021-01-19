@@ -418,9 +418,5 @@ CleanAllele <- function(var_1, var_2, locus) {
   # step 7: remove temporary variable holders
   rm(var_1_c1, var_1_c2, var_1_c3, var_2_c1, var_2_c2, var_2_c3, tmp)
 
-  if (locus %in% c("A", "a", "B", "b", "C", "c")) {
-    return(list(locus1 = var_1_out, locus2 = var_2_out))
-  } else{
-    return(list(locus1 = var_1_out, locus2 = var_2_out))
-  }
+  return(list(locus1 = var_1_out, locus2 = var_2_out))
 }
