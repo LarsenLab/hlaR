@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-topn.R
 \name{CalAlleleTopN}
 \alias{CalAlleleTopN}
-\title{calculate topN most frequent allele(s)}
+\title{calculate topN most frequent recipient/donor alleles}
 \usage{
 CalAlleleTopN(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 }
@@ -19,7 +19,7 @@ CalAlleleTopN(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 a dataframe of top_n most frequent alleles
 }
 \description{
-calculate topN most frequent allele(s)
+calculate topN most frequent recipient/donor alleles
 }
 \examples{
 \dontrun{

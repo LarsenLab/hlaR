@@ -1,4 +1,5 @@
-#' calculate HLA class II eplet mismatch using Matchmaker algorithm
+#' @name CalEpletMHCII
+#' @title calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm
 #' @param dat_in
 #' dataframe with subject info (first 3 columns) and MHC II allele info
 #' @param ver
@@ -21,8 +22,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCII(dat_in = "YourDataFile", ver = 2)
-#' re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), ver = 3)
+# dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)
+#' re2 <- CalEpletMHCII(dat, ver = 2)
+#' re3 <- CalEpletMHCII(dat, ver = 3)
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
@@ -42,38 +44,38 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###
   #* 2a: master lookup tables for As and Bs *#
   lkup_a <- as.data.frame(t(raw_eplet_A)) %>%
-    setNames(paste(raw_eplet_A$type, raw_eplet_A$index, sep = "_" )) %>%
-    rownames_to_column(var = "locus") %>%
-    mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
-    filter(!locus %in% c("index", "type") ) %>%
-    distinct() %>%
-    reshape2::melt(id.vars = "locus") %>%
-    filter(value != "" ) %>%
-    distinct()
+            setNames(paste(raw_eplet_A$type, raw_eplet_A$index, sep = "_" )) %>%
+            rownames_to_column(var = "locus") %>%
+            mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
+            filter(!locus %in% c("index", "type") ) %>%
+            distinct() %>%
+            reshape2::melt(id.vars = "locus") %>%
+            filter(value != "" ) %>%
+            distinct()
 
   lkup_b <- as.data.frame(t(raw_eplet_B)) %>%
-    setNames(paste(raw_eplet_B$type, raw_eplet_B$index, sep = "_" )) %>%
-    rownames_to_column(var = "locus") %>%
-    mutate(locus = ifelse(str_detect(locus, "\\."), sub("\\..*", "", locus), locus)) %>%
-    filter(!locus %in% c("index", "type") ) %>%
-    distinct() %>%
-    reshape2::melt(id.vars = "locus") %>%
-    filter(value != "")%>%
-    distinct() %>%
-    filter(value != " " )
+            setNames(paste(raw_eplet_B$type, raw_eplet_B$index, sep = "_" )) %>%
+            rownames_to_column(var = "locus") %>%
+            mutate(locus = ifelse(str_detect(locus, "\\."), sub("\\..*", "", locus), locus)) %>%
+            filter(!locus %in% c("index", "type") ) %>%
+            distinct() %>%
+            reshape2::melt(id.vars = "locus") %>%
+            filter(value != "")%>%
+            distinct() %>%
+            filter(value != " " )
 
   #* end of 2a *#
 
   # 2b: sub-lookup tables, these tables are used for mis-match comparison of each locus #
   GenerateLookup <- function(lkup_in, locus_in){
     dat_out <- lkup_in %>%
-      filter(locus %in% locus_in) %>%
-      mutate(index = as.numeric(sub(".*\\_", "", variable)),
-             type = sub("\\_.*", "", variable)) %>%
-      select(index, type, value) %>%
-      dplyr::rename(eplet = value) %>%
-      filter(eplet != "") %>%
-      distinct()
+                filter(locus %in% locus_in) %>%
+                mutate(index = as.numeric(sub(".*\\_", "", variable)),
+                       type = sub("\\_.*", "", variable)) %>%
+                select(index, type, value) %>%
+                dplyr::rename(eplet = value) %>%
+                filter(eplet != "") %>%
+                distinct()
 
     return(dat_out)
   }
@@ -96,14 +98,14 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")
 
   rcpt <- dat %>%
-    filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", "part_type", nm_rec))
+          filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
+          select(-donor_type) %>%
+          setNames(c("part_id", "part_type", nm_rec))
 
   don <- dat %>%
-    filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", "part_type", nm_don))
+          filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
+          select(-donor_type) %>%
+          setNames(c("part_id", "part_type", nm_don))
 
   dat <- left_join(rcpt, don, by = c("part_id", "part_type"))
 
@@ -126,28 +128,28 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
       if(j %in% c(7, 8, 11, 12, 19, 20, 23, 24)){
         if (!is.na(allele[j])) {
           tmp <- raw_eplet_A %>%
-            select(index, type, allele[j])
+                  select(index, type, allele[j])
           tmp <- tmp %>%
-            setNames(c("index", "type", varname))
+                  setNames(c("index", "type", varname))
           ep_a <- ep_a %>%
             left_join(., tmp, by = c("index", "type"))
         } else{
           ep_a <- ep_a %>%
-            mutate(!!varname := NA)
+                  mutate(!!varname := NA)
         }
       }
       # B loci
       else{
         if (!is.na(allele[j])) {
           tmp <- raw_eplet_B %>%
-            select(index, type, allele[j])
+                  select(index, type, allele[j])
           tmp <- tmp %>%
-            setNames(c("index", "type", varname))
+                  setNames(c("index", "type", varname))
           ep_b <- ep_b %>%
-            left_join(., tmp, by = c("index", "type"))
+                  left_join(., tmp, by = c("index", "type"))
         } else{
           ep_b <- ep_b %>%
-            mutate(!!varname := NA)
+                  mutate(!!varname := NA)
         }
       }
     }
@@ -171,33 +173,33 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     ed <- st + 7
     pos <- c(st:ed)
     tmp <- ep_a %>%
-      select(all_of(pos))
+            select(all_of(pos))
     subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c("rec_dqa1", "rec_dqa2", "rec_dpa1", "rec_dpa2",
                        "don_dqa1", "don_dqa2", "don_dpa1", "don_dpa2")
 
     tmp <- tmp %>%
-      mutate(dqa1_mm = ifelse(don_dqa1 %in% c(rec_dqa1, rec_dqa2), NA, don_dqa1),
-             dqa2_mm = ifelse(don_dqa2 %in% c(rec_dqa1, rec_dqa2), NA, don_dqa2),
-             dpa1_mm = ifelse(don_dpa1 %in% c(rec_dpa1, rec_dpa2), NA, don_dpa1),
-             dpa2_mm = ifelse(don_dpa2 %in% c(rec_dpa1, rec_dpa2), NA, don_dpa2)) %>%
-      select(dqa1_mm, dqa2_mm, dpa1_mm, dpa2_mm) %>%
-      setNames(c(paste0("dqa1_mm_subj", subj_indx),
-                 paste0("dqa2_mm_subj", subj_indx),
-                 paste0("dpa1_mm_subj", subj_indx),
-                 paste0("dpa2_mm_subj", subj_indx)))
+            mutate(dqa1_mm = ifelse(don_dqa1 %in% c(rec_dqa1, rec_dqa2), NA, don_dqa1),
+                   dqa2_mm = ifelse(don_dqa2 %in% c(rec_dqa1, rec_dqa2), NA, don_dqa2),
+                   dpa1_mm = ifelse(don_dpa1 %in% c(rec_dpa1, rec_dpa2), NA, don_dpa1),
+                   dpa2_mm = ifelse(don_dpa2 %in% c(rec_dpa1, rec_dpa2), NA, don_dpa2)) %>%
+            select(dqa1_mm, dqa2_mm, dpa1_mm, dpa2_mm) %>%
+            setNames(c(paste0("dqa1_mm_subj", subj_indx),
+                       paste0("dqa2_mm_subj", subj_indx),
+                       paste0("dpa1_mm_subj", subj_indx),
+                       paste0("dpa2_mm_subj", subj_indx)))
 
     result_a <-  data.frame(t(tmp)) %>%
-      tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-      setNames("mm_eplets") %>%
-      mutate(subject = colnames(tmp),
-             mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-      mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-      mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-                             ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-      filter(!subject %in% c("index", "type")) %>%
-      select(subject, mm_eplets, mm_cnt)
+                  tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
+                  setNames("mm_eplets") %>%
+                  mutate(subject = colnames(tmp),
+                         mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
+                  mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
+                  mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
+                                         ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+                  filter(!subject %in% c("index", "type")) %>%
+                  select(subject, mm_eplets, mm_cnt)
 
     results_a <- rbind(results_a, result_a)
     st <- ed + 1
@@ -210,12 +212,11 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
                           mm_cnt = integer())
 
   ep_b_mm <- ep_b %>%
-    select(index, type)
+              select(index, type)
   ep_b_rownames <- paste(ep_b_mm$type, ep_b_mm$index, sep = "")
 
   rownames(ep_b_mm) <- ep_b_rownames
   rownames(ep_b) <- ep_b_rownames
-  # if av <= 21 or oth >= 8, DPB, one don : 2 rec comparison
   # if interlocus eplets(names contains "Int"), DPB, one don : ALL rec comparison
   int_loc_eplet<- ep_b_rownames[str_detect(ep_b_rownames,"Int")]
 
@@ -230,7 +231,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     ed <- st1 + 15
     pos <- c(st1:ed)
     tmp <- ep_b %>%
-      select(all_of(pos))
+            select(all_of(pos))
 
     subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
@@ -239,38 +240,38 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     tmp$rname <- ep_b_rownames
 
     tmp <- tmp %>%
-      mutate(drb1_mm = ifelse(don_drb1 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drb1),
-             drb2_mm = ifelse(don_drb2 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drb2),
-             drw1_mm = ifelse(don_drw1 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drw1),
-             drw2_mm = ifelse(don_drw2 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drw2),
-             dqb1_mm = ifelse(don_dqb1 %in% c(rec_dqb1, rec_dqb2), NA, don_dqb1),
-             dqb2_mm = ifelse(don_dqb2 %in% c(rec_dqb1, rec_dqb2), NA, don_dqb2),
-             dpb1_tmp2 = ifelse(don_dpb1 %in% c(rec_dpb1, rec_dpb2), NA, don_dpb1),
-             dpb1_tmp8 = ifelse(don_dpb1 %in% c(rec_dpb1, rec_dpb2, rec_drb1, rec_drb2, rec_drw1, rec_drw2, rec_dqb1, rec_dqb2), NA, don_dpb1),
-             dpb2_tmp2 = ifelse(don_dpb2 %in% c(rec_dpb1, rec_dpb2), NA, don_dpb2),
-             dpb2_tmp8 = ifelse(don_dpb2 %in% c(rec_dpb1, rec_dpb2, rec_drb1, rec_drb2, rec_drw1, rec_drw2, rec_dqb1, rec_dqb2), NA, don_dpb2)) %>%
-      mutate(dpb1_mm =  ifelse(rname %in% int_loc_eplet , dpb1_tmp8, dpb1_tmp2),
-             dpb2_mm = ifelse(rname %in% int_loc_eplet, dpb2_tmp8, dpb2_tmp2)) %>%
-      select(drb1_mm, drb2_mm, drw1_mm, drw2_mm, dqb1_mm, dqb2_mm, dpb1_mm,   dpb2_mm ) %>%
-      setNames(c(paste0("drb1_mm_subj", subj_indx),
-                 paste0("drb2_mm_subj", subj_indx),
-                 paste0("drw1_mm_subj", subj_indx),
-                 paste0("drw2_mm_subj", subj_indx),
-                 paste0("dqb1_mm_subj", subj_indx),
-                 paste0("dqb2_mm_subj", subj_indx),
-                 paste0("dpb1_mm_subj", subj_indx),
-                 paste0("dpb2_mm_subj", subj_indx)))
+            mutate(drb1_mm = ifelse(don_drb1 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drb1),
+                   drb2_mm = ifelse(don_drb2 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drb2),
+                   drw1_mm = ifelse(don_drw1 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drw1),
+                   drw2_mm = ifelse(don_drw2 %in% c(rec_drb1, rec_drb2, rec_drw1, rec_drw2), NA, don_drw2),
+                   dqb1_mm = ifelse(don_dqb1 %in% c(rec_dqb1, rec_dqb2), NA, don_dqb1),
+                   dqb2_mm = ifelse(don_dqb2 %in% c(rec_dqb1, rec_dqb2), NA, don_dqb2),
+                   dpb1_tmp2 = ifelse(don_dpb1 %in% c(rec_dpb1, rec_dpb2), NA, don_dpb1),
+                   dpb1_tmp8 = ifelse(don_dpb1 %in% c(rec_dpb1, rec_dpb2, rec_drb1, rec_drb2, rec_drw1, rec_drw2, rec_dqb1, rec_dqb2), NA, don_dpb1),
+                   dpb2_tmp2 = ifelse(don_dpb2 %in% c(rec_dpb1, rec_dpb2), NA, don_dpb2),
+                   dpb2_tmp8 = ifelse(don_dpb2 %in% c(rec_dpb1, rec_dpb2, rec_drb1, rec_drb2, rec_drw1, rec_drw2, rec_dqb1, rec_dqb2), NA, don_dpb2)) %>%
+            mutate(dpb1_mm =  ifelse(rname %in% int_loc_eplet , dpb1_tmp8, dpb1_tmp2),
+                   dpb2_mm = ifelse(rname %in% int_loc_eplet, dpb2_tmp8, dpb2_tmp2)) %>%
+            select(drb1_mm, drb2_mm, drw1_mm, drw2_mm, dqb1_mm, dqb2_mm, dpb1_mm,   dpb2_mm ) %>%
+            setNames(c(paste0("drb1_mm_subj", subj_indx),
+                       paste0("drb2_mm_subj", subj_indx),
+                       paste0("drw1_mm_subj", subj_indx),
+                       paste0("drw2_mm_subj", subj_indx),
+                       paste0("dqb1_mm_subj", subj_indx),
+                       paste0("dqb2_mm_subj", subj_indx),
+                       paste0("dpb1_mm_subj", subj_indx),
+                       paste0("dpb2_mm_subj", subj_indx)))
 
     result_b <-  data.frame(t(tmp)) %>%
-      tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-      setNames("mm_eplets") %>%
-      mutate(subject = colnames(tmp),
-             mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-      mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-      mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-                             ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-      filter(!subject %in% c("index", "type")) %>%
-      select(subject, mm_eplets, mm_cnt)
+                  tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
+                  setNames("mm_eplets") %>%
+                  mutate(subject = colnames(tmp),
+                         mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
+                  mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
+                  mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
+                                         ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+                  filter(!subject %in% c("index", "type")) %>%
+                  select(subject, mm_eplets, mm_cnt)
 
     results_b <- rbind(results_b, result_b)
 

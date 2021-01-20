@@ -29,6 +29,6 @@ evaluate mis-match alleles
 }
 \examples{
 \dontrun{
-a <- EvalAlleleMism(hla, hla$donor.a1, hla$donor.a2, hla$recipient.a1, hla$recipient.a2, "a")
+a <- EvalAlleleMism(dat, dat$donor.a1, dat$donor.a2, dat$recipient.a1, dat$recipient.a2, "a")
 }
 }

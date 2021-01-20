@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet-MHC-I.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{calculate HLA Class I eplet mismatch using Matchmaker algorithm}
+\title{calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm}
 \usage{
 CalEpletMHCI(dat_in, ver = 3)
 }
@@ -16,12 +16,12 @@ each unique participant id has 2 rows associated with it, 1 for recipient, 1 for
 data table with detailed single molecule level mis-match eplet info of each subject
 }
 \description{
-calculate HLA Class I eplet mismatch using Matchmaker algorithm
+calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm
 }
 \examples{
 \dontrun{
-re <- CalEpletMHCI(dat_in = "YourDataFile", ver = 2)
-re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), ver = 2)
+re2 <- CalEpletMHCI(dat, ver = 2)
+re3 <- CalEpletMHCI(dat, ver = 3)
 }
 
 }

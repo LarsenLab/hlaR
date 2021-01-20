@@ -1,4 +1,5 @@
-#' @title calculate frequency of donor mis-match alleles to recipient's
+#' @name CalAlleleMismFreq
+#' @title calculate -match alleles frequency of donor to recipient
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param nms_don
@@ -12,7 +13,7 @@
 #'
 #' @examples
 #' \dontrun{
-# dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
+# dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
 # don <- c("donor.a1", "donor.a2")
 # rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
@@ -22,14 +23,13 @@
 CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
   #* start of data prep *#
   dat_don <- dat_in %>%
-    select(all_of(nms_don))
-  dat_rcpt <- dat_in %>%
-    select(all_of(nms_rcpt))
+              select(all_of(nms_don))
 
-  # tmp[,c(1,2)] are donor's alleles
-  # tmp[,c(3,4)] are recipient's alleles
+  dat_rcpt <- dat_in %>%
+                select(all_of(nms_rcpt))
+
   tmp <- as.data.frame(cbind(dat_don, dat_rcpt)) %>%
-    mutate_all(as.character)
+          mutate_all(as.character)
   #* end of data prep *#
 
   #* start of calculating mis-match of donor's hla in recipient *#
@@ -58,9 +58,9 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
   }
 
   tmp <- tmp %>%
-    mutate(mis_1 = mis_1,
-           mis_2 = mis_2) %>%
-    filter(!is.na(mis_1) & !is.na(mis_2))
+          mutate(mis_1 = mis_1,
+                 mis_2 = mis_2) %>%
+          filter(!is.na(mis_1) & !is.na(mis_2))
   #* end of calculating mis-match of donor's hla in recipient *#
 
   #* start of calculate mis-match frequency for donor *#

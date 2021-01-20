@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-haplotype.R
 \name{CompHaploTbl}
 \alias{CompHaploTbl}
-\title{compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs}
+\title{feed low resolution hla typing to NMDP frequency table to get best pairs of haplotype combination based on max count of unique low res in the combination}
 \usage{
 CompHaploTbl(dat_in)
 }
@@ -10,13 +10,13 @@ CompHaploTbl(dat_in)
 \item{dat_in}{dataframe with recipient/donor alleles info}
 }
 \value{
-dataframe of best allele combination based on haplotype-freq table
+dataframe of best pairs of haplotype combination
 }
 \description{
-compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs
+feed low resolution hla typing to NMDP frequency table to get best pairs of haplotype combination based on max count of unique low res in the combination
 }
 \examples{
 \dontrun{
-result <- CompHaploTbl(dat_in = dat, cut_p= 0.0001, cut_n = 10)
+result <- CompHaploTbl(dat_in = dat)
 }
 }

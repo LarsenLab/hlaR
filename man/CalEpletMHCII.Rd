@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet-MHC-II.R
 \name{CalEpletMHCII}
 \alias{CalEpletMHCII}
-\title{calculate HLA class II eplet mismatch using Matchmaker algorithm}
+\title{calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm}
 \usage{
 CalEpletMHCII(dat_in, ver = 3)
 }
@@ -15,12 +15,12 @@ CalEpletMHCII(dat_in, ver = 3)
 data table with detailed single molecule level mis-match eplet info of each subject
 }
 \description{
-calculate HLA class II eplet mismatch using Matchmaker algorithm
+calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm
 }
 \examples{
 \dontrun{
-re <- CalEpletMHCII(dat_in = "YourDataFile", ver = 2)
-re <- CalEpletMHCII(system.file("extdata", "MHC_II_test.csv", package = "hlaR"), ver = 3)
+re2 <- CalEpletMHCII(dat, ver = 2)
+re3 <- CalEpletMHCII(dat, ver = 3)
 }
 
 }

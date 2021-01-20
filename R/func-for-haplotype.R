@@ -154,7 +154,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
         select(pair, cnt_pair) %>%
         distinct()
 
-      # pair id
+      # paired id
       cnt_by_pair <- rbind(cnt_by_pair, tmp)
     }
 
@@ -176,6 +176,5 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   }
 
   #* end of step 4 *#
-  # return(list(hpl_tp_raw = hpl_tp_raw, hpl_tp_pairs = hpl_tp_pairs))
   return(hpl_tp_pairs)
 }

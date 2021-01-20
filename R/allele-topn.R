@@ -1,5 +1,5 @@
 #' @name CalAlleleTopN
-#' @title calculate topN most frequent allele(s)
+#' @title calculate topN most frequent recipient/donor alleles
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param nms_don
@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' \dontrun{
-#  dat <- read_csv(system.file("extdata", "HLA_MisMatch_test.csv", package = "hlaR"))
+#  dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
 #  don <- c("donor.a1", "donor.a2")
 #  rcpt <- c("recipient.a1", "recipient.a2")
 #' result <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)

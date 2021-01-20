@@ -1,4 +1,5 @@
-#' evaluate mis-match alleles
+#' @name EvalAlleleMism
+#' @title evaluate mis-match alleles
 #' @param dat_in
 #' dataframe with allele info
 #' @param don_1
@@ -22,15 +23,10 @@
 #'
 #' @examples
 #' \dontrun{
-# hla <- read_csv("~/projects/hlaclean_test/hla_typing_test.csv") %>%
-# rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
-#' a <- EvalAlleleMism(hla, hla$donor.a1, hla$donor.a2, hla$recipient.a1, hla$recipient.a2, "a")
-# hla$mism.a1 <- a$mism_1
-# hla$mism.a2 <- a$mism_2
-# hla$mism.b1 <- unlist(MismatchHla(hla, hla$donor.b1, hla$donor.b2,
-# hla$recipient.b1, hla$recipient.b2, "b")[1])
-# hla$mism.b2 <- unlist(MismatchHla(hla, hla$donor.b1, hla$donor.b2,
-# hla$recipient.b1, hla$recipient.b2, "b")[2])
+# dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
+#' a <- EvalAlleleMism(dat, dat$donor.a1, dat$donor.a2, dat$recipient.a1, dat$recipient.a2, "a")
+# dat$mism.a1 <- a$mism_1
+# dat$mism.a2 <- a$mism_2
 #' }
 
 EvalAlleleMism <- function(dat_in, don_1, don_2, recip_1, recip_2, locus)

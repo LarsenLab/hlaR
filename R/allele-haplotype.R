@@ -1,21 +1,21 @@
 #' @name CompHaploTbl
-#' @title compare alleles with NMDP frequency table to get top combination of haplotypes based on user cutoffs
+#' @title feed low resolution hla typing to NMDP frequency table to get best pairs of haplotype combination based on max count of unique low res in the combination
 #' @param dat_in
 #' dataframe with recipient/donor alleles info
 #' @return
-#' dataframe of best allele combination based on haplotype-freq table
+#' dataframe of best pairs of haplotype combination
 #' @import
 #' tidyverse
 #'
 #' @examples
 #' \dontrun{
-# dat <- read_csv(system.file("extdata", "Haplotype_test.csv", package = "hlaR"))
-#' result <- CompHaploTbl(dat_in = dat, cut_p= 0.0001, cut_n = 10)
+# dat <- read_csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
+#' result <- CompHaploTbl(dat_in = dat)
 #' }
 #' @export
 
 CompHaploTbl <- function(dat_in){
-  #* step 1: import raw haplotype frequenc table and do a brief cleaning *#
+  #* step 1: import raw haplotype frequency table and do a brief cleaning *#
   raw_hap_tbl <- read.csv(system.file("extdata/ref", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
@@ -50,7 +50,7 @@ CompHaploTbl <- function(dat_in){
            lst_drb345 = sub(".*\\:", "", drb345))
   #* end of step 1 *#
 
-  #* step 2: rechape input data table by recipient and donor *#
+  #* step 2: reshape input data table by recipient and donor *#
   rcpt <- dat_in %>%
     rename_all(. %>% tolower) %>%
     select(contains(c("id", "ethnicity","race","rcpt"))) %>%
@@ -88,20 +88,17 @@ CompHaploTbl <- function(dat_in){
   rm(rcpt, don)
   #* end of step 2 *#
 
-  #* step 3: call FuncForCompHaplo() for each subjects and get top combination of alleles *#
+  #* step 3: call FuncForCompHaplo() for each subjects and get top pairs haplotype combination *#
   num_subj <- dim(dat_ready)[1]
   hpl_tp_raw <- vector(mode = "list", length = num_subj)
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
     print(i)
-   # hpl_tp_raw[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])$hpl_tp_raw
-   #  hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])$hpl_tp_pairs
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
   }
 
   #* end of step 3 *#
-  # names(hpl_tp_raw) <- dat_ready$id
   names(hpl_tp_pairs) <- dat_ready$id
 
   return(hpl_tp_pairs)

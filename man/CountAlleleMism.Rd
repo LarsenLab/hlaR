@@ -19,7 +19,7 @@ count number of mis-match alleles
 }
 \examples{
 \dontrun{
-classI <- CountAlleleMism(hla, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
-classII <- CountAlleleMism(hla, c("mism.dqa12", "mism.dqb11", "mism.dqb12"  ))
+classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
+classII <- CountAlleleMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))
 }
 }

@@ -1,4 +1,5 @@
-#' clean messy HLA typing for downstream analysis
+#' @name CleanAllele
+#' @title clean messy HLA typing for downstream analysis
 #' @param var_1
 #' gene on locus 1
 #' @param var_2
@@ -6,9 +7,7 @@
 #' @param locus
 #' locus of which we want to work
 #' @return
-#' list of data cleaned hla of the locus
-#' returns alpha1 and alpha2 for HLA class I
-#' returns alpha and beta for HLA class II
+#' list of clean hla of each locus
 #' @export
 #'
 #' @import
@@ -18,9 +17,9 @@
 #'
 #' @examples
 #' \dontrun{
-# dat <- read_csv("~/projects/hlaclean_test/hla_typing_test.csv") %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
-#' re <- CleanAllele(dat$don.a1.ori, dat$don.a2.ori, locus = "a")
-#' re <- CleanAllele(dat$don.drb.ori, dat$don.drb.ori, locus = "drb")
+# dat <-  read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR")) %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
+#' clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2, locus = "a")
+#' clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11, locus = "drb")
 #' }
 #'
 

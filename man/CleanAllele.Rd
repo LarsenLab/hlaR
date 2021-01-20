@@ -14,17 +14,15 @@ CleanAllele(var_1, var_2, locus)
 \item{locus}{locus of which we want to work}
 }
 \value{
-list of data cleaned hla of the locus
-returns alpha1 and alpha2 for HLA class I
-returns alpha and beta for HLA class II
+list of clean hla of each locus
 }
 \description{
 clean messy HLA typing for downstream analysis
 }
 \examples{
 \dontrun{
-re <- CleanAllele(dat$don.a1.ori, dat$don.a2.ori, locus = "a")
-re <- CleanAllele(dat$don.drb.ori, dat$don.drb.ori, locus = "drb")
+clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2, locus = "a")
+clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11, locus = "drb")
 }
 
 }

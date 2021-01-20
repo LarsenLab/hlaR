@@ -1,4 +1,5 @@
-#' count number of mis-match alleles
+#' @name CountAlleleMism
+#' @title count number of mis-match alleles
 #' @param dat_in
 #' dataframe with mis-match flags of allele
 #' @param names_in
@@ -12,9 +13,9 @@
 #'
 #' @examples
 #' \dontrun{
-# hla <- read_csv("~/projects/hlaR/inst/extdata/HLA_MisMatch_count_test2.csv")
-#' classI <- CountAlleleMism(hla, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
-#' classII <- CountAlleleMism(hla, c("mism.dqa12", "mism.dqb11", "mism.dqb12"  ))
+# hla <- read_csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))
+#' classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
+#' classII <- CountAlleleMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))
 #' }
 
 CountAlleleMism <- function(dat_in, names_in){

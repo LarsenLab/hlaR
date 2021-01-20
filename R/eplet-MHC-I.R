@@ -1,4 +1,5 @@
-#' calculate HLA Class I eplet mismatch using Matchmaker algorithm
+#' @name CalEpletMHCI
+#' @title calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm
 #' @param dat_in
 #' dataframe with subject info(first 3 columns) and MHC I allele info
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
@@ -20,8 +21,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' re <- CalEpletMHCI(dat_in = "YourDataFile", ver = 2)
-#' re <- CalEpletMHCI(system.file("extdata", "MHC_I_test.csv", package = "hlaR"), ver = 2)
+# dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)
+#' re2 <- CalEpletMHCI(dat, ver = 2)
+#' re3 <- CalEpletMHCI(dat, ver = 3)
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
@@ -37,33 +39,33 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   }
 
   raw_lookup <- as.data.frame(t(raw_eplet)) %>%
-    setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
-    rownames_to_column(var = "locus") %>%
-    mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
-    filter(!locus %in% c("index", "type") ) %>%
-    distinct() %>%
-    reshape2::melt(id.vars = "locus") %>%
-    filter(value != "" ) %>%
-    distinct() %>%
-    mutate(index = as.numeric(sub(".*\\_", "", variable)),
-           type = sub("\\_.*", "", variable)) %>%
-    dplyr::rename(eplet = value) %>%
-    select(index, type, eplet) %>%
-    distinct()
+                setNames(paste(raw_eplet$type, raw_eplet$index, sep = "_" )) %>%
+                rownames_to_column(var = "locus") %>%
+                mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
+                filter(!locus %in% c("index", "type") ) %>%
+                distinct() %>%
+                reshape2::melt(id.vars = "locus") %>%
+                filter(value != "" ) %>%
+                distinct() %>%
+                mutate(index = as.numeric(sub(".*\\_", "", variable)),
+                       type = sub("\\_.*", "", variable)) %>%
+                dplyr::rename(eplet = value) %>%
+                select(index, type, eplet) %>%
+                distinct()
 
   #* step 2: import patient table *#
   nm_rec <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2")
   nm_don <- c("don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
 
   rcpt <- dat_in %>%
-    filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", "part_type", nm_rec))
+            filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
+            select(-donor_type) %>%
+            setNames(c("part_id", "part_type", nm_rec))
 
   don <- dat_in %>%
-    filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", "part_type", nm_don))
+          filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
+          select(-donor_type) %>%
+          setNames(c("part_id", "part_type", nm_don))
 
   dat <- left_join(rcpt, don, by = c("part_id")) %>%
          select(-part_type.y) %>%
@@ -85,21 +87,21 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
       varname <- paste0(tmp_names[j], ".", sep = i)
       if (!is.na(allele[j])) {
         tmp <- raw_eplet %>%
-          select(index, type, allele[j])
+                select(index, type, allele[j])
         tmp <- tmp %>%
-          setNames(c("index", "type", varname))
+                setNames(c("index", "type", varname))
         dat_ep <- dat_ep %>%
-          left_join(., tmp, by = c("index", "type"))
+                  left_join(., tmp, by = c("index", "type"))
       } else{
         dat_ep <- dat_ep %>%
-          mutate(!!varname := NA)
+                  mutate(!!varname := NA)
       }
     }
   }
 
   #* step 5: mark mis-matches *#
   dat_ep_mm <- dat_ep %>%
-    select(index, type)
+                select(index, type)
 
   # exclude index and type, pulling data starting from the 3rd position
   st1 <- 3
@@ -109,26 +111,26 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     ed <- st1 + 11
     positions <- c(st1:ed)
     tmp <- dat_ep %>%
-      select(all_of(positions))
+            select(all_of(positions))
     subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c(nm_rec, nm_don)
 
     # compare each donor's allele for ALL of recipient's alleles
     tmp <- tmp %>%
-      mutate(a1_mm = ifelse(don_a1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a1),
-             a2_mm = ifelse(don_a2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a2),
-             b1_mm = ifelse(don_b1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b1),
-             b2_mm = ifelse(don_b2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b2),
-             c1_mm = ifelse(don_c1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c1),
-             c2_mm = ifelse(don_c2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c2)) %>%
-      select(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm) %>%
-      setNames(c(paste0("a1_mm_subj", subj_indx),
-                 paste0("a2_mm_subj", subj_indx),
-                 paste0("b1_mm_subj", subj_indx),
-                 paste0("b2_mm_subj", subj_indx),
-                 paste0("c1_mm_subj", subj_indx),
-                 paste0("c2_mm_subj", subj_indx)))
+            mutate(a1_mm = ifelse(don_a1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a1),
+                   a2_mm = ifelse(don_a2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a2),
+                   b1_mm = ifelse(don_b1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b1),
+                   b2_mm = ifelse(don_b2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b2),
+                   c1_mm = ifelse(don_c1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c1),
+                   c2_mm = ifelse(don_c2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c2)) %>%
+            select(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm) %>%
+            setNames(c(paste0("a1_mm_subj", subj_indx),
+                       paste0("a2_mm_subj", subj_indx),
+                       paste0("b1_mm_subj", subj_indx),
+                       paste0("b2_mm_subj", subj_indx),
+                       paste0("c1_mm_subj", subj_indx),
+                       paste0("c2_mm_subj", subj_indx)))
 
     dat_ep_mm <- cbind(dat_ep_mm, tmp)
     st1 <- ed + 1
@@ -146,37 +148,38 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     ed <- st2 + 5
     positions <- c(st2:ed)
     tmp <- dat_ep_mm %>%
-      select(c(1,2,all_of(positions)))
+            select(c(1,2,all_of(positions)))
 
     ori_name <- colnames(tmp)[-c(1,2)]
     if(i == 1){
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-        filter(mm != "") %>%
-        left_join(tmp, ., by = c("index", "type")) %>%
-        select(-c(all_of(ori_name), "eplet", "mm")) %>%
-        setNames(c("index", "type", ori_name)) %>%
-        distinct()
+              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+              filter(mm != "") %>%
+              left_join(tmp, ., by = c("index", "type")) %>%
+              select(-c(all_of(ori_name), "eplet", "mm")) %>%
+              setNames(c("index", "type", ori_name)) %>%
+              distinct()
     }
 
     if (i > 1 ) {
       tmp2 <- left_join(raw_lookup, tmp, by = c("index", "type")) %>%
-        setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
-        mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
-        filter(mm != "") %>%
-        left_join(tmp, ., by = c("index", "type")) %>%
-        select(-c(ori_name, "eplet", "mm")) %>%
-        setNames(c("index", "type", ori_name)) %>%
-        distinct() %>%
-        select(-c("index", "type"))
+              setNames(c("index", "type", "eplet", "a1", "a2", "b1", "b2", "c1", "c2")) %>%
+              mutate(mm = ifelse(eplet == a1 | eplet == a2 | eplet == b1 | eplet == b2 | eplet == c1 | eplet == c2 , eplet, "")) %>%
+              filter(mm != "") %>%
+              left_join(tmp, ., by = c("index", "type")) %>%
+              select(-c(ori_name, "eplet", "mm")) %>%
+              setNames(c("index", "type", ori_name)) %>%
+              distinct() %>%
+              select(-c("index", "type"))
     }
     st2 <- ed + 1
 
     dat_ep_mm2 <- cbind(dat_ep_mm2, tmp2)
   }
 
-  dat_ep_mm2 <- dat_ep_mm2 %>% select(-c(1:2))
+  dat_ep_mm2 <- dat_ep_mm2 %>%
+                select(-c(1:2))
 
   #* step 7: final result *#
   subj_names <- unique(sub(".*\\_", "", names(dat_ep_mm2)[-c(1:2)]))
@@ -187,41 +190,41 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     ed <- st3 + 5
     positions <- c(st3:ed)
     tmp <- dat_ep_mm2 %>%
-      select(c(1, 2, positions)) %>%
-      setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
-      right_join(., raw_lookup,by = c("index", "type")) %>%
-      mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
-      select(index, type, eplet, var) %>%
-      setNames(c("index", "type", "eplet", subj_names[i]))
+            select(c(1, 2, positions)) %>%
+            setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
+            right_join(., raw_lookup,by = c("index", "type")) %>%
+            mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
+            select(index, type, eplet, var) %>%
+            setNames(c("index", "type", "eplet", subj_names[i]))
 
     st3 <- ed + 1
     result <- left_join(result, tmp, by = c("index", "type", "eplet"))
   }
 
   result <-  data.frame(t(dat_ep_mm2)) %>%
-    tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
-    setNames("mm_eplets") %>%
-    mutate(subject = colnames(dat_ep_mm2),
-           mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
-    mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
-    mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
-                           ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-    filter(!subject %in% c("index", "type")) %>%
-    select(subject, mm_eplets, mm_cnt) %>%
-    mutate(part_id = gsub(".*subj", "", subject),
-           gene = gsub("\\_.*","",subject) )
+              tidyr::unite_(., paste(colnames(.), collapse="_"), colnames(.)) %>%
+              setNames("mm_eplets") %>%
+              mutate(subject = colnames(dat_ep_mm2),
+                     mm_eplets = gsub(",NA", "", gsub("_", ",", gsub("NA_", "", mm_eplets)))) %>%
+              mutate(mm_cnt = str_count(mm_eplets, ",")) %>%
+              mutate(mm_cnt = ifelse(mm_eplets == "NA" & mm_cnt == 0, 0,
+                                     ifelse(mm_eplets != "NA" & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+              filter(!subject %in% c("index", "type")) %>%
+              select(subject, mm_eplets, mm_cnt) %>%
+              mutate(part_id = gsub(".*subj", "", subject),
+                     gene = gsub("\\_.*","",subject) )
 
   don_allele <- dat %>%
-    select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
-    pivot_longer(cols = starts_with("don_"),
-                 names_to = "gene",
-                 values_to = "don_type") %>%
-    mutate(gene = str_replace(gene, "don_", ""),
-           part_id = as.character(part_id))
+                select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
+                pivot_longer(cols = starts_with("don_"),
+                             names_to = "gene",
+                             values_to = "don_type") %>%
+                mutate(gene = str_replace(gene, "don_", ""),
+                       part_id = as.character(part_id))
 
   result <- result %>%
-    left_join(., don_allele, by =c("part_id", "gene") ) %>%
-    select(subject, don_type, mm_eplets, mm_cnt)
+            left_join(., don_allele, by =c("part_id", "gene") ) %>%
+            select(subject, don_type, mm_eplets, mm_cnt)
 
   return(result)
 }
