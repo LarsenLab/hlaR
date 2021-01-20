@@ -14,8 +14,8 @@
 #' locus of domains
 #' @return
 #' a list of mis-match vectors
-#' mism_1 is mis-match flag of alpha1
-#' mism_2 is mis-match flag of alpha2 or beta
+#' mism_1 is mis-match flag of locus 1
+#' mism_2 is mis-match flag of locus 2
 #' @export
 #'
 #' @import
