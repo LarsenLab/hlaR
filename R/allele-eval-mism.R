@@ -54,7 +54,7 @@ EvalAlleleMism <- function(dat_in, don_1, don_2, recip_1, recip_2, locus)
       mis_2[i] <- NA
     }
 
-    # if dornor's hla matches with any of recipient's, then mis-match is 0;  otherwise mis-match is 1
+    # if donor's hla matches with any of recipient's, then mis-match is 0;  otherwise mis-match is 1
     else{
       if (tmp[i,1] %in% c(tmp[i,3],tmp[i,4]))
         mis_1[i] <- 0
