@@ -4,14 +4,12 @@
 \alias{CleanAllele}
 \title{clean messy HLA typing for downstream analysis}
 \usage{
-CleanAllele(var_1, var_2, locus)
+CleanAllele(var_1, var_2)
 }
 \arguments{
-\item{var_1}{gene on locus 1}
+\item{var_1}{hla on locus 1}
 
-\item{var_2}{gene on locus 2}
-
-\item{locus}{locus of which we want to work}
+\item{var_2}{hla on locus 2}
 }
 \value{
 list of clean hla of each locus
@@ -21,8 +19,8 @@ clean messy HLA typing for downstream analysis
 }
 \examples{
 \dontrun{
-clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2, locus = "a")
-clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11, locus = "drb")
+clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
+clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
 }
 
 }

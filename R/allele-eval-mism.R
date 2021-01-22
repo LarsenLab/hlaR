@@ -10,8 +10,6 @@
 #' recipient's alpha1 domain
 #' @param recip_2
 #' recipient's alpha2 or beta1 domain
-#' @param locus
-#' locus of domains
 #' @return
 #' a list of mis-match vectors
 #' mism_1 is mis-match flag of locus 1
@@ -24,18 +22,18 @@
 #' @examples
 #' \dontrun{
 # dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
-#' a <- EvalAlleleMism(dat, dat$donor.a1, dat$donor.a2, dat$recipient.a1, dat$recipient.a2, "a")
+#' a <- EvalAlleleMism(dat, dat$donor.a1, dat$donor.a2, dat$recipient.a1, dat$recipient.a2)
 # dat$mism.a1 <- a$mism_1
 # dat$mism.a2 <- a$mism_2
 #' }
 
-EvalAlleleMism <- function(dat_in, don_1, don_2, recip_1, recip_2, locus)
+EvalAlleleMism <- function(dat_in, don_1, don_2, recip_1, recip_2)
 {
   # start of calling CleanAllele() to clean hla value #
-  don_1_c <- unlist(CleanAllele(don_1, don_2, locus)[1])
-  don_2_c <- unlist(CleanAllele(don_1, don_2, locus)[2])
-  recip_1_c <- unlist(CleanAllele(recip_1, recip_2, locus)[1])
-  recip_2_c <- unlist(CleanAllele(recip_1, recip_2, locus)[2])
+  don_1_c <- unlist(CleanAllele(don_1, don_2)[1])
+  don_2_c <- unlist(CleanAllele(don_1, don_2)[2])
+  recip_1_c <- unlist(CleanAllele(recip_1, recip_2)[1])
+  recip_2_c <- unlist(CleanAllele(recip_1, recip_2)[2])
 
   tmp <- as.data.frame(cbind(don_1_c, don_2_c, recip_1_c, recip_2_c)) %>%
     mutate_all(as.character)
