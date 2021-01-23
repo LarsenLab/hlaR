@@ -54,24 +54,35 @@ CleanAllele <- function(var_1, var_2) {
                             ifelse(str_detect(var_2, "\\{"), str_replace(var_2, "\\s*\\{[^\\}]+\\}", ""), var_2)))
 
   # step 4 : remove other special symbols like *, #, :., ), ], }, (., and {. , then drop non-numeric characters
-  var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\:.*|\\(.*|\\{.*", '', var_1_c1)
-  var_2_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\:.*|\\(.*|\\{.*", '', var_2_c1)
+  #var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\:.*|\\(.*|\\{.*", '', var_1_c1)
+  #var_2_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\:.*|\\(.*|\\{.*", '', var_2_c1)
 
-  var_1_c2 <- as.character(parse_number(var_1_c2))
-  var_2_c2 <- as.character(parse_number(var_2_c2))
+  var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*", '', var_1_c1)
+  var_2_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*", '', var_2_c1)
+
+  # if the string contains more than 1 ":", then remove everything strating from 2nd ":"
+  # ex: 39:02:02 will become 39:02
+  var_1_c2 <- ifelse(str_count(var_1_c2, ":") <= 1, var_1_c2, sub("^(([^:]*:){1}[^:]*).*", "\\1", var_1_c2))
+  var_2_c2 <- ifelse(str_count(var_2_c2, ":") <= 1, var_2_c2, sub("^(([^:]*:){1}[^:]*).*", "\\1", var_2_c2))
 
   # step 5 : keep only first two characters
-  var_1_c3 <- map_chr(var_1_c2, ~substr(.,1,2))
-  var_2_c3 <- map_chr(var_2_c2, ~substr(.,1,2))
+  var_1_c3 <- ifelse(str_count(var_1_c2, ":") == 1, var_1_c2, map_chr(var_1_c2, ~substr(.,1,2)))
+  var_2_c3 <- ifelse(str_count(var_2_c2, ":") == 1, var_2_c2, map_chr(var_2_c2, ~substr(.,1,2)))
 
-  # step 6 : add a leading 0 if nchar is 1
+  # step 7 : if it's low resolution and nchar = 1, then add a leading 0
   # rationale : some of antigen are the same but in different notation
   # example : 2 and 02 are the same
-  var_1_out <- map_chr(var_1_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
-  var_2_out <- map_chr(var_2_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
+  var_1_c4 <- map_chr(var_1_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
+  var_2_c4 <- map_chr(var_2_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
 
-  # step 7: remove temporary variable holders
-  rm(var_1_c1, var_1_c2, var_1_c3, var_2_c1, var_2_c2, var_2_c3, tmp)
+  # step 8 : if it's high resolution and nchar < 5, then add a leading 0
+  # var_1_out <- ifelse(str_count(var_1_c4, ":") > 0 & nchar(unlist(str_split(var_1_c4,":"))) == 1, paste("0", var_1_c4, sep=""), var_1_c4)
+  # var_2_out <- ifelse(str_count(var_2_c4, ":") > 0 & nchar(unlist(str_split(var_2_c4,":"))) == 1, paste("0", var_2_c4, sep=""), var_2_c4)
+  var_1_out <- ifelse(str_count(var_1_c4, ":") > 0 & nchar(var_1_c4) < 5, paste("0", var_1_c4, sep=""), var_1_c4)
+  var_2_out <- ifelse(str_count(var_2_c4, ":") > 0 & nchar(var_2_c4) < 5, paste("0", var_2_c4, sep=""), var_2_c4)
+
+  # step 9: remove temporary variable holders
+  rm(var_1_c1, var_1_c2, var_1_c3, var_1_c4, var_2_c1, var_2_c2, var_2_c3, var_2_c4, tmp)
 
   return(list(locus1 = var_1_out, locus2 = var_2_out))
 }
