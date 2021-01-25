@@ -12,7 +12,7 @@ CleanAllele(var_1, var_2)
 \item{var_2}{hla on locus 2}
 }
 \value{
-list of clean hla of each locus
+a data frame with cleaned hla of each locus
 }
 \description{
 clean messy HLA typing for downstream analysis

@@ -5,7 +5,7 @@
 #' @param var_2
 #' hla on locus 2
 #' @return
-#' list of clean hla of each locus
+#' a data frame with cleaned hla of each locus
 #' @export
 #'
 #' @import
@@ -84,5 +84,7 @@ CleanAllele <- function(var_1, var_2) {
   # step 9: remove temporary variable holders
   rm(var_1_c1, var_1_c2, var_1_c3, var_1_c4, var_2_c1, var_2_c2, var_2_c3, var_2_c4, tmp)
 
-  return(list(locus1 = var_1_out, locus2 = var_2_out))
+  result <- data.frame(cbind(var_1_out,var_2_out)) %>%
+            setNames(c("locus1_clean", "locus2_clean"))
+  return(result)
 }
