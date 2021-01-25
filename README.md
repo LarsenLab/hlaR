@@ -28,7 +28,7 @@ clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)<br>
 clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB12)<br>
 #### - mis-match
 dat <- read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
-a <- EvalAlleleMism99(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)<br>
+a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)<br>
 a<br>
 #### - count of mis-match
 hla_mm_cnt <- read_csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))<br>

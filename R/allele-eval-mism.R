@@ -82,7 +82,7 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
 
   result <- data.frame(don_1_clean = don_1_clean, don_2_clean = don_2_clean,
                        recip_1_clean = recip_1_clean, recip_2_clean = recip_2_clean,
-                       mis_1 = mis_1, mis_2 = mis_2)
+                       mism_1 = mis_1, mism_2 = mis_2)
   rownames(result) <- seq(1, dim(result)[1])
 
   return(result)
