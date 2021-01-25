@@ -25,7 +25,7 @@ eplet_mm2_v3
 library(readr)<br>
 clean <- read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
 clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)<br>
-clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)<br>
+clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB12)<br>
 #### - mis-match
 hla_mm_eval <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
 a <- EvalAlleleMism(hla_mm_eval, hla_mm_eval$donor.a1, hla_mm_eval$donor.a2, hla_mm_eval$recipient.a1, hla_mm_eval$recipient.a2)<br>
