@@ -4,11 +4,9 @@
 \alias{EvalAlleleMism}
 \title{evaluate mis-match alleles}
 \usage{
-EvalAlleleMism(dat_in, don_1, don_2, recip_1, recip_2)
+EvalAlleleMism(don_1, don_2, recip_1, recip_2)
 }
 \arguments{
-\item{dat_in}{dataframe with allele info}
-
 \item{don_1}{donor's alpha1 domain}
 
 \item{don_2}{donor's alpha2 or beta1 domain}
@@ -18,15 +16,13 @@ EvalAlleleMism(dat_in, don_1, don_2, recip_1, recip_2)
 \item{recip_2}{recipient's alpha2 or beta1 domain}
 }
 \value{
-a list of mis-match vectors
-mism_1 is mis-match flag of locus 1
-mism_2 is mis-match flag of locus 2
+a data frame with cleaned donor and recipients, and donor to recipient mis-match flags
 }
 \description{
 evaluate mis-match alleles
 }
 \examples{
 \dontrun{
-a <- EvalAlleleMism(dat, dat$donor.a1, dat$donor.a2, dat$recipient.a1, dat$recipient.a2)
+a <- EvalAlleleMism99(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)
 }
 }
