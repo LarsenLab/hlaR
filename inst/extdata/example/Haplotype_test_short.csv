@@ -1,4 +1,4 @@
-rowid,ethnicity,type,don_a1,don_a2,don_b1,don_b2,don_c1,don_c2,don_dqb1,don_dqb2,don_drb1,don_drb2,don_drb31,don_drb32,don_drb41,don_drb42,don_drb51,don_drb52
+rowid,ethnicity,type,a1,a2,b1,b2,c1,c2,dqb1,dqb2,drb1,drb2,drb31,drb32,drb41,drb42,drb51,drb52
 116,afa,donor,3,31,7,7,7,7,6,6,15,15,NA,NA,NA,NA,1,1
 44,afa,donor,2,68,41,44,1,17,3,6,11,13,2,3,NA,NA,NA,NA
 54,cau,donor,1,2,8,35,4,7,2,3,3,11,1,2,NA,NA,NA,NA
