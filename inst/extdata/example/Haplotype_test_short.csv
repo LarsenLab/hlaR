@@ -1,4 +1,7 @@
-rowid,ethnicity,rcpt_a1,rcpt_a2,don_a1,don_a2,rcpt_b1,rcpt_b2,don_b1,don_b2,rcpt_c1,rcpt_c2,don_c1,don_c2,rcpt_drb1,rcpt_drb2,don_drb1,don_drb2,rcpt_dqb1,rcpt_dqb2,don_dqb1,don_dqb2,rcpt_drb31,rcpt_drb32,don_drb31,don_drb32,rcpt_drb41,rcpt_drb42,don_drb41,don_drb42,rcpt_drb51,rcpt_drb52,don_drb51,don_drb52
-116,afa,34,68,3,31,15,57,7,7,2,18,7,7,12,13,15,15,5,13,6,6,1,3,NA,NA,NA,NA,NA,NA,NA,NA,1,1
-44,afa,30,34,2,68,44,57,41,44,4,7,1,17,9,15,11,13,2,15,3,6,NA,NA,2,3,1,1,NA,NA,1,1,NA,NA
-54,cau,24,24,1,2,7,15,8,35,3,7,4,7,1,11,3,11,3,11,2,3,2,2,1,2,NA,NA,NA,NA,NA,NA,NA,NA
+rowid,ethnicity,type,don_a1,don_a2,don_b1,don_b2,don_c1,don_c2,don_dqb1,don_dqb2,don_drb1,don_drb2,don_drb31,don_drb32,don_drb41,don_drb42,don_drb51,don_drb52
+116,afa,donor,3,31,7,7,7,7,6,6,15,15,NA,NA,NA,NA,1,1
+44,afa,donor,2,68,41,44,1,17,3,6,11,13,2,3,NA,NA,NA,NA
+54,cau,donor,1,2,8,35,4,7,2,3,3,11,1,2,NA,NA,NA,NA
+116,afa,recipient,34,68,15,57,2,18,5,13,12,13,1,3,NA,NA,NA,NA
+44,afa,recipient,30,34,44,57,4,7,2,15,9,15,NA,NA,1,1,1,1
+54,cau,recipient,24,24,7,15,3,7,3,11,1,11,2,2,NA,NA,NA,NA
