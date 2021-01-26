@@ -16,13 +16,13 @@ EvalAlleleMism(don_1, don_2, recip_1, recip_2)
 \item{recip_2}{recipient's alpha2 or beta1 domain}
 }
 \value{
-a data frame with cleaned donor and recipients, and mis-match flags on low and high resolution alleles of donor to recipient
+a data frame with cleaned donor and recipients, and donor to recipient mis-match flags
 }
 \description{
 evaluate mis-match alleles
 }
 \examples{
 \dontrun{
-a <- EvalAlleleMism99(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)
+a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)
 }
 }

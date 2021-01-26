@@ -23,7 +23,7 @@
 # a
 #' }
 
-EvalAlleleMism99 <- function(don_1, don_2, recip_1, recip_2)
+EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
 {
   # start of calling CleanAllele() to clean hla value #
   don_1_clean <- CleanAllele(don_1, don_2)$locus1_clean
