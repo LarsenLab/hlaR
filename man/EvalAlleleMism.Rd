@@ -16,7 +16,7 @@ EvalAlleleMism(don_1, don_2, recip_1, recip_2)
 \item{recip_2}{recipient's alpha2 or beta1 domain}
 }
 \value{
-a data frame with cleaned donor and recipients, and donor to recipient mis-match flags
+a data frame with cleaned donor and recipients, and mis-match flags on low and high resolution alleles of donor to recipient
 }
 \description{
 evaluate mis-match alleles
