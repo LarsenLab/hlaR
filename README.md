@@ -30,6 +30,8 @@ clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB12)<br>
 dat <- read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
 a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)<br>
 a<br>
+b <- EvalAlleleMism(dat$DONOR_B1, dat$DONOR_B2, dat$RECIPIENT_B1, dat$RECIPIENT_B2)<br>
+b<br>
 #### - count of mis-match
 hla_mm_cnt <- read_csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))<br>
 classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))<br>
