@@ -8,6 +8,39 @@
 #' tidyverse
 
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
+  #* step 0: raw data *#
+  raw <- tbl_in %>%
+    mutate(pair = "raw",
+           id = ethnicity,
+           a = ifelse(!is.na(a1) & !is.na(a2), paste(a1, a2, sep = "/" ),
+                      ifelse(!is.na(a1) & is.na(a2), a1,
+                             ifelse(is.na(a1) & !is.na(a2), a2, NA))),
+
+           b = ifelse(!is.na(b1) & !is.na(b2), paste(b1, b2, sep = "/" ),
+                      ifelse(!is.na(b1) & is.na(b2), b1,
+                             ifelse(is.na(b1) & !is.na(b2), b2, NA))),
+
+           c = ifelse(!is.na(c1) & !is.na(c2), paste(c1, c2, sep = "/" ),
+                      ifelse(!is.na(c1) & is.na(c2), c1,
+                             ifelse(is.na(c1) & !is.na(c2), c2, NA))),
+
+           drb1 = ifelse(!is.na(drb1) & !is.na(drb2), paste(drb1, drb2, sep = "/" ),
+                         ifelse(!is.na(drb1) & is.na(drb2), drb1,
+                                ifelse(is.na(drb1) & !is.na(drb2), drb2, NA))),
+
+           dqb1 = ifelse(!is.na(dqb1) & !is.na(dqb2), paste(dqb1, dqb2, sep = "/" ),
+                         ifelse(!is.na(dqb1) & is.na(dqb2), dqb1,
+                                ifelse(is.na(dqb1) & !is.na(dqb2), dqb2, NA))),
+           # will modify to bringing drb3/4/5 together - 01/27/2021
+           drb345 = ifelse(!is.na(drb41) & !is.na(drb42), paste(drb41, drb42, sep = "/" ),
+                           ifelse(!is.na(drb41) & is.na(drb42), drb41,
+                                  ifelse(is.na(drb41) & !is.na(drb42), drb42, NA))),
+           freq = NA,
+           rank = NA,
+           cnt_pair = NA) %>%
+    select(pair, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+  #* end of step 0 *#
+
   #* step 1: calculate if a subject with all NA values *#
   sum_na <- tbl_in %>%
     rowwise %>%
@@ -182,5 +215,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   }
 
   #* end of step 4 *#
-  return(hpl_tp_pairs)
+  result <- rbind(raw, hpl_tp_pairs)
+
+  return(result)
 }
