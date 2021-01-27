@@ -402,16 +402,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-6"><a href="#cb3-6"></a><span class="co">#   select(-c(patient_full_nm:transplant_dt))</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a><span class="co"># </span></span>
 <span id="cb3-8"><a href="#cb3-8"></a><span class="co"># write_csv(tx_cohort, &quot;data/tx_cohort.csv&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>high_res_cohort &lt;-<span class="st"> </span><span class="kw">read_xlsb</span>(<span class="st">&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;EnterData&quot;</span>, <span class="dt">skip =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="st">   </span><span class="kw">select</span>(Rec1stA<span class="op">:</span>Rec2ndC, Don1stA<span class="op">:</span>Don2ndC) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="st">   </span><span class="kw">filter</span>(Rec1stA <span class="op">!=</span><span class="st"> &quot;x&quot;</span>,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>          Rec1stA <span class="op">!=</span><span class="st"> &quot;&quot;</span>) </span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>high_res_cohort &lt;-<span class="st"> </span><span class="kw">rowid_to_column</span>(high_res_cohort, <span class="st">&quot;ID&quot;</span>)</span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9"></a>high_res_rename &lt;-<span class="st">  </span>high_res_cohort <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="st">  </span><span class="kw">rename_with</span>(<span class="op">~</span><span class="st"> </span><span class="kw">str_replace</span>(., <span class="st">&quot;Rec1st&quot;</span>, <span class="st">&quot;rec_1&quot;</span>), <span class="dt">.cols =</span> <span class="kw">c</span>(Rec1stA, Rec1stB, Rec1stC))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># high_res_cohort &lt;- read_xlsb(&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;, sheet = &quot;EnterData&quot;, skip = 1) %&gt;% </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %&gt;% </span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#    filter(Rec1stA != &quot;x&quot;,</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#           Rec1stA != &quot;&quot;) </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co"># </span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co"># high_res_cohort &lt;- rowid_to_column(high_res_cohort, &quot;ID&quot;)</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># </span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># </span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co"># high_res_rename &lt;-  high_res_cohort %&gt;% </span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#   rename_with(~ str_replace(., &quot;Rec1st&quot;, &quot;rec_1&quot;), .cols = c(Rec1stA, Rec1stB, Rec1stC))</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co"># data(high_res_cohort)</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="co"># </span></span>
@@ -419,22 +419,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><span class="citation">[@TODO]</span> Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).</p>
 <p>Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.</p>
 <p>Describe the variables. recip_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">glimpse</span>(high_res_cohort)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Rows: 187</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; Columns: 13</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; $ ID      &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18…</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; $ Rec1stA &lt;chr&gt; &quot;A*01:01&quot;, &quot;A*01:01&quot;, &quot;A*01:01&quot;, &quot;A*01:01&quot;, &quot;A*01:01&quot;, &quot;A*01:…</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; $ Rec2ndA &lt;chr&gt; &quot;A*03:01&quot;, &quot;A*03:01&quot;, &quot;A*03:01&quot;, &quot;A*03:01&quot;, &quot;A*03:01&quot;, &quot;A*03:…</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; $ Rec1stB &lt;chr&gt; &quot;B*08:01&quot;, &quot;B*08:01&quot;, &quot;B*08:01&quot;, &quot;B*08:01&quot;, &quot;B*08:01&quot;, &quot;B*08:…</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; $ Rec2ndB &lt;chr&gt; &quot;B*07:02&quot;, &quot;B*07:02&quot;, &quot;B*07:02&quot;, &quot;B*07:02&quot;, &quot;B*07:02&quot;, &quot;B*07:…</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; $ Rec1stC &lt;chr&gt; &quot;C*07:01&quot;, &quot;C*07:01&quot;, &quot;C*07:01&quot;, &quot;C*07:01&quot;, &quot;C*07:01&quot;, &quot;C*07:…</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; $ Rec2ndC &lt;chr&gt; &quot;C*07:02&quot;, &quot;C*07:02&quot;, &quot;C*07:02&quot;, &quot;C*07:02&quot;, &quot;C*07:02&quot;, &quot;C*07:…</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; $ Don1stA &lt;chr&gt; &quot;A*02:01&quot;, &quot;A*02:02&quot;, &quot;A*02:03&quot;, &quot;A*02:04&quot;, &quot;A*02:05&quot;, &quot;A*02:…</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; $ Don2ndA &lt;chr&gt; &quot;A*68:01&quot;, &quot;A*68:02&quot;, &quot;A*68:03&quot;, &quot;A*68:04&quot;, &quot;A*68:05&quot;, &quot;A*68:…</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; $ Don1stB &lt;chr&gt; &quot;B*07:02&quot;, &quot;B*07:03&quot;, &quot;B*07:04&quot;, &quot;B*07:05&quot;, &quot;B*07:06&quot;, &quot;B*07:…</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; $ Don2ndB &lt;chr&gt; &quot;B*40:02&quot;, &quot;B*40:01&quot;, &quot;B*40:03&quot;, &quot;B*40:04&quot;, &quot;B*40:05&quot;, &quot;B*40:…</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; $ Don1stC &lt;chr&gt; &quot;C*07:02&quot;, &quot;C*07:01&quot;, &quot;C*07:03&quot;, &quot;C*07:04&quot;, &quot;C*07:05&quot;, &quot;C*07:…</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; $ Don2ndC &lt;chr&gt; &quot;C*03:04&quot;, &quot;C*03:03&quot;, &quot;C*03:02&quot;, &quot;C*03:05&quot;, &quot;C*03:06&quot;, &quot;C*03:…</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># glimpse(high_res_cohort)</span></span></code></pre></div>
 <p>Describe the function purpose, input output. Reference matchmaker</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># out &lt;- CalEpletMHCI(high_res_cohort)</span></span></code></pre></div>
 <p>Generate some visuals (base vs ggplot)</p>

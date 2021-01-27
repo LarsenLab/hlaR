@@ -92,16 +92,16 @@ Use case transplant team or researcher would like to calulate the Class I and Cl
 ```
 
 ```{r}
-high_res_cohort <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
-   select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
-   filter(Rec1stA != "x",
-          Rec1stA != "") 
-
-high_res_cohort <- rowid_to_column(high_res_cohort, "ID")
-
-
-high_res_rename <-  high_res_cohort %>% 
-  rename_with(~ str_replace(., "Rec1st", "rec_1"), .cols = c(Rec1stA, Rec1stB, Rec1stC))
+# high_res_cohort <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
+#    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
+#    filter(Rec1stA != "x",
+#           Rec1stA != "") 
+# 
+# high_res_cohort <- rowid_to_column(high_res_cohort, "ID")
+# 
+# 
+# high_res_rename <-  high_res_cohort %>% 
+#   rename_with(~ str_replace(., "Rec1st", "rec_1"), .cols = c(Rec1stA, Rec1stB, Rec1stC))
 
 
 ```
@@ -120,7 +120,7 @@ Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Cla
 Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
 
 ```{r explore data set}
-glimpse(high_res_cohort)
+# glimpse(high_res_cohort)
 ```
 
 Describe the function purpose, input output. Reference matchmaker

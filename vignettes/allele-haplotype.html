@@ -338,27 +338,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="load-test-data-set" class="section level2">
 <h2>Load test data set</h2>
 <p>A sample HLA typing data derived from a cohort of 200 kidney transplant recipients is provided to demonstrate the <code>CompHaploTbl</code> function. donor and recipient cleaned HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, DQa DQb, DPA, and DPB). A set of low resolution HLA typing for 200 kidney transplant donor recipient pairs is provided. This data has already been cleaned using the <code>CleanHLAallele</code> function.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tx_cohort_clean&lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;Haplotype_test_short.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>))</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; </span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; cols(</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;   .default = col_double(),</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;   ethnicity = col_character(),</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;   don_drb41 = col_logical(),</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;   don_drb42 = col_logical()</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt; )</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt; ℹ Use `spec()` for the full column specifications.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># tx_cohort_clean&lt;- read_csv(system.file(&quot;extdata/example&quot;, &quot;Haplotype_test_short.csv&quot;, package = &quot;hlaR&quot;))</span></span></code></pre></div>
 </div>
 <div id="generate-list-of-possible-haplotypes-and-sort-most-likely-pairs" class="section level2">
 <h2>Generate List of Possible Haplotypes and Sort Most likely Pairs</h2>
 <p>Use the <code>CompHaploTbl</code> Function to generate a list of high resolution haplotypes that fit the patient’s low resolution data. The haplotypes are sorted by a count measure, “cnt” that represents the number of high resolution antigens that match the low resolution input. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible combinations of haplotypes. For each combination, calculate the count, again representing the number of high resolution antigens that match the low resolution input, without counting duplicates. Results are arranged by descending count, and pairs with the same count are arranged by descending population frequency.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>haplotbl&lt;-<span class="st"> </span><span class="kw">CompHaploTbl</span>(tx_cohort_clean)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; [1] 1</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; [1] 2</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; [1] 3</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; [1] 4</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; [1] 5</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt; [1] 6</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#haplotbl&lt;- CompHaploTbl(tx_cohort_clean)</span></span></code></pre></div>
 </div>
 <div id="impute-high-resolution-data" class="section level2">
 <h2>Impute high-resolution data</h2>

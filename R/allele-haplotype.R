@@ -51,41 +51,24 @@ CompHaploTbl <- function(dat_in){
   #* end of step 1 *#
 
   #* step 2: reshape input data table by recipient and donor *#
-  rcpt <- dat_in %>%
-    rename_all(. %>% tolower) %>%
-    select(contains(c("id", "ethnicity","race","rcpt"))) %>%
-    rename_at(vars(contains('rcpt_')), list(~sub('rcpt_', '', .))) %>%
-    mutate(id = paste("rcpt", rowid, sep = "_"),
-           a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1)) %>%
-    select(id, everything())
-
-  don <- dat_in %>%
-    rename_all(. %>% tolower) %>%
-    select(contains(c("id", "ethnicity","race","don"))) %>%
-    rename_at(vars(contains('don_')), list(~sub('don_', '', .))) %>%
-    mutate(id = paste("don", rowid, sep = "_")) %>%
-    select(id, everything())
-
-  dat_ready <- rbind(rcpt, don) %>% arrange(rowid) %>%
-    mutate_all(as.character) %>%
-    mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
-           a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
-           b1 = ifelse(nchar(b1) == 1, paste0("0", b1), b1),
-           b2 = ifelse(nchar(b2) == 1, paste0("0", b2), b2),
-           c1 = ifelse(nchar(c1) == 1, paste0("0", c1), c1),
-           c2 = ifelse(nchar(c2) == 1, paste0("0", c2), c2),
-           drb1 = ifelse(nchar(drb1) == 1, paste0("0", drb1), drb1),
-           drb2 = ifelse(nchar(drb2) == 1, paste0("0", drb2), drb2),
-           dqb1 = ifelse(nchar(dqb1) == 1, paste0("0", dqb1), dqb1),
-           dqb2 = ifelse(nchar(dqb2) == 1, paste0("0", dqb2), dqb2),
-           drb31 = ifelse(nchar(drb31) == 1, paste0("0", drb31), drb31),
-           drb32 = ifelse(nchar(drb32) == 1, paste0("0", drb32), drb32),
-           drb41 = ifelse(nchar(drb41) == 1, paste0("0", drb41), drb41),
-           drb42 = ifelse(nchar(drb42) == 1, paste0("0", drb42), drb42),
-           drb51 = ifelse(nchar(drb51) == 1, paste0("0", drb51), drb51),
-           drb52 = ifelse(nchar(drb52) == 1, paste0("0", drb52), drb52))
-
-  rm(rcpt, don)
+  dat_ready <- dat_in %>% arrange(rowid) %>%
+                mutate_all(as.character) %>%
+                mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
+                       a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
+                       b1 = ifelse(nchar(b1) == 1, paste0("0", b1), b1),
+                       b2 = ifelse(nchar(b2) == 1, paste0("0", b2), b2),
+                       c1 = ifelse(nchar(c1) == 1, paste0("0", c1), c1),
+                       c2 = ifelse(nchar(c2) == 1, paste0("0", c2), c2),
+                       drb1 = ifelse(nchar(drb1) == 1, paste0("0", drb1), drb1),
+                       drb2 = ifelse(nchar(drb2) == 1, paste0("0", drb2), drb2),
+                       dqb1 = ifelse(nchar(dqb1) == 1, paste0("0", dqb1), dqb1),
+                       dqb2 = ifelse(nchar(dqb2) == 1, paste0("0", dqb2), dqb2),
+                       drb31 = ifelse(nchar(drb31) == 1, paste0("0", drb31), drb31),
+                       drb32 = ifelse(nchar(drb32) == 1, paste0("0", drb32), drb32),
+                       drb41 = ifelse(nchar(drb41) == 1, paste0("0", drb41), drb41),
+                       drb42 = ifelse(nchar(drb42) == 1, paste0("0", drb42), drb42),
+                       drb51 = ifelse(nchar(drb51) == 1, paste0("0", drb51), drb51),
+                       drb52 = ifelse(nchar(drb52) == 1, paste0("0", drb52), drb52))
   #* end of step 2 *#
 
   #* step 3: call FuncForCompHaplo() for each subjects and get top pairs haplotype combination *#
@@ -96,12 +79,10 @@ CompHaploTbl <- function(dat_in){
   for (i in 1:num_subj){
     print(paste("subject", i))
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
-    num_pairs <- dim(hpl_tp_pairs[[i]])[1]/2
-    hpl_tp_pairs[[i]]$pair <- rep(1:num_pairs, each  = 2)
   }
 
   #* end of step 3 *#
-  names(hpl_tp_pairs) <- dat_ready$id
+  names(hpl_tp_pairs) <- dat_ready$rowid
 
   return(hpl_tp_pairs)
 }

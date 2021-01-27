@@ -33,7 +33,7 @@ A set of low resolution HLA typing for 200 kidney transplant donor recipient pai
 
 
 ```{r}
-tx_cohort_clean<- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))
+# tx_cohort_clean<- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))
 ```
 
 
@@ -41,7 +41,7 @@ tx_cohort_clean<- read_csv(system.file("extdata/example", "Haplotype_test_short.
 Use the `CompHaploTbl` Function to generate a list of high resolution haplotypes that fit the patient's low resolution data. The haplotypes are sorted by a count measure, "cnt" that represents the number of high resolution antigens that match the low resolution input. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible combinations of haplotypes. For each combination, calculate the count, again representing the number of high resolution antigens that match the low resolution input, without counting duplicates. Results are arranged by descending count, and pairs with the same count are arranged by descending population frequency. 
 
 ```{r}
-haplotbl<- CompHaploTbl(tx_cohort_clean)
+#haplotbl<- CompHaploTbl(tx_cohort_clean)
 ```
 
 ## Impute high-resolution data
