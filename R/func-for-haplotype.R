@@ -7,7 +7,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo <- function(tbl_raw, tbl_in) {
+FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
   #* step 0: raw data *#
   raw <- tbl_in %>%
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
@@ -140,12 +140,20 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       tmp <- hpl_tp_raw %>%
         mutate(indx = row_number())
 
-      hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
-        setNames(c("indx1", "indx2")) %>%
-        mutate(pair = row_number()) %>%
-        pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
-        left_join(., tmp, by = c("value" = "indx")) %>%
-        select(-index)
+      if (dim(tmp)[1] <= 1){
+        hpl_tp_pairs <- tmp %>%
+                        mutate(pair = 1,
+                               value = 1) %>%
+                        select(pair, value, everything())
+
+      } else{
+        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+          setNames(c("indx1", "indx2")) %>%
+          mutate(pair = row_number()) %>%
+          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+          left_join(., tmp, by = c("value" = "indx")) %>%
+          select(-index)
+      }
     }
   } else{
     hpl_tp_raw <- data.frame(id = tbl_in$rowid)
@@ -213,15 +221,25 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
     hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+
+    hpl_tp_pairs <- hpl_tp_pairs %>%
+      mutate(subj = raw$subj,
+             id = pair,
+             type = "imputed") %>%
+      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
-  if(dim(hpl_tp_pairs)[1] > 1){
-  hpl_tp_pairs <- hpl_tp_pairs %>%
-                  mutate(subj = raw$subj,
-                         id = pair,
-                         type = "imputed") %>%
-                  select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-  } else{
+  if(dim(hpl_tp_pairs)[1] == 1){
+    hpl_tp_pairs <- hpl_tp_pairs %>%
+      setNames(gsub("afa_|cau_", "", names(.))) %>%
+      mutate(subj = raw$subj,
+             id = pair,
+             type = "imputed",
+             cnt_pair = cnt) %>%
+      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+  }
+
+  if(dim(hpl_tp_pairs)[1] == 0){
     hpl_tp_pairs <- raw %>%
                     mutate(type = "imputed",
                            a = NA, b = NA, c = NA,
