@@ -13,29 +13,29 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
            type = paste("raw"),
            id = NA,
-           a = ifelse(!is.na(a1) & !is.na(a2), paste(a1, a2, sep = "/" ),
-                      ifelse(!is.na(a1) & is.na(a2), a1,
-                             ifelse(is.na(a1) & !is.na(a2), a2, NA))),
+           a = ifelse(a1 != "" & a2 != "", paste(a1, a2, sep = "/" ),
+                      ifelse(a1 != "" & a2 == "", a1,
+                             ifelse(a1 == "" & a2 != "", a2, NA))),
 
-           b = ifelse(!is.na(b1) & !is.na(b2), paste(b1, b2, sep = "/" ),
-                      ifelse(!is.na(b1) & is.na(b2), b1,
-                             ifelse(is.na(b1) & !is.na(b2), b2, NA))),
+           b = ifelse(b1 != "" & b2 != "", paste(b1, b2, sep = "/" ),
+                      ifelse(b1 != "" & b2 == "", b1,
+                             ifelse(b1 == "" & b2 != "", b2, NA))),
 
-           c = ifelse(!is.na(c1) & !is.na(c2), paste(c1, c2, sep = "/" ),
-                      ifelse(!is.na(c1) & is.na(c2), c1,
-                             ifelse(is.na(c1) & !is.na(c2), c2, NA))),
+           c = ifelse(c1 != "" & c2 != "", paste(c1, c2, sep = "/" ),
+                      ifelse(c1 != "" & c2 == "", c1,
+                             ifelse(c1 == "" & c2 != "", c2, NA))),
 
-           drb1 = ifelse(!is.na(drb1) & !is.na(drb2), paste(drb1, drb2, sep = "/" ),
-                         ifelse(!is.na(drb1) & is.na(drb2), drb1,
-                                ifelse(is.na(drb1) & !is.na(drb2), drb2, NA))),
+           drb1 = ifelse(drb1 != "" & drb2 != "", paste(drb1, drb2, sep = "/" ),
+                         ifelse(drb1 != "" & drb2 == "", drb1,
+                                ifelse(drb1 == "" & drb2 != "", drb2, NA))),
 
-           dqb1 = ifelse(!is.na(dqb1) & !is.na(dqb2), paste(dqb1, dqb2, sep = "/" ),
-                         ifelse(!is.na(dqb1) & is.na(dqb2), dqb1,
-                                ifelse(is.na(dqb1) & !is.na(dqb2), dqb2, NA))),
+           dqb1 = ifelse(dqb1 != "" & dqb2 != "", paste(dqb1, dqb2, sep = "/" ),
+                         ifelse(dqb1 != "" & dqb2 == "", dqb1,
+                                ifelse(dqb1 == "" & dqb2 != "", dqb2, NA))),
            # will modify to bringing drb3/4/5 together - 01/27/2021
-           drb345 = ifelse(!is.na(drb41) & !is.na(drb42), paste(drb41, drb42, sep = "/" ),
-                           ifelse(!is.na(drb41) & is.na(drb42), drb41,
-                                  ifelse(is.na(drb41) & !is.na(drb42), drb42, NA))),
+           drb345 = ifelse(drb41 != "" & drb42 != "", paste(drb41, drb42, sep = "/" ),
+                           ifelse(drb41 != "" & drb42 == "", drb41,
+                                  ifelse(drb41 == "" & drb42 != "", drb42, NA))),
            freq = NA,
            rank = NA,
            cnt_pair = NA) %>%
@@ -215,11 +215,20 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
   }
 
+  if(dim(hpl_tp_pairs)[1] > 1){
   hpl_tp_pairs <- hpl_tp_pairs %>%
-    mutate(subj = raw$subj,
-           id = pair,
-           type = "imputed") %>%
-    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+                  mutate(subj = raw$subj,
+                         id = pair,
+                         type = "imputed") %>%
+                  select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+  } else{
+    hpl_tp_pairs <- raw %>%
+                    mutate(type = "imputed",
+                           a = NA, b = NA, c = NA,
+                           drb1 = NA, dqb1 = NA, drb345 = NA,
+                           freq = NA, rank = NA, cnt_pair = NA) %>%
+                    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+  }
 
   #* end of step 4 *#
   result <- rbind(raw, hpl_tp_pairs)
