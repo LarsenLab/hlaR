@@ -2,9 +2,10 @@
 % Please edit documentation in R/func-for-haplotype.R
 \name{FuncForCompHaplo}
 \alias{FuncForCompHaplo}
+\alias{FuncForCompHaplo99}
 \title{extracts combinations from halpo frequency table, it's called within CompHaploTbl()}
 \usage{
-FuncForCompHaplo(tbl_raw, tbl_in)
+FuncForCompHaplo99(tbl_raw, tbl_in)
 }
 \arguments{
 \item{tbl_raw}{raw haplotype frequency table downloaded from NMDP website}

@@ -33,7 +33,7 @@ A set of low resolution HLA typing for 200 kidney transplant donor recipient pai
 
 
 ```{r}
-# tx_cohort_clean<- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))
+# tx_cohort_clean <- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))
 ```
 
 

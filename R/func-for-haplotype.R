@@ -7,7 +7,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
+FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 0: raw data *#
   raw <- tbl_in %>%
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
@@ -221,15 +221,16 @@ FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
     hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
     hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+  }
 
+  if(dim(hpl_tp_pairs)[1] > 1 ){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       mutate(subj = raw$subj,
              id = pair,
              type = "imputed") %>%
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
-
-  if(dim(hpl_tp_pairs)[1] == 1){
+  if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       setNames(gsub("afa_|cau_", "", names(.))) %>%
       mutate(subj = raw$subj,
@@ -239,7 +240,7 @@ FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
-  if(dim(hpl_tp_pairs)[1] == 0){
+  if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
     hpl_tp_pairs <- raw %>%
                     mutate(type = "imputed",
                            a = NA, b = NA, c = NA,
