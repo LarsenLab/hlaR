@@ -220,7 +220,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     num_pairs <- dim(hpl_tp_pairs)[1]/2
     hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
-    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+    # hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
   }
 
   if(dim(hpl_tp_pairs)[1] > 1 ){
