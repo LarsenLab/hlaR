@@ -10,8 +10,9 @@
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 0: raw data *#
   raw <- tbl_in %>%
-    mutate(pair = "raw",
-           id = ethnicity,
+    mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
+           type = paste("raw"),
+           id = NA,
            a = ifelse(!is.na(a1) & !is.na(a2), paste(a1, a2, sep = "/" ),
                       ifelse(!is.na(a1) & is.na(a2), a1,
                              ifelse(is.na(a1) & !is.na(a2), a2, NA))),
@@ -38,7 +39,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
            freq = NA,
            rank = NA,
            cnt_pair = NA) %>%
-    select(pair, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   #* end of step 0 *#
 
   #* step 1: calculate if a subject with all NA values *#
@@ -213,6 +214,12 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
     hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
   }
+
+  hpl_tp_pairs <- hpl_tp_pairs %>%
+    mutate(subj = raw$subj,
+           id = pair,
+           type = "imputed") %>%
+    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
 
   #* end of step 4 *#
   result <- rbind(raw, hpl_tp_pairs)

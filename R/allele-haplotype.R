@@ -84,6 +84,9 @@ CompHaploTbl <- function(dat_in){
   #* end of step 3 *#
   names(hpl_tp_pairs) <- dat_ready$rowid
 
+  hpl_tp_pairs <- as.data.frame(do.call(rbind, hpl_tp_pairs))
+  row.names(hpl_tp_pairs) <- seq(1:dim(hpl_tp_pairs)[1])
+
   return(hpl_tp_pairs)
 }
 
