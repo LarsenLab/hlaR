@@ -142,9 +142,9 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
       if (dim(tmp)[1] <= 1){
         hpl_tp_pairs <- tmp %>%
-                        mutate(pair = 1,
-                               value = 1) %>%
-                        select(pair, value, everything())
+          mutate(pair = 1,
+                 value = 1) %>%
+          select(pair, value, everything())
 
       } else{
         hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
@@ -160,6 +160,23 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     hpl_tp_pairs <- data.frame(id = tbl_in$rowid)
   }
   #* end of step 3 *#
+
+  ### add
+  if(dim(hpl_tp_pairs)[1] > 500){
+    hpl_tp_pairs <- hpl_tp_pairs %>%
+      setNames(gsub("afa_|cau_", "", names(.))) %>%
+      group_by(pair) %>%
+      summarise(avg = mean(rank), .groups = 'drop') %>%
+      ungroup() %>%
+      left_join(hpl_tp_pairs, ., by  = "pair") %>%
+      arrange(avg, pair) %>%
+      select(-c(value, avg)) %>%
+      filter(row_number() <= 500)
+
+    num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
+    hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
+  }
+  ### end of add
 
   #* step4: generate paired table *#
   if(dim(hpl_tp_pairs)[1] > 1) {
@@ -213,7 +230,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       ungroup() %>%
       left_join(hpl_tp_pairs_3, ., by  = "pair") %>%
       arrange(avg, pair) %>%
-      select(-c(value, avg))
+      #select(-c(value, avg))
+      select(-c(avg))
 
     hpl_tp_pairs <- hpl_tp_pairs_4
 
@@ -231,6 +249,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
              type = "imputed") %>%
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
+
   if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       setNames(gsub("afa_|cau_", "", names(.))) %>%
@@ -243,11 +262,11 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
   if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
     hpl_tp_pairs <- raw %>%
-                    mutate(type = "imputed",
-                           a = NA, b = NA, c = NA,
-                           drb1 = NA, dqb1 = NA, drb345 = NA,
-                           freq = NA, rank = NA, cnt_pair = NA) %>%
-                    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+      mutate(type = "imputed",
+             a = NA, b = NA, c = NA,
+             drb1 = NA, dqb1 = NA, drb345 = NA,
+             freq = NA, rank = NA, cnt_pair = NA) %>%
+      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
   #* end of step 4 *#
