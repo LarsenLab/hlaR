@@ -8,44 +8,28 @@
 #' tidyverse
 
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
-  #* step 0: raw data *#
+  #* step 0: reshape raw data so it will bind with paired imputed haplotype data  *#
   raw <- tbl_in %>%
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
            type = paste("raw"),
            id = NA,
-           a = ifelse(a1 != "" & a2 != "", paste(a1, a2, sep = "/" ),
-                      ifelse(a1 != "" & a2 == "", a1,
-                             ifelse(a1 == "" & a2 != "", a2, NA))),
-
-           b = ifelse(b1 != "" & b2 != "", paste(b1, b2, sep = "/" ),
-                      ifelse(b1 != "" & b2 == "", b1,
-                             ifelse(b1 == "" & b2 != "", b2, NA))),
-
-           c = ifelse(c1 != "" & c2 != "", paste(c1, c2, sep = "/" ),
-                      ifelse(c1 != "" & c2 == "", c1,
-                             ifelse(c1 == "" & c2 != "", c2, NA))),
-
-           drb1 = ifelse(drb1 != "" & drb2 != "", paste(drb1, drb2, sep = "/" ),
-                         ifelse(drb1 != "" & drb2 == "", drb1,
-                                ifelse(drb1 == "" & drb2 != "", drb2, NA))),
-
-           dqb1 = ifelse(dqb1 != "" & dqb2 != "", paste(dqb1, dqb2, sep = "/" ),
-                         ifelse(dqb1 != "" & dqb2 == "", dqb1,
-                                ifelse(dqb1 == "" & dqb2 != "", dqb2, NA))),
-           # will modify to bringing drb3/4/5 together - 01/27/2021
-           drb345 = ifelse(drb41 != "" & drb42 != "", paste(drb41, drb42, sep = "/" ),
-                           ifelse(drb41 != "" & drb42 == "", drb41,
-                                  ifelse(drb41 == "" & drb42 != "", drb42, NA))),
            freq = NA,
            rank = NA,
            cnt_pair = NA) %>%
+    unite(a, a1:a2, sep = "/", na.rm = TRUE) %>%
+    unite(b, b1:b2, sep = "/", na.rm = TRUE) %>%
+    unite(c, c1:c2, sep = "/", na.rm = TRUE) %>%
+    unite(drb1, drb1:drb2, sep = "/", na.rm = TRUE) %>%
+    unite(dqb1, dqb1:dqb2, sep = "/", na.rm = TRUE) %>%
+    unite(drb345, drb31:drb52, sep = "/", na.rm = TRUE) %>%
     select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   #* end of step 0 *#
 
   #* step 1: calculate if a subject with all NA values *#
   sum_na <- tbl_in %>%
     rowwise %>%
-    summarise(na_per_row = sum(is.na(.)), .groups = 'drop')
+    #summarise(na_per_row = sum(is.na(.)), .groups = 'drop')
+    summarise(na_per_row = sum(. == ""), .groups = 'drop')
 
   num_tt <- dim(tbl_in)[2]
 
@@ -84,13 +68,15 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   indx_lo <- unique(c(a_lo, b_lo, c_lo, drb1_lo, dqb1_lo, drb345_lo))
 
   rm(a_lo, b_lo, c_lo, drb1_lo, dqb1_lo, drb345_lo)
-
   #* end of step 2b *#
 
   #* step 3: pull out high res combinations of max group count *#
   tmp_indx <- unique(c(indx_hi, indx_lo))
 
   if(length(tmp_indx) > 0 & num_na > 3) {
+    # count: by row(individual combination)
+    # purpose: count nnumber of imputed allele occurs in the raw input data
+    # filter  imputed rows by max count of sum(hi/low resolution part of raw impute table, occurs in user's input table)
     hpl_tp_raw <- tbl_raw %>%
       mutate(id = tbl_in$rowid,
              cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
@@ -117,6 +103,9 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
              cnt = cnt_lo + cnt_hi) %>%
       filter(cnt == max(cnt))
 
+    # pull out ethnicity specific rank and frequency
+    # if ethicity is "cau" or "afa", pull data and mutate a little bit
+    # if none ethnicity, the set up empty hpl_tp_raw and hpl_tp_pairs
     if(tbl_in$ethnicity == "cau"){
       hpl_tp_raw <- hpl_tp_raw %>%
         arrange(cau_rank) %>%
@@ -169,8 +158,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   }
   #* end of step 3 *#
 
-  ### add
-  if(dim(hpl_tp_pairs)[1] > 500){
+  #* step 4a: if there are too many paired combinations, then keep first 500 pairs lowest average rank within each pair *#
+  if(dim(hpl_tp_pairs)[1] > 1000){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       setNames(gsub("afa_|cau_", "", names(.))) %>%
       group_by(pair) %>%
@@ -179,15 +168,17 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       left_join(hpl_tp_pairs, ., by  = "pair") %>%
       arrange(avg, pair) %>%
       select(-c(value, avg)) %>%
-      filter(row_number() <= 500)
+      filter(row_number() <= 1000)
 
     num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
     hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
   }
-  ### end of add
+  #* end of 4a *#
 
-  #* step4: generate paired table *#
+  #* step 4b: generate paired table *#
   if(dim(hpl_tp_pairs)[1] > 1) {
+    # count: by pair(a pair of combinations)
+    # purpose: count UNIQUE number of raw low/high allele occurs in the imputed pair
     hpl_tp_pairs_2 <-  hpl_tp_pairs %>%
       mutate(a = sub("\\:.*", "", a),
              b = sub("\\:.*", "", b),
@@ -246,10 +237,11 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     num_pairs <- dim(hpl_tp_pairs)[1]/2
     hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
-    # hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
-    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
+    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+    #hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
   }
 
+  # if there are more than 2 imputed combinations (at least 1 pair)
   if(dim(hpl_tp_pairs)[1] > 1 ){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       mutate(subj = raw$subj,
@@ -258,6 +250,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
+  # if there is only imputed combination (no pair)
   if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       setNames(gsub("afa_|cau_", "", names(.))) %>%
@@ -268,6 +261,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
+  # if all alleles are NA
   if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
     hpl_tp_pairs <- raw %>%
       mutate(type = "imputed",
