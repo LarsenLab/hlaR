@@ -90,11 +90,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 3: pull out high res combinations of max group count *#
   tmp_indx <- unique(c(indx_hi, indx_lo))
 
-  rm(PullIndx, indx_hi, indx_lo, num_tt, sum_na)
-
-  # 1st if: if indx of haplotype is not 0 and not all of genes are NA
   if(length(tmp_indx) > 0 & num_na > 3) {
-    # haplotype raw table with high/low res count
     hpl_tp_raw <- tbl_raw %>%
       mutate(id = tbl_in$rowid,
              cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
@@ -120,50 +116,60 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
              cnt_hi = cnt_a_hi + cnt_b_hi + cnt_c_hi + cnt_drb1_hi + cnt_dqb1_hi + cnt_drb345_hi,
              cnt = cnt_lo + cnt_hi) %>%
       filter(cnt == max(cnt))
-  }
 
-  # 2nd if: select by ethnicity
-  if(tbl_in$ethnicity == "cau"){
-    hpl_tp_raw <- hpl_tp_raw %>%
-      arrange(cau_rank) %>%
-      select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt)
-  }
-  if(tbl_in$ethnicity == "afa"){
-    hpl_tp_raw <- hpl_tp_raw %>%
-      arrange(afa_rank) %>%
-      select(id, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt)
-  }
+    if(tbl_in$ethnicity == "cau"){
+      hpl_tp_raw <- hpl_tp_raw %>%
+        arrange(cau_rank) %>%
+        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt)
 
-  tmp <- hpl_tp_raw %>%
-    mutate(indx = row_number()) %>%
-    setNames(gsub("afa_|cau_", "", names(.)))
+      tmp <- hpl_tp_raw %>%
+        mutate(indx = row_number())
 
-  # 3rd if : if filter haplotye table has more than 1 combinations, generate all possible pairs table
-  # if only 1 combination, then keep 1
-  # if 0 combination, then create an empty pair table
-  if(dim(tmp)[1] > 1){
-    hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
-      setNames(c("indx1", "indx2")) %>%
-      mutate(pair = row_number()) %>%
-      pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
-      left_join(., tmp, by = c("value" = "indx")) %>%
-      select(-index)
-  } else if(dim(tmp)[1] == 1){
-    hpl_tp_pairs <- tmp %>%
-      mutate(pair = 1,
-             value = 1) %>%
-      select(pair, value, everything())
-  }  else{
+      if (dim(tmp)[1] <= 1){
+        hpl_tp_pairs <- tmp %>%
+          mutate(pair = 1,
+                 value = 1) %>%
+          select(pair, value, everything())
+
+      } else{
+        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+          setNames(c("indx1", "indx2")) %>%
+          mutate(pair = row_number()) %>%
+          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+          left_join(., tmp, by = c("value" = "indx")) %>%
+          select(-index)
+      }
+
+    } else if(tbl_in$ethnicity == "afa"){
+      hpl_tp_raw <- hpl_tp_raw %>%
+        arrange(afa_rank) %>%
+        select(id, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt)
+
+      tmp <- hpl_tp_raw %>%
+        mutate(indx = row_number())
+
+      if (dim(tmp)[1] <= 1){
+        hpl_tp_pairs <- tmp %>%
+          mutate(pair = 1,
+                 value = 1) %>%
+          select(pair, value, everything())
+
+      } else{
+        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+          setNames(c("indx1", "indx2")) %>%
+          mutate(pair = row_number()) %>%
+          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+          left_join(., tmp, by = c("value" = "indx")) %>%
+          select(-index)
+      }
+    }
+  } else{
     hpl_tp_raw <- data.frame(id = tbl_in$rowid)
     hpl_tp_pairs <- data.frame(id = tbl_in$rowid)
   }
   #* end of step 3 *#
 
-  #* step add *#
-  #* reduce number of paris if it's too big,
-  #* select by top average rank, ignore count, is that reasonable? -  reasonable ?
-  #* this actually could be done in step 4 ? - 01/29/2021
-  #* logic: if too many then filter by average rank; -> all possible 2 pairs -> max count -> filter by average rank again
+  ### add
   if(dim(hpl_tp_pairs)[1] > 500){
     hpl_tp_pairs <- hpl_tp_pairs %>%
       setNames(gsub("afa_|cau_", "", names(.))) %>%
@@ -175,11 +181,10 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       select(-c(value, avg)) %>%
       filter(row_number() <= 500)
 
-    # rename pair id
     num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
     hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
   }
-  #* end of add *#
+  ### end of add
 
   #* step4: generate paired table *#
   if(dim(hpl_tp_pairs)[1] > 1) {
@@ -204,10 +209,10 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
     cnt_by_pair <- data.frame(pair = numeric(),
                               cnt_pair = numeric())
-    # count unique hla of each pair
+
     for (i in 1:max(hpl_tp_pairs_2$pair)){
       tmp <- hpl_tp_pairs_2 %>% filter(pair == i) %>%
-        mutate(dup_a = ifelse(a[1] == a[2] & cnt_a == 1, cnt_a, cnt_a + 1), # identical = 1, non-identitcal = 2
+        mutate(dup_a = ifelse(a[1] == a[2] & cnt_a == 1, cnt_a, cnt_a + 1), # identical = 0, non-identitcal = 1
                dup_b = ifelse(b[1] == b[2] & cnt_b == 1, cnt_b, cnt_b + 1),
                dup_c = ifelse(c[1] == c[2] & cnt_c == 1, cnt_c, cnt_c + 1),
                dup_drb1 = ifelse(drb1[1] == drb1[2]  & cnt_drb1 == 1, cnt_drb1, cnt_drb1 + 1),
@@ -221,14 +226,12 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       cnt_by_pair <- rbind(cnt_by_pair, tmp)
     }
 
-    # join cnt_pair to hpl_tp_pair table
     hpl_tp_pairs_3 <- left_join(hpl_tp_pairs, cnt_by_pair,
                                 by = "pair") %>%
       filter(cnt_pair == max(cnt_pair)) %>%
-      # setNames(gsub("afa_|cau_", "", names(.))) %>%
+      setNames(gsub("afa_|cau_", "", names(.))) %>%
       select(-cnt)
 
-    # calculate average rank for each pair
     hpl_tp_pairs_4 <- hpl_tp_pairs_3 %>%
       group_by(pair) %>%
       summarise(avg = mean(rank), .groups = 'drop') %>%
@@ -240,14 +243,24 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
     hpl_tp_pairs <- hpl_tp_pairs_4
 
-    # rename pair id
     num_pairs <- dim(hpl_tp_pairs)[1]/2
     hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
     # hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
-    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2))
-  } else{
+    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
+  }
+
+  if(dim(hpl_tp_pairs)[1] > 1 ){
     hpl_tp_pairs <- hpl_tp_pairs %>%
+      mutate(subj = raw$subj,
+             id = pair,
+             type = "imputed") %>%
+      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+  }
+
+  if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
+    hpl_tp_pairs <- hpl_tp_pairs %>%
+      setNames(gsub("afa_|cau_", "", names(.))) %>%
       mutate(subj = raw$subj,
              id = pair,
              type = "imputed",
@@ -255,34 +268,13 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
-  # if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
-  #   hpl_tp_pairs <- hpl_tp_pairs %>%
-  #     setNames(gsub("afa_|cau_", "", names(.))) %>%
-  #     mutate(subj = raw$subj,
-  #            id = pair,
-  #            type = "imputed",
-  #            cnt_pair = cnt) %>%
-  #     select(names(raw))
-  # }else if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
   if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
     hpl_tp_pairs <- raw %>%
       mutate(type = "imputed",
              a = NA, b = NA, c = NA,
              drb1 = NA, dqb1 = NA, drb345 = NA,
              freq = NA, rank = NA, cnt_pair = NA) %>%
-      select(names(raw))
-  } else if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      mutate(subj = raw$subj,
-             # id = pair,
-             type = "imputed") %>%
-      select(names(raw))
-  } else{
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      mutate(subj = raw$subj,
-             id = pair,
-             type = "imputed") %>%
-      select(names(raw))
+      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
   #* end of step 4 *#
