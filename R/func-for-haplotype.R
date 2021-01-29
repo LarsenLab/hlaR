@@ -125,12 +125,20 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       tmp <- hpl_tp_raw %>%
         mutate(indx = row_number())
 
-      hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
-        setNames(c("indx1", "indx2")) %>%
-        mutate(pair = row_number()) %>%
-        pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
-        left_join(., tmp, by = c("value" = "indx")) %>%
-        select(-index)
+      if (dim(tmp)[1] <= 1){
+        hpl_tp_pairs <- tmp %>%
+          mutate(pair = 1,
+                 value = 1) %>%
+          select(pair, value, everything())
+
+      } else{
+        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+          setNames(c("indx1", "indx2")) %>%
+          mutate(pair = row_number()) %>%
+          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+          left_join(., tmp, by = c("value" = "indx")) %>%
+          select(-index)
+      }
 
     } else if(tbl_in$ethnicity == "afa"){
       hpl_tp_raw <- hpl_tp_raw %>%
