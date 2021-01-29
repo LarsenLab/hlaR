@@ -170,20 +170,20 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* end of step 3 *#
 
   ### add
-  if(dim(hpl_tp_pairs)[1] > 500){
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      setNames(gsub("afa_|cau_", "", names(.))) %>%
-      group_by(pair) %>%
-      summarise(avg = mean(rank), .groups = 'drop') %>%
-      ungroup() %>%
-      left_join(hpl_tp_pairs, ., by  = "pair") %>%
-      arrange(avg, pair) %>%
-      select(-c(value, avg)) %>%
-      filter(row_number() <= 500)
-
-    num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
-    hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
-  }
+  # if(dim(hpl_tp_pairs)[1] > 500){
+  #   hpl_tp_pairs <- hpl_tp_pairs %>%
+  #     setNames(gsub("afa_|cau_", "", names(.))) %>%
+  #     group_by(pair) %>%
+  #     summarise(avg = mean(rank), .groups = 'drop') %>%
+  #     ungroup() %>%
+  #     left_join(hpl_tp_pairs, ., by  = "pair") %>%
+  #     arrange(avg, pair) %>%
+  #     select(-c(value, avg)) %>%
+  #     filter(row_number() <= 500)
+  #
+  #   num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
+  #   hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
+  # }
   ### end of add
 
   #* step4: generate paired table *#
