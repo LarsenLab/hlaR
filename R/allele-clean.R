@@ -24,7 +24,7 @@
 CleanAllele <- function(var_1, var_2) {
   # vector of NA definition based on the unique XX pattern from all of the locus in the existing data
   # set to NA for some unidentifiable values
-  vec_na <- c("0.796527778", "0.175", "1/1/00 11:12")
+  vec_na <- c("0.796527778", "0.175", "1/1/00 11:12", "NT", "NO")
 
   # create a temp data frame to hold input antigens
   tmp <- data.frame(cbind(var_1,var_2))
