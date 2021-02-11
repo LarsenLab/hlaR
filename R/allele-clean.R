@@ -21,14 +21,37 @@
 #' }
 #'
 
+#' @name CleanAllele
+#' @title clean messy HLA typing for downstream analysis
+#' @param var_1
+#' hla on locus 1
+#' @param var_2
+#' hla on locus 2
+#' @return
+#' a data frame with cleaned hla of each locus
+#' @export
+#'
+#' @import
+#' tidyverse
+#' utils
+#' readr
+#'
+#' @examples
+#' \dontrun{
+# dat <-  read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR")) %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
+#' clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
+#' clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
+#' }
+#'
+
 CleanAllele <- function(var_1, var_2) {
   # set to NA for some unidentifiable values
   vec_na <- c("0.796527778", "0.175", "1/1/00 11:12")
 
   # create a temp data frame to hold input antigens
   tmp <- data.frame(cbind(var_1,var_2)) %>%
-          mutate(var_1 = gsub(" ", "", str_trim(var_1, side = "both"), fixed = FALSE),
-                 var_2 = gsub(" ", "", str_trim(var_2, side = "both"), fixed = FALSE))
+    mutate(var_1 = gsub(" ", "", str_trim(var_1, side = "both"), fixed = FALSE),
+           var_2 = gsub(" ", "", str_trim(var_2, side = "both"), fixed = FALSE))
 
   # step 1 : remove BW4s
   bw4 <- c("\\(BW4\\)|\\[BW4\\]|\\[BW4\\}|\\{BW4\\)|\\{BW4\\}|\\{BW4\\}|\\(\\{BW4\\}|\\(BW4\\}\\|BW4\\)")
@@ -89,16 +112,22 @@ CleanAllele <- function(var_1, var_2) {
   #         - if it's hi resolution and nchar > 5 then keep first 5 chars only
   # var_1_out <- ifelse(str_count(var_1_c4, ":") > 0 & nchar(unlist(str_split(var_1_c4,":"))) == 1, paste("0", var_1_c4, sep=""), var_1_c4)
   # var_2_out <- ifelse(str_count(var_2_c4, ":") > 0 & nchar(unlist(str_split(var_2_c4,":"))) == 1, paste("0", var_2_c4, sep=""), var_2_c4)
-  var_1_out <- ifelse(str_count(var_1_c5, ":") > 0 & nchar(var_1_c5) < 5, paste("0", var_1_c5, sep=""), var_1_c5)
-  var_2_out <- ifelse(str_count(var_2_c5, ":") > 0 & nchar(var_2_c5) < 5, paste("0", var_2_c5, sep=""), var_2_c5)
+  tmp1 <- ifelse(str_count(var_1_c5, ":") > 0 & nchar(var_1_c5) < 5, paste("0", var_1_c5, sep=""), var_1_c5)
+  tmp2 <- ifelse(str_count(var_2_c5, ":") > 0 & nchar(var_2_c5) < 5, paste("0", var_2_c5, sep=""), var_2_c5)
 
-  var_1_out <- ifelse(nchar(var_1_out) > 5, substr(var_1_out, 1, 5), var_1_out)
-  var_2_out <- ifelse(nchar(var_2_out) > 5, substr(var_2_out, 1, 5), var_2_out)
+  tmp1 <- ifelse(nchar(tmp1) > 5, substr(tmp1, 1, 5), tmp1)
+  tmp2 <- ifelse(nchar(tmp2) > 5, substr(tmp2, 1, 5), tmp2)
+
+  result <- data.frame(cbind(tmp1, tmp2)) %>%
+    mutate(locus1_clean = ifelse(tmp1 != "", tmp1,
+                                 ifelse(tmp2 != "", tmp2, "")),
+           locus2_clean = ifelse(tmp2 != "", tmp2,
+                                 ifelse(tmp1 != "", tmp1, ""))) %>%
+    select(locus1_clean, locus2_clean)
 
   # step 10: remove temporary variable holders
-  rm(var_1_c1, var_1_c2, var_1_c3, var_1_c4, var_1_c5, var_2_c1, var_2_c2, var_2_c3, var_2_c4, var_2_c5, tmp)
+  rm(var_1_c1, var_1_c2, var_1_c3, var_1_c4, var_1_c5, var_2_c1, var_2_c2, var_2_c3, var_2_c4, var_2_c5, tmp, tmp1, tmp2)
 
-  result <- data.frame(cbind(var_1_out,var_2_out)) %>%
-            setNames(c("locus1_clean", "locus2_clean"))
   return(result)
 }
+
