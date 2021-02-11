@@ -82,8 +82,8 @@ CleanAllele <- function(var_1, var_2) {
   var_2_c4 <- map_chr(var_2_c3, function(x) ifelse(nchar(x) == 1, paste0("0",x), x))
 
   # step 8 : - if string contains letters only, then set to NA
-  var_1_c5 = ifelse(!grepl("[^A-Za-z]", var_1_c4), "", var_1_c4)
-  var_2_c5 = ifelse(!grepl("[^A-Za-z]", var_2_c4), "", var_2_c4)
+  var_1_c5 <- ifelse(!grepl("[^A-Za-z]", var_1_c4), "", var_1_c4)
+  var_2_c5 <- ifelse(!grepl("[^A-Za-z]", var_2_c4), "", var_2_c4)
 
   # step 9 : - if it's high resolution and nchar < 5, then add a leading 0
   #         - if it's hi resolution and nchar > 5 then keep first 5 chars only

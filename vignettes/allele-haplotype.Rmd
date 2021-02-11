@@ -31,17 +31,15 @@ Analysis of historic hla typing data is limited by low to moderate resolution. U
 A sample HLA typing data derived from a cohort of 200 kidney transplant recipients is provided to demonstrate the `CompHaploTbl` function.    donor and recipient cleaned HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, DQa  DQb, DPA, and DPB).
 A set of low resolution HLA typing for 200 kidney transplant donor recipient pairs is provided. This data has already been cleaned using the `CleanHLAallele` function. 
 
-
 ```{r}
-tx_cohort_clean <- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))
+tx_cohort_clean <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
 ```
-
 
 ## Generate List of Possible Haplotypes and Sort Most likely Pairs
 Use the `CompHaploTbl` Function to generate a list of high resolution haplotypes that fit the patient's low resolution data. The haplotypes are sorted by a count measure, "cnt" that represents the number of high resolution antigens that match the low resolution input. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible combinations of haplotypes. For each combination, calculate the count, again representing the number of high resolution antigens that match the low resolution input, without counting duplicates. Results are arranged by descending count, and pairs with the same count are arranged by descending population frequency. 
 
 ```{r}
-haplotbl<- CompHaploTbl(tx_cohort_clean)
+haplotbl<- CompHaploTbl(tx_cohort_clean[1:10,])
 ```
 
 ## Impute high-resolution data
