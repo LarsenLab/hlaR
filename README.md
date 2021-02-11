@@ -49,9 +49,6 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 
 ### - haplotype
-dat <- read_csv(system.file("extdata/example", "Haplotype_test_short.csv", package = "hlaR"))<br>
-re <- CompHaploTbl(dat_in = dat)<br>
-check results of recipient2 <br>
-re$rcpt_44
-re$don_44
+dat <- read_csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
+re <- CompHaploTbl(dat_in = dat[1:5,])<br>
 
