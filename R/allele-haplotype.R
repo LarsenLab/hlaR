@@ -20,7 +20,8 @@ CompHaploTbl <- function(dat_in){
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
            afa_freq, afa_rank, api_freq, api_rank, cau_freq, cau_rank, his_freq, his_rank, nam_freq, nam_rank) %>%
-    mutate(idx = as.numeric(rownames(.))) %>%
+    mutate(idx = as.numeric(rownames(.)),
+           drb = str_sub(drb345, 1, 4)) %>%
     # remove trailing g
     mutate(a = ifelse(str_detect(a, "g"), str_replace(a, "g", ""), a),
            b = ifelse(str_detect(b, "g"), str_replace(b, "g", ""), b),
