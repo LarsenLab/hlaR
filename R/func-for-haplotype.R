@@ -109,7 +109,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     if(tbl_in$ethnicity == "cau"){
       hpl_tp_raw <- hpl_tp_raw %>%
         arrange(cau_rank) %>%
-        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt)
+        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt, drb)
 
       tmp <- hpl_tp_raw %>%
         mutate(indx = row_number())
@@ -132,7 +132,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     } else if(tbl_in$ethnicity == "afa"){
       hpl_tp_raw <- hpl_tp_raw %>%
         arrange(afa_rank) %>%
-        select(id, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt)
+        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt, drb)
 
       tmp <- hpl_tp_raw %>%
         mutate(indx = row_number())
@@ -246,7 +246,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
     hpl_tp_pairs <- hpl_tp_pairs %>%
       mutate(subj = raw$subj,
              id = pair,
-             type = "imputed") %>%
+             type = "imputed",
+             drb345 = paste(drb, drb345, sep = "*")) %>%
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
@@ -257,7 +258,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       mutate(subj = raw$subj,
              id = pair,
              type = "imputed",
-             cnt_pair = cnt) %>%
+             cnt_pair = cnt,
+             drb345 = paste(drb, drb345, sep = "*")) %>%
       select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
   }
 
@@ -276,4 +278,5 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
   return(result)
 }
+
 
