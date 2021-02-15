@@ -32,12 +32,12 @@ CalAlleleTopN <- function(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5){
               mutate(part_type = ifelse(name %in% nms_don, "don",
                                         ifelse(name %in% nms_rcpt, "rcpt", "none"))) %>%
               select(-name) %>%
-              filter(!is.na(allele)) %>%
+              filter(!is.na(allele) & allele != "") %>%
               group_by(part_type, allele) %>%
               summarise(freq = n(), .groups = 'drop') %>%
               ungroup() %>%
               group_by(part_type) %>%
-              top_n(top_n) %>%
+              top_n(top_n, wt = freq) %>%
               ungroup() %>%
               arrange(part_type, -freq)
 
