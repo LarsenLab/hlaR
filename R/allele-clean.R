@@ -86,8 +86,8 @@ CleanAllele <- function(var_1, var_2) {
                             ifelse(str_detect(var_2, "\\{"), str_replace(var_2, "\\s*\\{[^\\}]+\\}", ""), var_2)))
 
   # step 4 : remove other special symbols like *, #, :., ), ], }, (., and {. , then drop non-numeric characters
-  var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*", '', var_1_c1)
-  var_2_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*", '', var_2_c1)
+  var_1_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*|@", '', var_1_c1)
+  var_2_c2 <- gsub("\\)|\\]|\\}|\\*|\\#|\\(.*|\\{.*|@", '', var_2_c1)
 
   # if the string contains more than 1 ":", then remove everything strating from 2nd ":"
   # ex: 39:02:02 will become 39:02
@@ -118,15 +118,12 @@ CleanAllele <- function(var_1, var_2) {
   tmp1 <- ifelse(nchar(tmp1) > 5, substr(tmp1, 1, 5), tmp1)
   tmp2 <- ifelse(nchar(tmp2) > 5, substr(tmp2, 1, 5), tmp2)
 
-  # if allele is dd:ww then remove :ww, if it's ww:dd then remove ww:
-  # if it's special case "@0", then set to blank
   tmp1 <- ifelse(str_detect(tmp1, "\\d\\d\\:\\w\\w"), str_sub(tmp1, 1 ,2),
-                 ifelse(str_detect(tmp1, "\\ww\\ww\\:\\d\\d"), str_sub(tmp1, 4 ,5),
-                        ifelse(str_detect(tmp1, "@0"), "", tmp1)))
+                 ifelse(str_detect(tmp1, "\\ww\\ww\\:\\d\\d"), str_sub(tmp1, 4 ,5), tmp1))
 
   tmp2 <- ifelse(str_detect(tmp2, "\\d\\d\\:\\w\\w"), str_sub(tmp2, 1 ,2),
-                 ifelse(str_detect(tmp2, "\\ww\\ww\\:\\d\\d"), str_sub(tmp2, 4 ,5),
-                        ifelse(str_detect(tmp2, "@0"), "", tmp2)))
+                 ifelse(str_detect(tmp2, "\\ww\\ww\\:\\d\\d"), str_sub(tmp2, 4 ,5), tmp2))
+
 
   result <- data.frame(cbind(tmp1, tmp2)) %>%
     mutate(locus1_clean = ifelse(tmp1 != "", tmp1,
