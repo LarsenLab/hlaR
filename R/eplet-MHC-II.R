@@ -287,13 +287,14 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
 
   ###*** step 5: generate output table ***###
   results <- rbind(results_a, results_b) %>%
-             mutate(name = gsub(".*\\_","", subject),
-                    gene = gsub("\\_.*", "", subject)) %>%
-             select(name, gene, mm_eplets, mm_cnt) %>%
-             arrange(name, gene)%>%
-             left_join(., match_id, by = "match_id") %>%
-             select(-match_id) %>%
-             select(part_id, everything())
+              mutate(name = gsub(".*\\_","", subject),
+                     gene = gsub("\\_.*", "", subject),
+                     match_id = as.numeric(str_replace(name, "subj", ""))) %>%
+              select(name, gene, mm_eplets, mm_cnt, match_id) %>%
+              arrange(name, gene)%>%
+              left_join(., match_id, by = "match_id") %>%
+              select(-match_id) %>%
+              select(part_id, everything())
 
   return(results)
   ###*** end of step 5 ***###
