@@ -74,6 +74,13 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
           arrange(part_id_ori) %>%
           mutate(part_id = dense_rank(part_id_ori))
 
+  id_match <- dat %>%
+              select(part_id_ori, part_id) %>%
+              mutate(part_id = as.character(part_id))
+
+  dat <- dat %>%
+          select(-part_id_ori)
+
   subj_num <- dim(dat)[1]
   tmp_names <- c(nm_rec, nm_don)
 
@@ -218,7 +225,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
                      gene = gsub("\\_.*","",subject) )
 
   don_allele <- dat %>%
-                select(part_id, part_id_ori, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
+                select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
                 pivot_longer(cols = starts_with("don_"),
                              names_to = "gene",
                              values_to = "don_type") %>%
@@ -227,8 +234,11 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
 
   result <- result %>%
             left_join(., don_allele, by =c("part_id", "gene") ) %>%
-            select(part_id_ori, subject, don_type, mm_eplets, mm_cnt) %>%
-            dplyr::rename(part_id = part_id_ori)
+            select(part_id, subject, don_type, mm_eplets, mm_cnt) %>%
+            left_join(., id_match, by = "part_id") %>%
+            select(-part_id) %>%
+            rename(part_id = part_id_ori) %>%
+            select(part_id, everything())
 
   return(result)
 }
