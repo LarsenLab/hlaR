@@ -79,7 +79,8 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
               mutate(part_id = as.character(part_id))
 
   dat <- dat %>%
-          select(-part_id_ori)
+          select(-part_id_ori) %>%
+    select(part_id, part_type, everything())
 
   subj_num <- dim(dat)[1]
   tmp_names <- c(nm_rec, nm_don)
