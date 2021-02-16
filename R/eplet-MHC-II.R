@@ -107,7 +107,12 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
           select(-donor_type) %>%
           setNames(c("part_id", "part_type", nm_don))
 
-  dat <- left_join(rcpt, don, by = c("part_id", "part_type"))
+  dat <- left_join(rcpt, don, by = c("part_id", "part_type")) %>%
+          arrange(part_id)
+
+  match_id <- dat %>%
+              select(part_id) %>%
+              mutate(match_id = dense_rank(part_id))
 
   subj_num <- dim(dat)[1]
   tmp_names <- c(nm_rec, nm_don)
@@ -285,7 +290,10 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
              mutate(name = gsub(".*\\_","", subject),
                     gene = gsub("\\_.*", "", subject)) %>%
              select(name, gene, mm_eplets, mm_cnt) %>%
-             arrange(name, gene)
+             arrange(name, gene)%>%
+             left_join(., match_id, by = "match_id") %>%
+             select(-match_id) %>%
+             select(part_id, everything())
 
   return(results)
   ###*** end of step 5 ***###
