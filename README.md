@@ -18,7 +18,7 @@ a<br>
 b <- EvalAlleleMism(dat$DONOR_B1, dat$DONOR_B2, dat$RECIPIENT_B1, dat$RECIPIENT_B2)<br>
 b<br>
 
-### - haplotype
+### haplotype
 dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
 re <- CompHaploTbl(dat_in = dat[1:5,])<br>
 
@@ -38,7 +38,7 @@ eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
 (or simply eplet_mm2_v3 <- CalEpletMHCII(dat) )<br>
 head(eplet_mm2_v3)
 
-### other  functionalities
+### other functionalities
 #### - count of mis-match
 hla_mm_cnt <- read.csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))<br>
 classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))<br>
