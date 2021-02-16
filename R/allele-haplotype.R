@@ -78,7 +78,7 @@ CompHaploTbl <- function(dat_in){
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
 
   for (i in 1:num_subj){
-    print(paste("subject", i))
+    # print(paste("subject", i))
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
   }
 
