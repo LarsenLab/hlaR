@@ -118,6 +118,16 @@ CleanAllele <- function(var_1, var_2) {
   tmp1 <- ifelse(nchar(tmp1) > 5, substr(tmp1, 1, 5), tmp1)
   tmp2 <- ifelse(nchar(tmp2) > 5, substr(tmp2, 1, 5), tmp2)
 
+  # if allele is dd:ww then remove :ww, if it's ww:dd then remove ww:
+  # if it's special case "@0", then set to blank
+  tmp1 <- ifelse(str_detect(tmp1, "\\d\\d\\:\\w\\w"), str_sub(tmp1, 1 ,2),
+                 ifelse(str_detect(tmp1, "\\ww\\ww\\:\\d\\d"), str_sub(tmp1, 4 ,5),
+                        ifelse(str_detect(tmp1, "@0"), "", tmp1)))
+
+  tmp2 <- ifelse(str_detect(tmp2, "\\d\\d\\:\\w\\w"), str_sub(tmp2, 1 ,2),
+                 ifelse(str_detect(tmp2, "\\ww\\ww\\:\\d\\d"), str_sub(tmp2, 4 ,5),
+                        ifelse(str_detect(tmp2, "@0"), "", tmp2)))
+
   result <- data.frame(cbind(tmp1, tmp2)) %>%
     mutate(locus1_clean = ifelse(tmp1 != "", tmp1,
                                  ifelse(tmp2 != "", tmp2, "")),
