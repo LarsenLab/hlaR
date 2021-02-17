@@ -2,6 +2,7 @@
 
 export(CalAlleleMismFreq)
 export(CalAlleleTopN)
+export(CalEpletMHCII_o)
 export(CalEpletMHCII_s)
 export(CalEpletMHCI_o)
 export(CalEpletMHCI_s)
