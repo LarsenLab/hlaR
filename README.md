@@ -28,14 +28,14 @@ dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR
 eplet_mm1_v2 <- CalEpletMHCI_s(dat, ver = 2)<br>
 head(eplet_mm1_v2)<br>
 eplet_mm1_v3 <- CalEpletMHCI_s(dat, ver = 3)<br>
-(or simply eplet_mm1_v3 <- CalEpletMHCI(dat) )<br>
+(or simply eplet_mm1_v3 <- CalEpletMHCI_s(dat) )<br>
 head(eplet_mm1_v3)
 #### - MHC class II
 dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2_v2 <- CalEpletMHCII_s(dat, ver = 2)<br>
 head(eplet_mm2_v2)<br>
 eplet_mm2_v3 <- CalEpletMHCII_s(dat, ver = 3)<br>
-(or simply eplet_mm2_v3 <- CalEpletMHCII(dat) )<br>
+(or simply eplet_mm2_v3 <- CalEpletMHCII_s(dat) )<br>
 head(eplet_mm2_v3)
 
 ### other functionalities
