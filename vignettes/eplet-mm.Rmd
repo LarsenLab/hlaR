@@ -64,12 +64,12 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 ```{r, message = FALSE}
 # use the testing data in the library
 dat <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
-re <- CalEpletMHCII(dat)
+re <- CalEpletMHCII_s(dat)
 head(re$count)
 head(re$detail)
 
 path_test <- system.file("extdata/example", "MHC_I_test.csv", package="hlaR")
-test <-  read_csv(path_test)
+test <-  read.csv(path_test)
 ```
 
 ### Use case 2 Epilet MM for Transplant Cohort  (clinical.... 
@@ -126,7 +126,7 @@ Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe 
 Describe the function purpose, input output. Reference matchmaker
 
 ```{r calculate class I and class II epilet mm}
-# out <- CalEpletMHCI(high_res_cohort)
+# out <- CalEpletMHCI_s(high_res_cohort)
 ```
 
 Generate some visuals (base vs ggplot)

@@ -1,5 +1,5 @@
-#' @name CalEpletMHCII
-#' @title calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm
+#' @name CalEpletMHCII_s
+#' @title calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, single molecule level
 #' @param dat_in
 #' dataframe with subject info (first 3 columns) and MHC II allele info
 #' @param ver
@@ -23,14 +23,14 @@
 #' @examples
 #' \dontrun{
 # dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)
-#' re2 <- CalEpletMHCII(dat, ver = 2)
-#' re3 <- CalEpletMHCII(dat, ver = 3)
+#' re2 <- CalEpletMHCII_s(dat, ver = 2)
+#' re3 <- CalEpletMHCII_s(dat, ver = 3)
 #' }
 #'
 # below is an example to use globalVariables() to suppress "no visible global variable" note
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
-CalEpletMHCII <- function(dat_in, ver = 3) {
+CalEpletMHCII_s <- function(dat_in, ver = 3) {
   ###*** step 1: import raw eplet tables ***###
   if(ver == 2){
   raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)

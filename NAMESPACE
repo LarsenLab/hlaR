@@ -2,8 +2,8 @@
 
 export(CalAlleleMismFreq)
 export(CalAlleleTopN)
-export(CalEpletMHCI)
-export(CalEpletMHCII)
+export(CalEpletMHCII_s)
+export(CalEpletMHCI_s)
 export(CleanAllele)
 export(CompHaploTbl)
 export(CountAlleleMism)
