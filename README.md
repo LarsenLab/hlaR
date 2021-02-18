@@ -41,8 +41,8 @@ head(eplet_mm2_v3)
 ### other functionalities
 #### - count of mis-match
 hla_mm_cnt <- read.csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))<br>
-classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))<br>
-classII <- CountAlleleMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))<br>
+classI <- CountAlleleMism(hla_mm_cnt, c("mism_a", "mism_b"))<br>
+classII <- CountAlleleMism(hla_mm_cnt, c("mism_drb1", "mism_dqa", "mism_dqb"))<br>
 #### - topN most frequent recipient/donor alleles 
 dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
 don <- c("donor.a1", "donor.a2")<br>

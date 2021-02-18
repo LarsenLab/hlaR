@@ -1,5 +1,6 @@
 #' @name EvalAlleleMism
 #' @title evaluate mis-match alleles
+#  Mismatches at homozygous alleles were considered single mismatches
 #' @param don_1
 #' donor's alpha1 domain
 #' @param don_2
@@ -81,9 +82,14 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
 
   rm(tmp)
 
+  # mims total count = 1 if mismatch at homozygous alleles
   result <- data.frame(don_1_clean = don_1_clean, don_2_clean = don_2_clean,
                        recip_1_clean = recip_1_clean, recip_2_clean = recip_2_clean,
-                       mism_1 = mis_1, mism_2 = mis_2)
+                       mism_1 = mis_1, mism_2 = mis_2) %>%
+            mutate(tmp = mism_1 + mism_2,
+                   mism_cnt = ifelse(don_1_clean == don_2_clean & tmp == 2, tmp - 1, tmp)) %>%
+            select(-tmp)
+
   rownames(result) <- seq(1, dim(result)[1])
 
   return(result)
