@@ -3,7 +3,7 @@
 \name{CalEpletMHCI_s}
 \alias{CalEpletMHCI_s}
 \alias{CalEpletMHCI_o}
-\title{calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summarized report}
+\title{calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summary report}
 \usage{
 CalEpletMHCI_o(dat_in, ver = 3)
 
@@ -23,7 +23,7 @@ detail table: detailed mis-match eplet of each subject id, plus count and percen
 data table with detailed single molecule level mis-match eplet info of each subject
 }
 \description{
-calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summarized report
+calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summary report
 
 calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, single molecule level
 }

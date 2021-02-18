@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet-MHC-II_o.R
 \name{CalEpletMHCII_o}
 \alias{CalEpletMHCII_o}
-\title{calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, summarized report}
+\title{calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, summary report}
 \usage{
 CalEpletMHCII_o(dat_in, ver = 3)
 }
@@ -17,7 +17,7 @@ count table: original input data appended with count mis-matched eplet of each p
 detail table: detailed mis-match eplet of each subject id, plus count and percentage of mis-match across all pairs
 }
 \description{
-calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, summarized report
+calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, summary report
 }
 \examples{
 \dontrun{

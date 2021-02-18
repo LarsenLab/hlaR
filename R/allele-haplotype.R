@@ -1,4 +1,4 @@
-#' @name CompHaploTbl
+#' @name ImputeHaplo
 #' @title feed low resolution hla typing to NMDP frequency table to get best pairs of haplotype combination based on max count of unique low res in the combination
 #' @param dat_in
 #' dataframe with recipient/donor alleles info
@@ -10,11 +10,11 @@
 #' @examples
 #' \dontrun{
 # dat <- read_csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
-#' result <- CompHaploTbl(dat_in = dat)
+#' result <- ImputeHaplo(dat_in = dat)
 #' }
 #' @export
 
-CompHaploTbl <- function(dat_in){
+ImputeHaplo <- function(dat_in){
   #* step 1: import raw haplotype frequency table and do a brief cleaning *#
   raw_hap_tbl <- read.csv(system.file("extdata/ref", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
