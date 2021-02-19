@@ -115,14 +115,8 @@ CleanAllele <- function(var_1, var_2) {
   tmp1 <- ifelse(str_count(var_1_c5, ":") > 0 & nchar(var_1_c5) < 5, paste("0", var_1_c5, sep=""), var_1_c5)
   tmp2 <- ifelse(str_count(var_2_c5, ":") > 0 & nchar(var_2_c5) < 5, paste("0", var_2_c5, sep=""), var_2_c5)
 
-  tmp1 <- ifelse(nchar(tmp1) > 5, substr(tmp1, 1, 5), tmp1)
-  tmp2 <- ifelse(nchar(tmp2) > 5, substr(tmp2, 1, 5), tmp2)
-
-  tmp1 <- ifelse(str_detect(tmp1, "\\d\\d\\:\\w\\w"), str_sub(tmp1, 1 ,2),
-                 ifelse(str_detect(tmp1, "\\ww\\ww\\:\\d\\d"), str_sub(tmp1, 4 ,5), tmp1))
-
-  tmp2 <- ifelse(str_detect(tmp2, "\\d\\d\\:\\w\\w"), str_sub(tmp2, 1 ,2),
-                 ifelse(str_detect(tmp2, "\\ww\\ww\\:\\d\\d"), str_sub(tmp2, 4 ,5), tmp2))
+  tmp1 <- str_replace(tmp1, "[A-Z]|[a-z]", "")
+  tmp2 <- str_replace(tmp2, "[A-Z]|[a-z]", "")
 
 
   result <- data.frame(cbind(tmp1, tmp2)) %>%
@@ -137,4 +131,3 @@ CleanAllele <- function(var_1, var_2) {
 
   return(result)
 }
-
