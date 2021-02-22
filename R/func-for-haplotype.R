@@ -7,7 +7,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo <- function(tbl_raw, tbl_in) {
+FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
   #* step 0: reshape raw data so it will bind with paired imputed haplotype data  *#
   raw <- tbl_in %>%
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
@@ -73,210 +73,288 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 3: pull out high res combinations of max group count *#
   tmp_indx <- unique(c(indx_hi, indx_lo))
 
-  if(length(tmp_indx) > 0 & num_na > 3) {
-    # count: by row(individual combination)
-    # purpose: count nnumber of imputed allele occurs in the raw input data
-    # filter  imputed rows by max count of sum(hi/low resolution part of raw impute table, occurs in user's input table)
-    hpl_tp_raw <- tbl_raw %>%
-      mutate(id = tbl_in$rowid,
-             cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
-             cnt_b = ifelse(fst_b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
-             cnt_c = ifelse(fst_c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
-             cnt_drb1 = ifelse(fst_drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
-             cnt_dqb1 = ifelse(fst_dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
-             cnt_drb3 = ifelse(fst_drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
-             cnt_drb4 = ifelse(fst_drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
-             cnt_drb5 = ifelse(fst_drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0),
+  if(str_detect(raw$subj, "oth")){
+    result <- raw
+  } else {
+    if(length(tmp_indx) > 0 & num_na > 3) {
+      # count: by row(individual combination)
+      # purpose: count nnumber of imputed allele occurs in the raw input data
+      # filter  imputed rows by max count of sum(hi/low resolution part of raw impute table, occurs in user's input table)
+      hpl_tp_raw <- tbl_raw %>%
+        mutate(id = tbl_in$rowid,
+               cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
+               cnt_b = ifelse(fst_b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
+               cnt_c = ifelse(fst_c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
+               cnt_drb1 = ifelse(fst_drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
+               cnt_dqb1 = ifelse(fst_dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
+               cnt_drb3 = ifelse(fst_drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
+               cnt_drb4 = ifelse(fst_drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
+               cnt_drb5 = ifelse(fst_drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0),
 
-             cnt_a_hi = ifelse(a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
-             cnt_b_hi = ifelse(b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
-             cnt_c_hi = ifelse(c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
-             cnt_drb1_hi = ifelse(drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
-             cnt_dqb1_hi = ifelse(dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
-             cnt_drb3_hi = ifelse(drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
-             cnt_drb4_hi = ifelse(drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
-             cnt_drb5_hi = ifelse(drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0)) %>%
-      mutate(cnt_drb345 = ifelse(cnt_drb3 + cnt_drb4 + cnt_drb5 > 0, 1, 0),
-             cnt_drb345_hi = ifelse(cnt_drb3_hi + cnt_drb4_hi + cnt_drb5_hi > 0, 1, 0)) %>%
-      mutate(cnt_lo = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb345,
-             cnt_hi = cnt_a_hi + cnt_b_hi + cnt_c_hi + cnt_drb1_hi + cnt_dqb1_hi + cnt_drb345_hi,
-             cnt = cnt_lo + cnt_hi) %>%
-      filter(cnt == max(cnt))
+               cnt_a_hi = ifelse(a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
+               cnt_b_hi = ifelse(b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
+               cnt_c_hi = ifelse(c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
+               cnt_drb1_hi = ifelse(drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
+               cnt_dqb1_hi = ifelse(dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
+               cnt_drb3_hi = ifelse(drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
+               cnt_drb4_hi = ifelse(drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
+               cnt_drb5_hi = ifelse(drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0)) %>%
+        mutate(cnt_drb345 = ifelse(cnt_drb3 + cnt_drb4 + cnt_drb5 > 0, 1, 0),
+               cnt_drb345_hi = ifelse(cnt_drb3_hi + cnt_drb4_hi + cnt_drb5_hi > 0, 1, 0)) %>%
+        mutate(cnt_lo = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb345,
+               cnt_hi = cnt_a_hi + cnt_b_hi + cnt_c_hi + cnt_drb1_hi + cnt_dqb1_hi + cnt_drb345_hi,
+               cnt = cnt_lo + cnt_hi) %>%
+        filter(cnt == max(cnt))
 
-    # pull out ethnicity specific rank and frequency
-    # if ethicity is "cau" or "afa", pull data and mutate a little bit
-    # if none ethnicity, the set up empty hpl_tp_raw and hpl_tp_pairs
-    if(tbl_in$ethnicity == "cau"){
-      hpl_tp_raw <- hpl_tp_raw %>%
-        arrange(cau_rank) %>%
-        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt, drb)
+      # pull out ethnicity specific rank and frequency
+      # if ethicity is "cau" or "afa", pull data and mutate a little bit
+      # if none ethnicity, the set up empty hpl_tp_raw and hpl_tp_pairs
+      if(tbl_in$ethnicity == "cau"){
+        hpl_tp_raw <- hpl_tp_raw %>%
+          arrange(cau_rank) %>%
+          select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt, drb)
 
-      tmp <- hpl_tp_raw %>%
-        mutate(indx = row_number())
+        tmp <- hpl_tp_raw %>%
+          mutate(indx = row_number())
 
-      if (dim(tmp)[1] <= 1){
-        hpl_tp_pairs <- tmp %>%
-          mutate(pair = 1,
-                 value = 1) %>%
-          select(pair, value, everything())
+        if (dim(tmp)[1] <= 1){
+          hpl_tp_pairs <- tmp %>%
+            mutate(pair = 1,
+                   value = 1) %>%
+            select(pair, value, everything())
 
-      } else{
-        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
-          setNames(c("indx1", "indx2")) %>%
-          mutate(pair = row_number()) %>%
-          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
-          left_join(., tmp, by = c("value" = "indx")) %>%
-          select(-index)
+        } else{
+          hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+            setNames(c("indx1", "indx2")) %>%
+            mutate(pair = row_number()) %>%
+            pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+            left_join(., tmp, by = c("value" = "indx")) %>%
+            select(-index)
+        }
+
+      }
+      if(tbl_in$ethnicity == "afa"){
+        hpl_tp_raw <- hpl_tp_raw %>%
+          arrange(afa_rank) %>%
+          select(id, a, b, c, drb1, dqb1, drb345, afa_freq, afa_rank, cnt, drb)
+
+        tmp <- hpl_tp_raw %>%
+          mutate(indx = row_number())
+
+        if (dim(tmp)[1] <= 1){
+          hpl_tp_pairs <- tmp %>%
+            mutate(pair = 1,
+                   value = 1) %>%
+            select(pair, value, everything())
+
+        } else{
+          hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+            setNames(c("indx1", "indx2")) %>%
+            mutate(pair = row_number()) %>%
+            pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+            left_join(., tmp, by = c("value" = "indx")) %>%
+            select(-index)
+        }
+      }
+      if(tbl_in$ethnicity == "his"){
+        hpl_tp_raw <- hpl_tp_raw %>%
+          arrange(his_rank) %>%
+          select(id, a, b, c, drb1, dqb1, drb345, his_freq, his_rank, cnt, drb)
+
+        tmp <- hpl_tp_raw %>%
+          mutate(indx = row_number())
+
+        if (dim(tmp)[1] <= 1){
+          hpl_tp_pairs <- tmp %>%
+            mutate(pair = 1,
+                   value = 1) %>%
+            select(pair, value, everything())
+
+        } else{
+          hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+            setNames(c("indx1", "indx2")) %>%
+            mutate(pair = row_number()) %>%
+            pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+            left_join(., tmp, by = c("value" = "indx")) %>%
+            select(-index)
+        }
+      }
+      if(tbl_in$ethnicity == "nam"){
+        hpl_tp_raw <- hpl_tp_raw %>%
+          arrange(nam_rank) %>%
+          select(id, a, b, c, drb1, dqb1, drb345, nam_freq, nam_rank, cnt, drb)
+
+        tmp <- hpl_tp_raw %>%
+          mutate(indx = row_number())
+
+        if (dim(tmp)[1] <= 1){
+          hpl_tp_pairs <- tmp %>%
+            mutate(pair = 1,
+                   value = 1) %>%
+            select(pair, value, everything())
+
+        } else{
+          hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+            setNames(c("indx1", "indx2")) %>%
+            mutate(pair = row_number()) %>%
+            pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+            left_join(., tmp, by = c("value" = "indx")) %>%
+            select(-index)
+        }
+      }
+      if(tbl_in$ethnicity == "api"){
+        hpl_tp_raw <- hpl_tp_raw %>%
+          arrange(api_rank) %>%
+          select(id, a, b, c, drb1, dqb1, drb345, api_freq, api_rank, cnt, drb)
+
+        tmp <- hpl_tp_raw %>%
+          mutate(indx = row_number())
+
+        if (dim(tmp)[1] <= 1){
+          hpl_tp_pairs <- tmp %>%
+            mutate(pair = 1,
+                   value = 1) %>%
+            select(pair, value, everything())
+
+        } else{
+          hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
+            setNames(c("indx1", "indx2")) %>%
+            mutate(pair = row_number()) %>%
+            pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
+            left_join(., tmp, by = c("value" = "indx")) %>%
+            select(-index)
+        }
       }
 
-    } else if(tbl_in$ethnicity == "afa"){
-      hpl_tp_raw <- hpl_tp_raw %>%
-        arrange(afa_rank) %>%
-        select(id, a, b, c, drb1, dqb1, drb345, cau_freq, cau_rank, cnt, drb)
+    }
 
-      tmp <- hpl_tp_raw %>%
-        mutate(indx = row_number())
 
-      if (dim(tmp)[1] <= 1){
-        hpl_tp_pairs <- tmp %>%
-          mutate(pair = 1,
-                 value = 1) %>%
-          select(pair, value, everything())
+    #* end of step 3 *#
 
-      } else{
-        hpl_tp_pairs <- data.frame(t(combn(tmp$indx,2))) %>%
-          setNames(c("indx1", "indx2")) %>%
-          mutate(pair = row_number()) %>%
-          pivot_longer(cols = c("indx1", "indx2"), names_to = "index") %>%
-          left_join(., tmp, by = c("value" = "indx")) %>%
-          select(-index)
+    #* step 4a: if there are too many paired combinations, then keep first 500 pairs lowest average rank within each pair *#
+    if(dim(hpl_tp_pairs)[1] > 1000){
+      hpl_tp_pairs <- hpl_tp_pairs %>%
+        setNames(gsub("afa_|cau_|his_|api_|nam_", "", names(.))) %>%
+        group_by(pair) %>%
+        summarise(avg = mean(rank), .groups = 'drop') %>%
+        ungroup() %>%
+        left_join(hpl_tp_pairs, ., by  = "pair") %>%
+        arrange(avg, pair) %>%
+        select(-c(value, avg)) %>%
+        filter(row_number() <= 1000)
+
+      num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
+      hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
+    }
+    #* end of 4a *#
+
+    #* step 4b: generate paired table *#
+    if(dim(hpl_tp_pairs)[1] > 1) {
+      # count: by pair(a pair of combinations)
+      # purpose: count UNIQUE number of raw low/high allele occurs in the imputed pair
+      hpl_tp_pairs_2 <-  hpl_tp_pairs %>%
+        mutate(a = sub("\\:.*", "", a),
+               b = sub("\\:.*", "", b),
+               c = sub("\\:.*", "", c) ,
+               drb1 = sub("\\:.*", "", drb1),
+               dqb1 = sub("\\:.*", "", dqb1),
+               drb345 = sub("\\:.*", "", drb345)) %>%
+        mutate(cnt_a = ifelse(a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
+               cnt_b = ifelse(b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
+               cnt_c = ifelse(c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
+               cnt_drb1 = ifelse(drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
+               cnt_dqb1 = ifelse(dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
+               cnt_drb3 = ifelse(drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
+               cnt_drb4 = ifelse(drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
+               cnt_drb5 = ifelse(drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0)) %>%
+        mutate(cnt_drb345 = ifelse(cnt_drb3 + cnt_drb4 + cnt_drb5 > 0, 1, 0)) %>%
+        mutate(cnt_sum = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb345) %>%
+        select(-c(cnt_drb3, cnt_drb4, cnt_drb5))
+
+      cnt_by_pair <- data.frame(pair = numeric(),
+                                cnt_pair = numeric())
+
+      for (i in 1:max(hpl_tp_pairs_2$pair)){
+        tmp <- hpl_tp_pairs_2 %>% filter(pair == i) %>%
+          mutate(dup_a = ifelse(a[1] == a[2] & cnt_a == 1, cnt_a, cnt_a + 1), # identical = 0, non-identitcal = 1
+                 dup_b = ifelse(b[1] == b[2] & cnt_b == 1, cnt_b, cnt_b + 1),
+                 dup_c = ifelse(c[1] == c[2] & cnt_c == 1, cnt_c, cnt_c + 1),
+                 dup_drb1 = ifelse(drb1[1] == drb1[2]  & cnt_drb1 == 1, cnt_drb1, cnt_drb1 + 1),
+                 dup_dqb1 = ifelse(dqb1[1] == dqb1[2] & cnt_dqb1 == 1, cnt_dqb1, cnt_dqb1 + 1),
+                 dup_drb345 = ifelse(drb345[1] == drb345[2] & cnt_drb345 == 1, cnt_drb345, cnt_drb345 + 1)) %>%
+          mutate(cnt_pair = dup_a + dup_b + dup_c + dup_drb1 + dup_dqb1 + dup_drb345) %>%
+          select(pair, cnt_pair) %>%
+          distinct()
+
+        # paired id
+        cnt_by_pair <- rbind(cnt_by_pair, tmp)
       }
-    }
-  } else{
-    hpl_tp_raw <- data.frame(id = tbl_in$rowid)
-    hpl_tp_pairs <- data.frame(id = tbl_in$rowid)
-  }
-  #* end of step 3 *#
 
-  #* step 4a: if there are too many paired combinations, then keep first 500 pairs lowest average rank within each pair *#
-  if(dim(hpl_tp_pairs)[1] > 1000){
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      setNames(gsub("afa_|cau_", "", names(.))) %>%
-      group_by(pair) %>%
-      summarise(avg = mean(rank), .groups = 'drop') %>%
-      ungroup() %>%
-      left_join(hpl_tp_pairs, ., by  = "pair") %>%
-      arrange(avg, pair) %>%
-      select(-c(value, avg)) %>%
-      filter(row_number() <= 1000)
+      hpl_tp_pairs_3 <- left_join(hpl_tp_pairs, cnt_by_pair,
+                                  by = "pair") %>%
+        filter(cnt_pair == max(cnt_pair)) %>%
+        setNames(gsub("afa_|cau_|his_|nam_|api_", "", names(.))) %>%
+        select(-cnt)
 
-    num_pair_tmp <- dim(hpl_tp_pairs)[1]/2
-    hpl_tp_pairs$pair <- rep(1:num_pair_tmp, each  = 2)
-  }
-  #* end of 4a *#
+      hpl_tp_pairs_4 <- hpl_tp_pairs_3 %>%
+        group_by(pair) %>%
+        summarise(avg = mean(rank), .groups = 'drop') %>%
+        ungroup() %>%
+        left_join(hpl_tp_pairs_3, ., by  = "pair") %>%
+        arrange(avg, pair) %>%
+        #select(-c(value, avg))
+        select(-c(avg))
 
-  #* step 4b: generate paired table *#
-  if(dim(hpl_tp_pairs)[1] > 1) {
-    # count: by pair(a pair of combinations)
-    # purpose: count UNIQUE number of raw low/high allele occurs in the imputed pair
-    hpl_tp_pairs_2 <-  hpl_tp_pairs %>%
-      mutate(a = sub("\\:.*", "", a),
-             b = sub("\\:.*", "", b),
-             c = sub("\\:.*", "", c) ,
-             drb1 = sub("\\:.*", "", drb1),
-             dqb1 = sub("\\:.*", "", dqb1),
-             drb345 = sub("\\:.*", "", drb345)) %>%
-      mutate(cnt_a = ifelse(a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
-             cnt_b = ifelse(b %in% c(tbl_in$b1, tbl_in$b2), 1, 0),
-             cnt_c = ifelse(c %in% c(tbl_in$c1, tbl_in$c2), 1, 0),
-             cnt_drb1 = ifelse(drb1 %in% c(tbl_in$drb1, tbl_in$drb2), 1, 0),
-             cnt_dqb1 = ifelse(dqb1 %in% c(tbl_in$dqb1, tbl_in$dqb2), 1, 0),
-             cnt_drb3 = ifelse(drb345 %in% c(tbl_in$drb31, tbl_in$drb32), 1, 0),
-             cnt_drb4 = ifelse(drb345 %in% c(tbl_in$drb41, tbl_in$drb42), 1, 0),
-             cnt_drb5 = ifelse(drb345 %in% c(tbl_in$drb51, tbl_in$drb52), 1, 0)) %>%
-      mutate(cnt_drb345 = ifelse(cnt_drb3 + cnt_drb4 + cnt_drb5 > 0, 1, 0)) %>%
-      mutate(cnt_sum = cnt_a + cnt_b + cnt_c + cnt_drb1 + cnt_dqb1 + cnt_drb345) %>%
-      select(-c(cnt_drb3, cnt_drb4, cnt_drb5))
+      hpl_tp_pairs <- hpl_tp_pairs_4
 
-    cnt_by_pair <- data.frame(pair = numeric(),
-                              cnt_pair = numeric())
+      num_pairs <- dim(hpl_tp_pairs)[1]/2
+      hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
-    for (i in 1:max(hpl_tp_pairs_2$pair)){
-      tmp <- hpl_tp_pairs_2 %>% filter(pair == i) %>%
-        mutate(dup_a = ifelse(a[1] == a[2] & cnt_a == 1, cnt_a, cnt_a + 1), # identical = 0, non-identitcal = 1
-               dup_b = ifelse(b[1] == b[2] & cnt_b == 1, cnt_b, cnt_b + 1),
-               dup_c = ifelse(c[1] == c[2] & cnt_c == 1, cnt_c, cnt_c + 1),
-               dup_drb1 = ifelse(drb1[1] == drb1[2]  & cnt_drb1 == 1, cnt_drb1, cnt_drb1 + 1),
-               dup_dqb1 = ifelse(dqb1[1] == dqb1[2] & cnt_dqb1 == 1, cnt_dqb1, cnt_dqb1 + 1),
-               dup_drb345 = ifelse(drb345[1] == drb345[2] & cnt_drb345 == 1, cnt_drb345, cnt_drb345 + 1)) %>%
-        mutate(cnt_pair = dup_a + dup_b + dup_c + dup_drb1 + dup_dqb1 + dup_drb345) %>%
-        select(pair, cnt_pair) %>%
-        distinct()
+      hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+      #hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
+      #}
 
-      # paired id
-      cnt_by_pair <- rbind(cnt_by_pair, tmp)
+      # if there are more than 2 imputed combinations (at least 1 pair)
+      # if(dim(hpl_tp_pairs)[1] > 1 ){
+      hpl_tp_pairs <- hpl_tp_pairs %>%
+        mutate(subj = raw$subj,
+               id = pair,
+               type = "imputed",
+               drb345 = paste(drb, drb345, sep = "*")) %>%
+        select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
     }
 
-    hpl_tp_pairs_3 <- left_join(hpl_tp_pairs, cnt_by_pair,
-                                by = "pair") %>%
-      filter(cnt_pair == max(cnt_pair)) %>%
-      setNames(gsub("afa_|cau_", "", names(.))) %>%
-      select(-cnt)
+    # if there is only imputed combination (no pair)
+    if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1 ){
+      hpl_tp_pairs <- hpl_tp_pairs %>%
+        setNames(gsub("afa_|cau_|his_|nam|api_", "", names(.))) %>%
+        mutate(subj = raw$subj,
+               id = pair,
+               type = "imputed",
+               cnt_pair = cnt,
+               drb345 = paste(drb, drb345, sep = "*")) %>%
+        select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+    }
 
-    hpl_tp_pairs_4 <- hpl_tp_pairs_3 %>%
-      group_by(pair) %>%
-      summarise(avg = mean(rank), .groups = 'drop') %>%
-      ungroup() %>%
-      left_join(hpl_tp_pairs_3, ., by  = "pair") %>%
-      arrange(avg, pair) %>%
-      #select(-c(value, avg))
-      select(-c(avg))
+    # if all alleles are NA
+    if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
+      hpl_tp_pairs <- raw %>%
+        mutate(type = "imputed",
+               a = NA, b = NA, c = NA,
+               drb1 = NA, dqb1 = NA, drb345 = NA,
+               freq = NA, rank = NA, cnt_pair = NA) %>%
+        select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+    }
 
-    hpl_tp_pairs <- hpl_tp_pairs_4
+    #* end of step 4 *#
+    result <-  rbind(raw, hpl_tp_pairs)
 
-    num_pairs <- dim(hpl_tp_pairs)[1]/2
-    hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
-
-    hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
-    #hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
   }
-
-  # if there are more than 2 imputed combinations (at least 1 pair)
-  if(dim(hpl_tp_pairs)[1] > 1 ){
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      mutate(subj = raw$subj,
-             id = pair,
-             type = "imputed",
-             drb345 = paste(drb, drb345, sep = "*")) %>%
-      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-  }
-
-  # if there is only imputed combination (no pair)
-  if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] > 1){
-    hpl_tp_pairs <- hpl_tp_pairs %>%
-      setNames(gsub("afa_|cau_", "", names(.))) %>%
-      mutate(subj = raw$subj,
-             id = pair,
-             type = "imputed",
-             cnt_pair = cnt,
-             drb345 = paste(drb, drb345, sep = "*")) %>%
-      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-  }
-
-  # if all alleles are NA
-  if(dim(hpl_tp_pairs)[1] == 1 & dim(hpl_tp_pairs)[2] == 1){
-    hpl_tp_pairs <- raw %>%
-      mutate(type = "imputed",
-             a = NA, b = NA, c = NA,
-             drb1 = NA, dqb1 = NA, drb345 = NA,
-             freq = NA, rank = NA, cnt_pair = NA) %>%
-      select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-  }
-
-  #* end of step 4 *#
-  result <- rbind(raw, hpl_tp_pairs)
 
   return(result)
 }
+
+
+
 
 
