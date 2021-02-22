@@ -7,7 +7,7 @@
 #' @import
 #' tidyverse
 
-FuncForCompHaplo99 <- function(tbl_raw, tbl_in) {
+FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 0: reshape raw data so it will bind with paired imputed haplotype data  *#
   raw <- tbl_in %>%
     mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
