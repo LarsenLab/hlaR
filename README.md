@@ -20,7 +20,7 @@ b<br>
 
 ### haplotype
 dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
-re <- IMputeHaplo(dat_in = dat[1:5,])<br>
+re <- ImputeHaplo(dat_in = dat[1:5,])<br>
 
 ### single molecule level eplet mis-match
 #### - MHC class I
