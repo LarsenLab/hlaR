@@ -310,11 +310,12 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
       num_pairs <- dim(hpl_tp_pairs)[1]/2
       hpl_tp_pairs$pair <- rep(1:num_pairs, each  = 2)
 
-      hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
-      #hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
+      # hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1,2,3))
+      hpl_tp_pairs <- hpl_tp_pairs %>% filter(pair %in% c(1))
       #}
 
       # if there are more than 2 imputed combinations (at least 1 pair)
+      # this statement actually can be removed since the condition has been coonsidered o utside of the function - 02/2021 jz
       # if(dim(hpl_tp_pairs)[1] > 1 ){
       hpl_tp_pairs <- hpl_tp_pairs %>%
         mutate(subj = raw$subj,
