@@ -1,0 +1,31 @@
+---
+title: "hla-eval-mism"
+description: |
+  This vignette shows you how to evaluate mis-match HLAs
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{hla-eval-mism}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## ?? how to deal calling a function within a function ?
+
+## notes
+this function calls CleanHla() before the evaluation<br>
+
+## evaluation logic
+1. if both alleles are NA in donor or recipient, then set mis-match value to 999<br>
+2. if dornor's hla matches with **any** of recipient's, then mis-match is 0<br>else mis-match is 1
+    
+
+
+

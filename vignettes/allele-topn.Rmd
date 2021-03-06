@@ -1,0 +1,24 @@
+---
+title: "allele-topn"
+description: |
+   topN most frequent allele(s)
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{allele-topn}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+CalAlleleTopN()
+    
+
+
+

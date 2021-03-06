@@ -1,0 +1,24 @@
+---
+title: "allele-mism-freq"
+description: |
+   frequency of donor mis-match alleles to recipient's
+output:
+  rmarkdown::html_vignette: default
+vignette: |
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{allele-mism-freq}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+CalAlleleMismFreq()
+    
+
+
+
