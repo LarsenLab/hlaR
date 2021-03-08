@@ -1,4 +1,4 @@
-#' @name CalEpletMHCI_s
+#' @name CalEpletMHCI_o
 #' @title calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summary report
 #' @param dat_in
 #' dataframe with subject info(first 3 columns) and MHC I allele info
