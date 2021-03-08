@@ -25,11 +25,16 @@ re <- ImputeHaplo(dat_in = dat[1:5,])<br>
 ### single molecule level eplet mis-match
 #### - MHC class I
 dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
-eplet_mm1_v2 <- CalEpletMHCI_s(dat, ver = 2)<br>
-head(eplet_mm1_v2)<br>
+eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
+single_detail <- eplet_mm1_v2$single_detail<br>
+overall_count <- eplet_mm1_v2$overall_count<br>
+overall_detail <- eplet_mm1_v2$overall_dertail<br>
+
 eplet_mm1_v3 <- CalEpletMHCI_s(dat, ver = 3)<br>
-(or simply eplet_mm1_v3 <- CalEpletMHCI_s(dat) )<br>
-head(eplet_mm1_v3)
+(or simply eplet_mm1_v3 <- CalEpletMHCI(dat) )<br>
+single_detail <- eplet_mm1_v3$single_detail<br>
+overall_count <- eplet_mm1_v3$overall_count<br>
+overall_detail <- eplet_mm1_v3$overall_dertail<br>
 #### - MHC class II
 dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2_v2 <- CalEpletMHCII_s(dat, ver = 2)<br>
