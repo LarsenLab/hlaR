@@ -235,7 +235,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     mutate(mm_cnt = subj_num - rowSums(is.na(.)),
            mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
 
-  # count of unique mist match eplets
+  # count unique mismatch eplets
   result_count <- result_detail %>%
     map(., ~sum(!is.na(.))) %>%
     data.frame() %>%
