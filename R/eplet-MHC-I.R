@@ -1,7 +1,7 @@
 #' @name CalEpletMHCI
 #' @title calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summary report
 #' @param dat_in
-#' dataframe with subject info(first 2 columns) and MHC I allele info
+#' a dataframe with subject info(first 2 columns) and MHC I allele info
 #' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
 #' @param ver
 #' version number of eplet mis-match table from epitopes.net to use
@@ -54,6 +54,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     dplyr::rename(eplet = value) %>%
     select(index, type, eplet) %>%
     distinct()
+  #* end of step 1 *#
 
   #* step 2: patient table *#
   nm_rec <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2")
@@ -87,10 +88,12 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
 
   subj_num <- dim(tbl_ready)[1]
   tmp_names <- c(nm_rec, nm_don)
+  #* end of step 2 *#
 
   #* step 3: initialize a dataframe to hold eplets *#
   tbl_ep <- tbl_raw_eplet %>%
     select(index, type)
+  #* end of step 3 *#
 
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
@@ -112,6 +115,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
       }
     }
   }
+  #* end of step 4 *#
 
   #* step 5: mark mis-matches *#
   tbl_ep_mm <- tbl_ep %>%
@@ -152,6 +156,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     tbl_ep_mm <- cbind(tbl_ep_mm, tmp)
     st <- ed + 1
   }
+  #* end of step 5 *#
 
   #* step 6: compare mis-match with tbl_ref table *#
   # reset starting position for another round of loop
@@ -179,6 +184,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     tbl_ep_mm2 <- tbl_ep_mm2 %>%
       left_join(., tmp2, by = c("index", "type"))
   }
+  #* end of step 6 *#
 
   #* step 7: final result - single molecule report *#
   # subject names
@@ -211,6 +217,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     select(-part_id) %>%
     rename(part_id = part_id_ori) %>%
     select(part_id, everything())
+  #* end of step 7 *#
 
   #* step 8: final result - overall report *#
   result_overall <- tbl_ref
@@ -244,6 +251,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     setNames(c("part_id", "mm_count")) %>%
     mutate(part_id = as.numeric(str_replace(part_id, "subj", ""))) %>%
     right_join(., tbl_ready, by = "part_id")
+  #* end of step 8 *#
 
   return(list(single_detail = result_single,
               overall_count = result_count,
