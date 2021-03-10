@@ -1,5 +1,5 @@
 #' @name CalAlleleMismFreq
-#' @title calculate -match alleles frequency of donor to recipient
+#' @title calculate mis-match alleles frequency of donor to recipient
 #' @param dat_in
 #' dataframe of clean HLA
 #' @param nms_don
@@ -21,7 +21,7 @@
 #' @export
 #'
 CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
-  #* start of data prep *#
+  #* step 1: data prep *#
   dat_don <- dat_in %>%
               select(all_of(nms_don))
 
@@ -30,9 +30,9 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
 
   tmp <- as.data.frame(cbind(dat_don, dat_rcpt)) %>%
           mutate_all(as.character)
-  #* end of data prep *#
+  #* end of step 1*#
 
-  #* start of calculating mis-match of donor's hla in recipient *#
+  #* step 2: calculate mis-match of donor's hla in recipient *#
   len <- dim(dat_in)[1]
   mis_1 <- numeric(length = len)
   mis_2 <- numeric(length = len)
@@ -61,9 +61,9 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
           mutate(mis_1 = mis_1,
                  mis_2 = mis_2) %>%
           filter(!is.na(mis_1) & !is.na(mis_2))
-  #* end of calculating mis-match of donor's hla in recipient *#
+  #* end of step 2 *#
 
-  #* start of calculate mis-match frequency for donor *#
+  #* step 3: calculate mis-match frequency for donor *#
   dat_out <- tmp %>%
               select(-all_of(nms_rcpt)) %>%
               setNames(c("d1", "d2", "m1", "m2")) %>%
@@ -77,6 +77,7 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
               filter(!is.na(allele)) %>%
               ungroup() %>%
               arrange(-freq)
+  #* end of step 3 *#
 
   return(dat_out)
 }
