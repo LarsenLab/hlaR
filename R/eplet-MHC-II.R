@@ -32,7 +32,7 @@
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCII <- function(dat_in, ver = 3) {
-  ###*** step 1: import raw eplet tables ***###
+  #* step 1: import raw eplet tables *#
   if(ver == 2){
     tbl_raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)
     tbl_raw_eplet_B <- read.csv(system.file("extdata/ref", "MHC_II_eplet_B_v2.csv", package = "hlaR"), check.names = FALSE)
@@ -40,9 +40,9 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     tbl_raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v3.csv", package = "hlaR"), check.names = FALSE)
     tbl_raw_eplet_B <- read.csv(system.file("extdata/ref", "MHC_II_eplet_B_v3.csv", package = "hlaR"), check.names = FALSE)
   }
-  ###*** end of step 1 ***###
+  #* end of step 1 *#
 
-  ###*** step 2: generate base lookup tables for MHC II loci As and Bs **###
+  #* step 2: generate base lookup tables for MHC II loci As and Bs *#
   #* 2a: master lookup tables for As and Bs *#
   tbl_ref_A <- as.data.frame(t(tbl_raw_eplet_A)) %>%
                 setNames(paste(tbl_raw_eplet_A$type, tbl_raw_eplet_A$index, sep = "_" )) %>%
@@ -87,9 +87,9 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   tbl_ref_dqb <- GenerateLookup(tbl_ref_B, "DQB1")
   tbl_ref_drb <- GenerateLookup(tbl_ref_B, c("DRB1", "DRB3", "DRB4", "DRB5"))
   #* end of 2b *#
-  ###*** end of step 2 ***###
+  #* end of step 2 *#
 
-  ###*** step 3: import patient data ***###
+  #* step 3: import patient data *#
   #* 3a. import data and define some variables *#
   nm_rec <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dqa1", "rec_dqa2", "rec_dpb1", "rec_dpb2", "rec_dpa1", "rec_dpa2")
   nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")
@@ -163,9 +163,9 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   tbl_ep_a <- tbl_ep_a %>% na_if(., "")
   tbl_ep_b <- tbl_ep_b %>% na_if(., "")
   #* end of 3b *#
-  #*** end of step 3 ***###
+  #* end of step 3 *#
 
-  ###*** step 4: mis-match eplet calculation ***###
+  #* step 4: mis-match eplet calculation *#
   #* 4a: A loci *#
   result_a_single <- data.frame(subject = character(),
                                 mm_eplets = character(),
@@ -290,9 +290,9 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     st <- ed + 1
   }
   #* end of 4b *#
-  ###*** end of step 4 ***###
+  #* end of step 4 *#
 
-  ###*** step 5: final result - single molecule ***###
+  #* step 5: final result - single molecule *#
   result_single <- rbind(result_a_single, result_b_single) %>%
                     mutate(name = subject,
                            match_id = as.numeric(str_replace(name, "subj", ""))) %>%
@@ -302,7 +302,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
                     select(-match_id) %>%
                     select(part_id, everything())
 
-  ###*** step 6: final result - overall count ***###
+  #* step 6: final result - overall count *#
   # count unique mismatch eplets
   result_count <- result_single %>%
                   group_by(name, part_id) %>%
@@ -321,7 +321,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
                   right_join(., tbl_ready, by = "part_id") %>%
                   arrange(part_id)
 
-  ###*** end of step 6 ***###
+  #* end of step 6 *#
 
   return(list(single_detail = result_single,
               overall_count = result_count))
