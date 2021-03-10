@@ -80,8 +80,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   } else {
     if(length(tmp_indx) > 0 & num_na > 3) {
       # count: by row(individual combination)
-      # purpose: count nnumber of imputed allele occurs in the raw input data
-      # filter  imputed rows by max count of sum(hi/low resolution part of raw impute table, occurs in user's input table)
+      # purpose: count number of imputed allele occurs in the raw input data
+      # filter imputed rows by max count of sum(hi/low resolution part of raw impute table, occurs in user's input table)
       hpl_tp_raw <- tbl_raw %>%
         mutate(id = tbl_in$rowid,
                cnt_a = ifelse(fst_a %in% c(tbl_in$a1, tbl_in$a2), 1, 0),
