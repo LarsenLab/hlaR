@@ -12,7 +12,9 @@ CalEpletMHCII(dat_in, ver = 3)
 \item{ver}{version number of eplet mis-match table from epitopes.net to use}
 }
 \value{
-data table with detailed single molecule level mis-match eplet info of each subject
+a list of data tables
+single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
+overall_count: original input data appended with count of unique mis-matched eplet
 }
 \description{
 calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, single molecule level
