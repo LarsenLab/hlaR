@@ -1,13 +1,13 @@
 #' @name CalEpletMHCII
 #' @title calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, single molecule level
 #' @param dat_in
-#' dataframe with subject info (first 3 columns) and MHC II allele info
+#' a dataframe with subject info (first s columns) and MHC II allele info
 #' @param ver
 #' version number of eplet mis-match table from epitopes.net to use
 #  note: interlocus info only available in table v3
 #' @return
 #' a list of data tables
-#' single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
+#' single_detail: single molecule level eplet mismatch table, including mismatch eplet name and count of each allele
 #' overall_count: original input data appended with count of unique mis-matched eplet
 #' @export
 #'
@@ -86,12 +86,11 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   tbl_ref_dpb <- GenerateLookup(tbl_ref_B, "DPB1")
   tbl_ref_dqb <- GenerateLookup(tbl_ref_B, "DQB1")
   tbl_ref_drb <- GenerateLookup(tbl_ref_B, c("DRB1", "DRB3", "DRB4", "DRB5"))
-
   #* end of 2b *#
   ###*** end of step 2 ***###
 
-  ###*** step 3: import records with recipient/donor MHC II pairs ***###
-  #* 3a. import patient data and some definitions *#
+  ###*** step 3: import patient data ***###
+  #* 3a. import data and define some variables *#
   nm_rec <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dqa1", "rec_dqa2", "rec_dpb1", "rec_dpb2", "rec_dpa1", "rec_dpa2")
   nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")
 
@@ -108,7 +107,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   tbl_ready <- merge(tmp_rcpt, tmp_don, by = c("part_id")) %>%
                 arrange(part_id)
 
-  # create id_match table to trace non-sequential pari_id
+  # create id_match table to trace non-sequential part_id
   match_id <- tbl_ready %>%
                 select(part_id) %>%
                 mutate(match_id = dense_rank(part_id))
@@ -122,7 +121,6 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   # index of names of As and Bs
   indx_as <- grep("dqa|dpa", tmp_names)
   indx_bs <- grep("drb|drw|dqb|dpb", tmp_names)
-
   #* end of 3a*#
 
   #* 3b: pull out eplet of each locus *#
@@ -161,7 +159,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     }
   }
 
-  # set blanks to NA for mismatch count calculation later
+  # set blanks to NA for mismatch count calculation
   tbl_ep_a <- tbl_ep_a %>% na_if(., "")
   tbl_ep_b <- tbl_ep_b %>% na_if(., "")
   #* end of 3b *#
@@ -230,6 +228,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   rownames(tbl_ep_b) <- ep_b_rownames
 
   # if interlocus eplets(names contains "Int"), DPB, then compare one don to ALL of recipients'
+  # this condition only applies for matchmaker v3
   int_loc_eplet<- ep_b_rownames[str_detect(ep_b_rownames, regex('int', ignore_case = T))]
 
   # B loci
