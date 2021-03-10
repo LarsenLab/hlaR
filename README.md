@@ -37,11 +37,13 @@ overall_count <- eplet_mm1_v3$overall_count<br>
 overall_detail <- eplet_mm1_v3$overall_dertail<br>
 #### - MHC class II
 dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
-eplet_mm2_v2 <- CalEpletMHCII_s(dat, ver = 2)<br>
-head(eplet_mm2_v2)<br>
-eplet_mm2_v3 <- CalEpletMHCII_s(dat, ver = 3)<br>
+eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
+single_detail <- eplet_mm2_v2$single_detail<br>
+overall_count <- eplet_mm2_v2$overall_count<br>
+eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
 (or simply eplet_mm2_v3 <- CalEpletMHCII_s(dat) )<br>
-head(eplet_mm2_v3)
+single_detail <- eplet_mm2_v3$single_detail<br>
+overall_count <- eplet_mm2_v3$overall_count<br>
 
 ### other functionalities
 #### - count of mis-match
