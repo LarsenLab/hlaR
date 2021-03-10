@@ -1,9 +1,9 @@
 #' @name ImputeHaplo
-#' @title feed low resolution hla typing to NMDP frequency table to get best pairs of haplotype combination based on max count of unique low res in the combination
+#' @title feed low resolution hla typing to NMDP frequency table to get the best pair of haplotype combination based on max count of unique low res in the combination
 #' @param dat_in
-#' dataframe with recipient/donor alleles info
+#' a dataframe with recipient/donor alleles info
 #' @return
-#' dataframe of best pairs of haplotype combination
+#' a dataframe of best pairs of haplotype combination
 #' @import
 #' tidyverse
 #'
@@ -82,10 +82,13 @@ ImputeHaplo <- function(dat_in){
   }
 
   #* end of step 3 *#
+
+  #* step 4: final table *#
   names(hpl_tp_pairs) <- dat_ready$rowid
 
   hpl_tp_pairs <- as.data.frame(do.call(rbind, hpl_tp_pairs))
   row.names(hpl_tp_pairs) <- seq(1:dim(hpl_tp_pairs)[1])
+  #* end of step 4 *#
 
   return(hpl_tp_pairs)
 }
