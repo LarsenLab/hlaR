@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-mism-freq.R
 \name{CalAlleleMismFreq}
 \alias{CalAlleleMismFreq}
-\title{calculate -match alleles frequency of donor to recipient}
+\title{calculate mis-match alleles frequency of donor to recipient}
 \usage{
 CalAlleleMismFreq(dat_in, nms_don = c(), nms_rcpt = c())
 }
@@ -17,7 +17,7 @@ CalAlleleMismFreq(dat_in, nms_don = c(), nms_rcpt = c())
 a dataframe of donor's mis-match alleles with frequency > 1
 }
 \description{
-calculate -match alleles frequency of donor to recipient
+calculate mis-match alleles frequency of donor to recipient
 }
 \examples{
 \dontrun{

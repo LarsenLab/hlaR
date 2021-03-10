@@ -7,13 +7,13 @@
 CalEpletMHCII(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{dataframe with subject info (first 3 columns) and MHC II allele info}
+\item{dat_in}{a dataframe with subject info (first s columns) and MHC II allele info}
 
 \item{ver}{version number of eplet mis-match table from epitopes.net to use}
 }
 \value{
 a list of data tables
-single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
+single_detail: single molecule level eplet mismatch table, including mismatch eplet name and count of each allele
 overall_count: original input data appended with count of unique mis-matched eplet
 }
 \description{

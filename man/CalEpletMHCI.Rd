@@ -7,7 +7,7 @@
 CalEpletMHCI(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{dataframe with subject info(first 2 columns) and MHC I allele info
+\item{dat_in}{a dataframe with subject info(first 2 columns) and MHC I allele info
 each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor}
 
 \item{ver}{version number of eplet mis-match table from epitopes.net to use}
