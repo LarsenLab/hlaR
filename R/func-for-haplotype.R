@@ -1,9 +1,9 @@
 #' @name FuncForCompHaplo
-#' @title extracts combinations from halpo frequency table, it's called within CompHaploTbl()
+#' @title extracts combinations from halpo frequency table, it's called by CompHaploTbl()
 #' @param tbl_raw
-#' raw haplotype frequency table downloaded from NMDP website
+#' a raw haplotype frequency table downloaded from NMDP website
 #' @param tbl_in
-#' data frame with alleles info
+#' a dataframe with alleles info
 #' @import
 #' tidyverse
 
@@ -36,7 +36,8 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   num_na <- num_tt - sum_na$na_per_row
   #* end of step 1 *#
 
-  #* step 2a : pull out all of indices which contain high res antigen of each locus  *#
+  #* step 2: index *#
+  #* step 2a : pull out all of indexes which contain high res antigen of each locus  *#
   PullIndx <- function(gene, nms){
     names <- syms(gene)
     tmp <- tbl_raw %>% select(!!!names, idx) %>%
@@ -69,6 +70,7 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
   rm(a_lo, b_lo, c_lo, drb1_lo, dqb1_lo, drb345_lo)
   #* end of step 2b *#
+  #* end of step 2 *#
 
   #* step 3: pull out high res combinations of max group count *#
   tmp_indx <- unique(c(indx_hi, indx_lo))
@@ -225,12 +227,10 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
             select(-index)
         }
       }
-
     }
-
-
     #* end of step 3 *#
 
+   #* step 4: combbination works *#
     #* step 4a: if there are too many paired combinations, then keep first 500 pairs lowest average rank within each pair *#
     if(dim(hpl_tp_pairs)[1] > 1000){
       hpl_tp_pairs <- hpl_tp_pairs %>%
@@ -344,10 +344,9 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
                freq = NA, rank = NA, cnt_pair = NA) %>%
         select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
     }
-
+    #* end of 4b *#
     #* end of step 4 *#
     result <-  rbind(raw, hpl_tp_pairs)
-
   }
 
   return(result)
