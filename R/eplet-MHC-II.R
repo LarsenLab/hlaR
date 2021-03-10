@@ -6,8 +6,9 @@
 #' version number of eplet mis-match table from epitopes.net to use
 #  note: interlocus info only available in table v3
 #' @return
-#' data table with detailed single molecule level mis-match eplet info of each subject
-#'
+#' a list of data tables
+#' single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
+#' overall_count: original input data appended with count of unique mis-matched eplet
 #' @export
 #'
 #' @import
@@ -67,14 +68,14 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
 
   # 2b: sub-lookup tables, these tables are used for mis-match comparison of each locus #
   GenerateLookup <- function(lkup_in, locus_in){
-      dat_out <- lkup_in %>%
-                  filter(locus %in% locus_in) %>%
-                  mutate(index = as.numeric(sub(".*\\_", "", variable)),
-                         type = sub("\\_.*", "", variable)) %>%
-                  select(index, type, value) %>%
-                  dplyr::rename(eplet = value) %>%
-                  filter(eplet != "") %>%
-                  distinct()
+    dat_out <- lkup_in %>%
+                filter(locus %in% locus_in) %>%
+                mutate(index = as.numeric(sub(".*\\_", "", variable)),
+                       type = sub("\\_.*", "", variable)) %>%
+                select(index, type, value) %>%
+                dplyr::rename(eplet = value) %>%
+                filter(eplet != "") %>%
+                distinct()
 
     return(dat_out)
   }
@@ -95,9 +96,9 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   nm_don <- c("don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dqa1", "don_dqa2", "don_dpb1", "don_dpb2", "don_dpa1", "don_dpa2")
 
   tmp_rcpt <- dat_in %>%
-               filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
-               select(-donor_type) %>%
-               setNames(c("part_id", nm_rec))
+              filter(donor_type %in% c("recipient", "recip", "rcpt", "r")) %>%
+              select(-donor_type) %>%
+              setNames(c("part_id", nm_rec))
 
   tmp_don <- dat_in %>%
               filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
@@ -109,8 +110,8 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
 
   # create id_match table to trace non-sequential pari_id
   match_id <- tbl_ready %>%
-               select(part_id) %>%
-               mutate(match_id = dense_rank(part_id))
+                select(part_id) %>%
+                mutate(match_id = dense_rank(part_id))
 
   subj_num <- dim(tbl_ready)[1]
   tmp_names <- c(nm_rec, nm_don)
@@ -135,30 +136,34 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
       if(j %in% indx_as){
         if (!is.na(allele[j])) {
           tmp <- tbl_raw_eplet_A %>%
-            select(index, type, allele[j]) %>%
-            setNames(c("index", "type", varname))
+                  select(index, type, allele[j]) %>%
+                  setNames(c("index", "type", varname))
           tbl_ep_a <- tbl_ep_a %>%
-            left_join(., tmp, by = c("index", "type"))
+                        left_join(., tmp, by = c("index", "type"))
         } else{
           tbl_ep_a <- tbl_ep_a %>%
-            mutate(!!varname := NA)
+                        mutate(!!varname := NA)
         }
       }
       # B loci
       else{
         if (!is.na(allele[j])) {
           tmp <- tbl_raw_eplet_B %>%
-            select(index, type, allele[j]) %>%
-            setNames(c("index", "type", varname))
+                  select(index, type, allele[j]) %>%
+                  setNames(c("index", "type", varname))
           tbl_ep_b <- tbl_ep_b %>%
-            left_join(., tmp, by = c("index", "type"))
+                        left_join(., tmp, by = c("index", "type"))
         } else{
           tbl_ep_b <- tbl_ep_b %>%
-            mutate(!!varname := NA)
+                       mutate(!!varname := NA)
         }
       }
     }
   }
+
+  # set blanks to NA for mismatch count calculation later
+  tbl_ep_a <- tbl_ep_a %>% na_if(., "")
+  tbl_ep_b <- tbl_ep_b %>% na_if(., "")
   #* end of 3b *#
   #*** end of step 3 ***###
 
@@ -245,6 +250,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
 
     colnames(tmp) <- c("rec_drb1", "rec_drb2", "rec_drw1", "rec_drw2", "rec_dqb1", "rec_dqb2", "rec_dpb1","rec_dpb2",
                        "don_drb1", "don_drb2", "don_drw1", "don_drw2", "don_dqb1", "don_dqb2", "don_dpb1","don_dpb2")
+
     tmp$rname <- ep_b_rownames
 
     tmp <- tmp %>%
@@ -271,14 +277,14 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
                        paste0("dpb2_mm_subj", subj_indx)))
 
     tmp_b <-  data.frame(t(tmp)) %>%
-               unite("mm_eplets", names(.), na.rm = TRUE, sep = ",", remove = FALSE) %>%
-               mutate(subject = gsub(".*_", "", rownames(.)),
-                      part_id = gsub(".*subj", "", subject),
-                      gene = gsub("_.*", "", rownames(.)),
-                      mm_cnt = str_count(mm_eplets, ",")) %>%
-               mutate(mm_cnt = ifelse((is.na(mm_eplets) | mm_eplets == "NA" | mm_eplets == "") & mm_cnt == 0, 0,
-                                      ifelse((!is.na(mm_eplets) | mm_eplets != "NA" | mm_eplets != "") & mm_cnt == 0, 1, mm_cnt + 1))) %>%
-               select(subject, part_id, gene, mm_eplets, mm_cnt)
+                unite("mm_eplets", names(.), na.rm = TRUE, sep = ",", remove = FALSE) %>%
+                mutate(subject = gsub(".*_", "", rownames(.)),
+                       part_id = gsub(".*subj", "", subject),
+                       gene = gsub("_.*", "", rownames(.)),
+                       mm_cnt = str_count(mm_eplets, ",")) %>%
+                mutate(mm_cnt = ifelse((is.na(mm_eplets) | mm_eplets == "NA" | mm_eplets == "") & mm_cnt == 0, 0,
+                                       ifelse((!is.na(mm_eplets) | mm_eplets != "NA" | mm_eplets != "") & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+                select(subject, part_id, gene, mm_eplets, mm_cnt)
 
     result_b_single <- rbind(result_b_single, tmp_b)
 
@@ -287,16 +293,38 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   #* end of 4b *#
   ###*** end of step 4 ***###
 
-  ###*** step 5: generate output table ***###
-  results_single <- rbind(result_a_single, result_b_single) %>%
-    mutate(name = subject,
-           match_id = as.numeric(str_replace(name, "subj", ""))) %>%
-    select(name, gene, mm_eplets, mm_cnt, match_id) %>%
-    arrange(name, gene)%>%
-    left_join(., match_id, by = "match_id") %>%
-    select(-match_id) %>%
-    select(part_id, everything())
+  ###*** step 5: final result - single molecule ***###
+  result_single <- rbind(result_a_single, result_b_single) %>%
+                    mutate(name = subject,
+                           match_id = as.numeric(str_replace(name, "subj", ""))) %>%
+                    select(name, gene, mm_eplets, mm_cnt, match_id) %>%
+                    arrange(name, gene)%>%
+                    left_join(., match_id, by = "match_id") %>%
+                    select(-match_id) %>%
+                    select(part_id, everything())
 
-  return(results_single)
-  ###*** end of step 5 ***###
+  ###*** step 6: final result - overall count ***###
+  # count unique mismatch eplets
+  result_count <- result_single %>%
+                  group_by(name, part_id) %>%
+                  select(part_id, name, mm_eplets) %>%
+                  mutate(rn = row_number()) %>%
+                  pivot_wider(names_from = rn,
+                              values_from = c("mm_eplets")) %>%
+                  ungroup() %>%
+                  select(names(.)[!is.na(names(.))]) %>%
+                  unite("mm_eplets", `1`:`12`, na.rm = TRUE, sep = ",", remove = FALSE) %>%
+                  mutate(mm_eplets = sapply(strsplit(mm_eplets, ","),
+                                            function(x) x = paste(unique(x), collapse = ","))) %>%
+                  mutate(mm_count = str_count(mm_eplets, ",")) %>%
+                  mutate(mm_eplets = ifelse(substr(mm_eplets, start = 1, stop = 1) == ",", str_sub(mm_eplets, start = 2L, end = -1L), mm_eplets)) %>%
+                  select(part_id, name, mm_eplets,mm_count) %>%
+                  right_join(., tbl_ready, by = "part_id") %>%
+                  arrange(part_id)
+
+  ###*** end of step 6 ***###
+
+  return(list(single_detail = result_single,
+              overall_count = result_count))
 }
+
