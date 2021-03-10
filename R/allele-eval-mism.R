@@ -26,7 +26,7 @@
 
 EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
 {
-  # start of calling CleanAllele() to clean hla value #
+  # step 1: call CleanAllele() to clean hla value #
   don_1_clean <- CleanAllele(don_1, don_2)$locus1_clean
   don_2_clean <- CleanAllele(don_1, don_2)$locus2_clean
   recip_1_clean <- CleanAllele(recip_1, recip_2)$locus1_clean
@@ -34,9 +34,9 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
 
   tmp <- as.data.frame(cbind(don_1_clean, don_2_clean, recip_1_clean, recip_2_clean)) %>%
     mutate_all(as.character)
-  # end of calling CleanAllele() #
+  # end of step 1 #
 
-  # start of calculating mis-match of donor's hla in recipient #
+  # step 2: calculate mis-match of donor's hla in recipient #
   len <- length(don_1_clean)
   mis_1 <- numeric(length = len)
   mis_2 <- numeric(length = len)
@@ -78,11 +78,12 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
         mis_2[i] <- 1}
     }
   }
-  # end of calculating mis-match #
+  # end of step 3 #
 
   rm(tmp)
 
-  # mims total count = 1 if mismatch at homozygous alleles
+  #* step 4: construct final table *#
+  # mismatch total count = 1 if mismatch at homozygous alleles
   result <- data.frame(don_1_clean = don_1_clean, don_2_clean = don_2_clean,
                        recip_1_clean = recip_1_clean, recip_2_clean = recip_2_clean,
                        mism_1 = mis_1, mism_2 = mis_2) %>%
@@ -91,6 +92,7 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
             select(-tmp)
 
   rownames(result) <- seq(1, dim(result)[1])
+ #* end of step 4 *#
 
   return(result)
 }
