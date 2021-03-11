@@ -13,20 +13,11 @@ CleanAllele(var_1, var_2)
 }
 \value{
 a data frame with cleaned hla of each locus
-
-a data frame with cleaned hla of each locus
 }
 \description{
 clean messy HLA typing for downstream analysis
-
-clean messy HLA typing for downstream analysis
 }
 \examples{
-\dontrun{
-clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
-clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
-}
-
 \dontrun{
 clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
 clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)

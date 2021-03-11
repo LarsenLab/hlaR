@@ -21,29 +21,6 @@
 #' }
 #'
 
-#' @name CleanAllele
-#' @title clean messy HLA typing for downstream analysis
-#' @param var_1
-#' hla on locus 1
-#' @param var_2
-#' hla on locus 2
-#' @return
-#' a data frame with cleaned hla of each locus
-#' @export
-#'
-#' @import
-#' tidyverse
-#' utils
-#' readr
-#'
-#' @examples
-#' \dontrun{
-# dat <-  read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR")) %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
-#' clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
-#' clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
-#' }
-#'
-
 CleanAllele <- function(var_1, var_2) {
   # set to NA for some unidentifiable values
   vec_na <- c("0.796527778", "0.175", "1/1/00 11:12")
