@@ -4,7 +4,7 @@
 \alias{EvalAlleleMism}
 \title{Evaluate mis-match alleles.}
 \usage{
-EvalAlleleMism(don_1, don_2, recip_1, recip_2)
+EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 }
 \arguments{
 \item{don_1}{Donor's alpha1 domain.}
@@ -14,6 +14,8 @@ EvalAlleleMism(don_1, don_2, recip_1, recip_2)
 \item{recip_1}{Recipient's alpha1 domain.}
 
 \item{recip_2}{Recipient's alpha2 or beta1 domain.}
+
+\item{hmz_cnt}{flag of the way to count mismatch at homozygous alleles. If flag = 1 then count as single, else count as double.}
 }
 \value{
 A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
@@ -23,6 +25,6 @@ Evaluate mis-match alleles.
 }
 \examples{
 \dontrun{
-a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)
+a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2, hmz_cnt = 2)
 }
 }

@@ -9,6 +9,8 @@
 #' Recipient's alpha1 domain.
 #' @param recip_2
 #' Recipient's alpha2 or beta1 domain.
+#' @param hmz_cnt
+#' flag of the way to count mismatch at homozygous alleles. If flag = 1 then count as single, else count as double.
 #' @return
 #' A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
 #' @export
@@ -20,11 +22,11 @@
 #' \dontrun{
 # input hlas could be either raw or cleaned
 # dat <- read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
-#' a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)
+#' a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2, hmz_cnt = 2)
 # a
 #' }
 
-EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
+EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 {
   # step 1: call CleanAllele() to clean hla value #
   don_1_clean <- CleanAllele(don_1, don_2)$locus1_clean
@@ -78,18 +80,17 @@ EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2)
         mis_2[i] <- 1}
     }
   }
-  # end of step 3 #
-
   rm(tmp)
+  # end of step 3 #
 
   #* step 4: construct final table *#
   # mismatch total count = 1 if mismatch at homozygous alleles
   result <- data.frame(don_1_clean = don_1_clean, don_2_clean = don_2_clean,
                        recip_1_clean = recip_1_clean, recip_2_clean = recip_2_clean,
                        mism_1 = mis_1, mism_2 = mis_2) %>%
-            mutate(tmp = mism_1 + mism_2,
-                   mism_cnt = ifelse(don_1_clean == don_2_clean & tmp == 2, tmp - 1, tmp)) %>%
-            select(-tmp)
+            mutate(cnt = mism_1 + mism_2,
+                   mism_cnt = ifelse(hmz_cnt == 1 & don_1_clean == don_2_clean & cnt == 2, cnt - 1, cnt)) %>%
+            select(-c(mism_1, mism_2, cnt))
 
   rownames(result) <- seq(1, dim(result)[1])
  #* end of step 4 *#
