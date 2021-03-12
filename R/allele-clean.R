@@ -38,15 +38,15 @@ CleanAllele <- function(var_1, var_2) {
   # - 3. if string contains only letters then set to NA
   # - 4. unify all brackets to round
   # - 5. remove everything between round brackets including brackets
-  # - 5. remove **XXX pattern start with *(could be 0 time) end with X(at least 1 time)
-  # - 6. if there are more than 1 colons, remove everything starting from 2nd colon: 131:01:00 -> 131:01  26:08:00 -> 26:08
-  # - 7. remove all punctuation marks except ":"
-  # - 8. remove if letter left
-  # - 9. if low resolution and nchar = 1 then paste a leading "0"
-  # - 10. if high resolution then split by ":"
-  # - 11. if nchar = 1 for first/last, then paste a leading "0"
-  # - 12. keep only first 2 chars for low resolution
-  # - 13. combine 1st and last parts into one with ":"
+  # - 6. remove **XXX pattern start with *(could be 0 time) end with X(at least 1 time)
+  # - 7. if there are more than 1 colons, remove everything starting from 2nd colon: 131:01:00 -> 131:01  26:08:00 -> 26:08
+  # - 8. remove all punctuation marks except ":"
+  # - 9. remove if letter left
+  # - 10. if low resolution and nchar = 1 then paste a leading "0"
+  # - 11. if high resolution then split by ":"
+  # - 12. if nchar = 1 for first/last, then paste a leading "0"
+  # - 13. keep only first 2 chars for low resolution
+  # - 14. combine 1st and last parts into one with ":"
   tmp <- data.frame(cbind(var_1, var_2)) %>%
           mutate(v1 = ifelse(var_1 %in% vec_na, "", var_1), # if string in vec_na then set to NA
                  v2 = ifelse(var_2 %in% vec_na, "", var_2)) %>%
