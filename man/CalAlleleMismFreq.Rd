@@ -2,22 +2,22 @@
 % Please edit documentation in R/allele-mism-freq.R
 \name{CalAlleleMismFreq}
 \alias{CalAlleleMismFreq}
-\title{calculate mis-match alleles frequency of donor to recipient}
+\title{Calculate donor to recipient's allele mis-match. No mismatch calculated if input alleles are NA.}
 \usage{
 CalAlleleMismFreq(dat_in, nms_don = c(), nms_rcpt = c())
 }
 \arguments{
-\item{dat_in}{dataframe of clean HLA}
+\item{dat_in}{A dataframe of clean HLA.}
 
-\item{nms_don}{column names of donor's alleles, must be length of 2}
+\item{nms_don}{A vector of column names of donor's alleles, must be length of 2.}
 
-\item{nms_rcpt}{column names of recipient's alleles, must be length of 2}
+\item{nms_rcpt}{A vector of column names of recipient's alleles, must be length of 2.}
 }
 \value{
-a dataframe of donor's mis-match alleles with frequency > 1
+A dataframe of donor's mis-match alleles with frequency > 1.
 }
 \description{
-calculate mis-match alleles frequency of donor to recipient
+Calculate donor to recipient's allele mis-match. No mismatch calculated if input alleles are NA.
 }
 \examples{
 \dontrun{

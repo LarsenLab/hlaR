@@ -378,15 +378,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="example-1" class="section level3">
 <h3>Example 1</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># use the testing data in the library</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>dat &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;MHC_II_test.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>) </span>
-<span id="cb2-3"><a href="#cb2-3"></a>re &lt;-<span class="st"> </span><span class="kw">CalEpletMHCII</span>(dat)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">head</span>(re<span class="op">$</span>count)</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; NULL</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">head</span>(re<span class="op">$</span>detail)</span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; NULL</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a>path_test &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;MHC_I_test.csv&quot;</span>, <span class="dt">package=</span><span class="st">&quot;hlaR&quot;</span>)</span>
-<span id="cb2-10"><a href="#cb2-10"></a>test &lt;-<span class="st">  </span><span class="kw">read_csv</span>(path_test)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># dat &lt;-  read.csv(system.file(&quot;extdata/example&quot;, &quot;MHC_II_test.csv&quot;, package = &quot;hlaR&quot;), sep = &quot;,&quot;, header = TRUE) </span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># re &lt;- CalEpletMHCII_s(dat)</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># head(re$count)</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># head(re$detail)</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># path_test &lt;- system.file(&quot;extdata/example&quot;, &quot;MHC_I_test.csv&quot;, package=&quot;hlaR&quot;)</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># test &lt;-  read.csv(path_test)</span></span></code></pre></div>
 </div>
 <div id="use-case-2-epilet-mm-for-transplant-cohort-clinical." class="section level3">
 <h3>Use case 2 Epilet MM for Transplant Cohort (clinical….</h3>
@@ -421,7 +419,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Describe the variables. recip_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># glimpse(high_res_cohort)</span></span></code></pre></div>
 <p>Describe the function purpose, input output. Reference matchmaker</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># out &lt;- CalEpletMHCI(high_res_cohort)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># out &lt;- CalEpletMHCI_s(high_res_cohort)</span></span></code></pre></div>
 <p>Generate some visuals (base vs ggplot)</p>
 <p>histogram of eplet mm ? eplet mmm vs dsa at 5 years?</p>
 </div>

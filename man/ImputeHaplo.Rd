@@ -2,18 +2,18 @@
 % Please edit documentation in R/allele-haplotype.R
 \name{ImputeHaplo}
 \alias{ImputeHaplo}
-\title{feed low resolution hla typing to NMDP frequency table to get the best pair of haplotype combination based on max count of unique low res in the combination}
+\title{Impute low resolution hla to high resolution typing.}
 \usage{
 ImputeHaplo(dat_in)
 }
 \arguments{
-\item{dat_in}{a dataframe with recipient/donor alleles info}
+\item{dat_in}{A dataframe with recipient/donor alleles info.}
 }
 \value{
-a dataframe of best pairs of haplotype combination
+A dataframe with the best pairs of haplotype combination.
 }
 \description{
-feed low resolution hla typing to NMDP frequency table to get the best pair of haplotype combination based on max count of unique low res in the combination
+Impute low resolution hla to high resolution typing.
 }
 \examples{
 \dontrun{

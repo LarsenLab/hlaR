@@ -1,16 +1,16 @@
 #' @name EvalAlleleMism
-#' @title evaluate mis-match alleles
-#  Mismatches at homozygous alleles were considered single mismatches
+#' @title Evaluate mis-match alleles.
+#  Mismatches at homozygous alleles were considered single mismatches.
 #' @param don_1
-#' donor's alpha1 domain
+#' Donor's alpha1 domain.
 #' @param don_2
-#' donor's alpha2 or beta1 domain
+#' Donor's alpha2 or beta1 domain.
 #' @param recip_1
-#' recipient's alpha1 domain
+#' Recipient's alpha1 domain.
 #' @param recip_2
-#' recipient's alpha2 or beta1 domain
+#' Recipient's alpha2 or beta1 domain.
 #' @return
-#' a data frame with cleaned donor and recipients, and donor to recipient mis-match flags
+#' A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
 #' @export
 #'
 #' @import

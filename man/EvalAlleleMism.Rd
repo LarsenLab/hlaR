@@ -2,24 +2,24 @@
 % Please edit documentation in R/allele-eval-mism.R
 \name{EvalAlleleMism}
 \alias{EvalAlleleMism}
-\title{evaluate mis-match alleles}
+\title{Evaluate mis-match alleles.}
 \usage{
 EvalAlleleMism(don_1, don_2, recip_1, recip_2)
 }
 \arguments{
-\item{don_1}{donor's alpha1 domain}
+\item{don_1}{Donor's alpha1 domain.}
 
-\item{don_2}{donor's alpha2 or beta1 domain}
+\item{don_2}{Donor's alpha2 or beta1 domain.}
 
-\item{recip_1}{recipient's alpha1 domain}
+\item{recip_1}{Recipient's alpha1 domain.}
 
-\item{recip_2}{recipient's alpha2 or beta1 domain}
+\item{recip_2}{Recipient's alpha2 or beta1 domain.}
 }
 \value{
-a data frame with cleaned donor and recipients, and donor to recipient mis-match flags
+A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
 }
 \description{
-evaluate mis-match alleles
+Evaluate mis-match alleles.
 }
 \examples{
 \dontrun{

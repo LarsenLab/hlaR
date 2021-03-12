@@ -1,12 +1,12 @@
 #' @name CalEpletMHCI
-#' @title calculate HLA Class I eplet mismatch using MatchMaker reference table and algorithm, summary report
+#' @title Calculate HLA Class I eplet mismatch. Eplet Reference table and mistmatch calculation logic are based on MatchMaker.
 #' @param dat_in
-#' a dataframe with subject info(first 2 columns) and MHC I allele info
-#' each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor
+#' A dataframe with subject info(first 2 columns) and MHC I allele info.
+#' Each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor.
 #' @param ver
-#' version number of eplet mis-match table from epitopes.net to use
+#' Version number of MatchMaker based eplet reference to use.
 #' @return
-#' a list of data tables
+#' A list of data tables.
 #' single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
 #' overall_count: original input data appended with count of unique mis-matched eplet
 #' overall_detail: percentage of mismatch across all subject of each eplet

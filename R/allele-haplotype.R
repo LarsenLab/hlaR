@@ -1,9 +1,9 @@
 #' @name ImputeHaplo
-#' @title feed low resolution hla typing to NMDP frequency table to get the best pair of haplotype combination based on max count of unique low res in the combination
+#' @title Impute low resolution hla to high resolution typing.
 #' @param dat_in
-#' a dataframe with recipient/donor alleles info
+#' A dataframe with recipient/donor alleles info.
 #' @return
-#' a dataframe of best pairs of haplotype combination
+#' A dataframe with the best pairs of haplotype combination.
 #' @import
 #' tidyverse
 #'

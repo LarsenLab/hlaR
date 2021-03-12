@@ -1,6 +1,6 @@
 Package: hlaR
 Type: Package
-Title: R package for HLA mis-match and data cleaning
+Title: Tools for HLA data
 Version: 0.1.0
 Description: R package for eplet and HLA mis-match evaluation.
 Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),

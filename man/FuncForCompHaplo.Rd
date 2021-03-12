@@ -2,15 +2,15 @@
 % Please edit documentation in R/func-for-haplotype.R
 \name{FuncForCompHaplo}
 \alias{FuncForCompHaplo}
-\title{extracts combinations from halpo frequency table, it's called by CompHaploTbl()}
+\title{Extracts combinations from haplo frequency table, it's called by CompHaploTbl().}
 \usage{
 FuncForCompHaplo(tbl_raw, tbl_in)
 }
 \arguments{
-\item{tbl_raw}{a raw haplotype frequency table downloaded from NMDP website}
+\item{tbl_raw}{A raw haplotype frequency table downloaded from NMDP website.}
 
-\item{tbl_in}{a dataframe with alleles info}
+\item{tbl_in}{A dataframe with alleles info.}
 }
 \description{
-extracts combinations from halpo frequency table, it's called by CompHaploTbl()
+Extracts combinations from haplo frequency table, it's called by CompHaploTbl().
 }

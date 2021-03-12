@@ -1,9 +1,9 @@
 #' @name FuncForCompHaplo
-#' @title extracts combinations from halpo frequency table, it's called by CompHaploTbl()
+#' @title Extracts combinations from haplo frequency table, it's called by CompHaploTbl().
 #' @param tbl_raw
-#' a raw haplotype frequency table downloaded from NMDP website
+#' A raw haplotype frequency table downloaded from NMDP website.
 #' @param tbl_in
-#' a dataframe with alleles info
+#' A dataframe with alleles info.
 #' @import
 #' tidyverse
 

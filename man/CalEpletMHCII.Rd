@@ -2,22 +2,22 @@
 % Please edit documentation in R/eplet-MHC-II.R
 \name{CalEpletMHCII}
 \alias{CalEpletMHCII}
-\title{calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, single molecule level}
+\title{Calculate HLA class-II eplet mismatch. Eplet Reference table and mistmatch calculation logic are based on MatchMaker. Note: interlocus info only available in table v3 reference tables.}
 \usage{
 CalEpletMHCII(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{a dataframe with subject info (first s columns) and MHC II allele info}
+\item{dat_in}{A dataframe with subject info (first 2 columns) and MHC II allele info.}
 
-\item{ver}{version number of eplet mis-match table from epitopes.net to use}
+\item{ver}{Version number of MatchMaker based eplet reference to use.}
 }
 \value{
-a list of data tables
+A list of data tables.
 single_detail: single molecule level eplet mismatch table, including mismatch eplet name and count of each allele
 overall_count: original input data appended with count of unique mis-matched eplet
 }
 \description{
-calculate HLA class-II eplet mismatch using Matchmaker reference table and algorithm, single molecule level
+Calculate HLA class-II eplet mismatch. Eplet Reference table and mistmatch calculation logic are based on MatchMaker. Note: interlocus info only available in table v3 reference tables.
 }
 \examples{
 \dontrun{

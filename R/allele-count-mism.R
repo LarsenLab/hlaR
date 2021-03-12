@@ -1,9 +1,9 @@
 #' @name CountAlleleMism
-#' @title count number of mis-match alleles
+#' @title Count number of mis-match alleles.
 #' @param dat_in
-#' dataframe with mis-match flags of allele
+#' A dataframe with allele's mis-match flag.
 #' @param names_in
-#' column names of which to count mis-matches
+#' A column names to count mis-matche.
 #' @return
 #' dat_in with count of mismatches appended on the last column
 #' @export

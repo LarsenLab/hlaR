@@ -2,20 +2,20 @@
 % Please edit documentation in R/allele-count-mism.R
 \name{CountAlleleMism}
 \alias{CountAlleleMism}
-\title{count number of mis-match alleles}
+\title{Count number of mis-match alleles.}
 \usage{
 CountAlleleMism(dat_in, names_in)
 }
 \arguments{
-\item{dat_in}{dataframe with mis-match flags of allele}
+\item{dat_in}{A dataframe with allele's mis-match flag.}
 
-\item{names_in}{column names of which to count mis-matches}
+\item{names_in}{A column names to count mis-matche.}
 }
 \value{
 dat_in with count of mismatches appended on the last column
 }
 \description{
-count number of mis-match alleles
+Count number of mis-match alleles.
 }
 \examples{
 \dontrun{

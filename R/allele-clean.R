@@ -1,11 +1,11 @@
 #' @name CleanAllele
-#' @title clean messy HLA typing for downstream analysis
+#' @title Clean messy HLA typing for downstream analysis.
 #' @param var_1
-#' hla on locus 1
+#' Hla on locus 1.
 #' @param var_2
-#' hla on locus 2
+#' Hla on locus 2.
 #' @return
-#' a data frame with cleaned hla of each locus
+#' A data frame with cleaned hla of each locus.
 #' @export
 #'
 #' @import

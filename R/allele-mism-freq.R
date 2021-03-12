@@ -1,13 +1,13 @@
 #' @name CalAlleleMismFreq
-#' @title calculate mis-match alleles frequency of donor to recipient
+#' @title Calculate donor to recipient's allele mis-match. No mismatch calculated if input alleles are NA.
 #' @param dat_in
-#' dataframe of clean HLA
+#' A dataframe of clean HLA.
 #' @param nms_don
-#' column names of donor's alleles, must be length of 2
+#' A vector of column names of donor's alleles, must be length of 2.
 #' @param nms_rcpt
-#' column names of recipient's alleles, must be length of 2
+#' A vector of column names of recipient's alleles, must be length of 2.
 #' @return
-#' a dataframe of donor's mis-match alleles with frequency > 1
+#' A dataframe of donor's mis-match alleles with frequency > 1.
 #' @import
 #' tidyverse
 #'
@@ -45,7 +45,7 @@ CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
       mis_2[i] <- NA
     }
 
-    # if dornor's hla matches with any of recipient's, then mis-match is 0;  otherwise mis-match is 1
+    # if donor's hla matches with any of recipient's, then mis-match is 0; otherwise mis-match is 1
     else{
       if (tmp[i,1] %in% c(tmp[i,3],tmp[i,4]))
         mis_1[i] <- 0
