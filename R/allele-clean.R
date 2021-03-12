@@ -64,8 +64,8 @@ CleanAllele <- function(var_1, var_2) {
                  v2.5 = ifelse(str_detect(v2.4, "\\*{0,}+X{1,}"), str_replace(v2.4, "\\*{0,}+X{1,}", ""), v2.4)) %>%
           mutate(v1.6 = ifelse(str_count(v1.5, ":") > 1, sub("(:[^:]+):.*", "\\1", v1.5), v1.5), # remove :56 from 12:34:56
                  v2.6 = ifelse(str_count(v2.5, ":") > 1, sub("(:[^:]+):.*", "\\1", v2.5), v2.5)) %>%
-          mutate(v1.7 =  sub("([:])|[[:punct:]]", "\\1", v1.6), # remove all punctuation marks except ":"
-                 v2.7 =  sub("([:])|[[:punct:]]", "\\1", v2.6)) %>%
+          mutate(v1.7 =  gsub("(?!\\:)[[:punct:]]", "", v1.6, perl = TRUE), # remove all punctuation marks except ":"
+                 v2.7 =  gsub("(?!\\:)[[:punct:]]", "", v2.6, perl = TRUE)) %>%
           mutate(v1.8 =  str_replace(v1.7, "[A-Za-z]", ""), # remove if letter left
                  v2.8 =  str_replace(v2.7, "[A-Za-z]", "")) %>%
           mutate(v1.9 = ifelse((!str_detect(v1.8, ":") & nchar(v1.8) == 1), paste0("0", v1.8), v1.8), # paste a leading "0" for 1 char low resolution antigen
