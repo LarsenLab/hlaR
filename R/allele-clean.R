@@ -32,7 +32,7 @@ CleanAllele <- function(var_1, var_2) {
   #* end of step 1*#
 
   #* step 2: body of cleaning *#
-  # logic line
+  # logical line
   # - 1. if string in vec_na then set to NA
   # - 2. remove white spaces around the string
   # - 3. if string contains only letters then set to NA
