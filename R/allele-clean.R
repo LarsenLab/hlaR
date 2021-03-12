@@ -25,6 +25,41 @@ CleanAllele <- function(var_1, var_2) {
   # set to NA for some unidentifiable values
   vec_na <- c("0.796527778", "0.175", "1/1/00 11:12")
 
+  #####################********* 03/11/2021 *********########################
+  # define all possible combinations of brackets
+  # brkt <- combn(c("{", "[", "(", "<", "}", "]", ")", ">"), 2, paste)
+
+  # step 1:
+  # create a temp data frame to hold input antigens, and
+  # - 1. if string in vec_na then set to NA
+  # - 2. remove white spaces around the string
+  # - 3. if string contains only letters then set to NA
+  # - 4. remove everything between brackets including brackets, it covers BW4 condition
+  # - 5. remove **XXX pattern start with* end with X -> \\*{0,}+X{1,} = start with * at least 0 times, end of X at least 1 time. eg: XXX, *X, **XX, *XXX
+  # - 6. if there are more than 1 colons, remove everything starting from 2nd colon: 131:01:00 -> 131:01  26:08:00 -> 26:08
+  # - 7. remove all puncctutaions except splits - ":"
+
+  # tmp <- data.frame(cbind(var_1, var_2)) %>%
+  #   mutate(v1 = ifelse(var_1 %in% vec_na, "", var_1), # if string in vec_na then set to NA
+  #          v2 = ifelse(var_2 %in% vec_na, "", var_2)) %>%
+  #   mutate(v1.1 = str_trim(v1), # remove white spaces around the string
+  #          v2.1 = str_trim(v2)) %>%
+  #   mutate(v1.2 = ifelse(grepl("[^A-Za-z]", v1.1), v1.1, ""), # if string contains only letters then set to NA
+  #          v2.2 = ifelse(grepl("[^A-Za-z]", v2.1), v2.1, "")) %>%
+  #   mutate(v1.3 = rm_between(v1.2, brkt[1,], brkt[2,]), # remove everything between brackets including brackets
+  #          v2.3 = rm_between(v2.2, brkt[1,], brkt[2,])) %>%
+  #   mutate(v1.4 = ifelse(str_detect(v1.3, "\\*{0,}+X{1,}"), str_replace(v1.3, "\\*{0,}+X{1,}", ""), v1.3), # remove **XXX pattern star
+  #          v2.4 = ifelse(str_detect(v2.3, "\\*{0,}+X{1,}"), str_replace(v2.3, "\\*{0,}+X{1,}", ""), v2.3)) %>%
+  #   mutate(v1.5 = ifelse(str_count(v1.4, ":") > 1, sub("(:[^:]+):.*", "\\1", v1.4), v1.4), # if there are more than 1 splits, remove everything starting from 2nd
+  #          v2.5 = ifelse(str_count(v2.4, ":") > 1, sub("(:[^:]+):.*", "\\1", v2.4), v2.4)) %>%
+  #   mutate(v1.6 =  sub("([:])|[[:punct:]]", "\\1", v1.5), # remove all puncctutaions except splits - ":"
+  #          v2.6 =  sub("([:])|[[:punct:]]", "\\1", v2.5)) %>%
+  #   select(var_1, v1, v1.2, v1.2, v1.3, v1.4, v1.5, v1.6, var_2, v2, v2.1, v2.2, v2.3, v2.4, v2.5, v2.6)
+  #
+  # tmp
+
+  #####################******** end of 03/11/2021**********########################
+
   # create a temp data frame to hold input antigens
   tmp <- data.frame(cbind(var_1,var_2)) %>%
     mutate(var_1 = gsub(" ", "", str_trim(var_1, side = "both"), fixed = FALSE),
