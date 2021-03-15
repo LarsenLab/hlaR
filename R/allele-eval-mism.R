@@ -1,6 +1,5 @@
 #' @name EvalAlleleMism
-#' @title Evaluate mis-match alleles.
-#  Mismatches at homozygous alleles were considered single mismatches.
+#' @title Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.
 #' @param don_1
 #' Donor's alpha1 domain.
 #' @param don_2

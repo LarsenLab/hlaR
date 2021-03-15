@@ -1,5 +1,5 @@
 #' @name CalAlleleTopN
-#' @title topN most frequent recipient/donor alleles.
+#' @title topN most frequent recipient/donor alleles. N can be defined by user, default n is 5.
 #' @param dat_in
 #' An cleaned HLA dataframe.
 #' @param nms_don

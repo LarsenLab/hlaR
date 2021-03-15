@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-eval-mism.R
 \name{EvalAlleleMism}
 \alias{EvalAlleleMism}
-\title{Evaluate mis-match alleles.}
+\title{Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.}
 \usage{
 EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 }
@@ -21,7 +21,7 @@ EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
 }
 \description{
-Evaluate mis-match alleles.
+Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.
 }
 \examples{
 \dontrun{

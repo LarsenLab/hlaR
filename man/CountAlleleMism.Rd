@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-count-mism.R
 \name{CountAlleleMism}
 \alias{CountAlleleMism}
-\title{Count number of mis-match alleles.}
+\title{Count number of mis-match alleles. Count is NA if input alleles are NA.}
 \usage{
 CountAlleleMism(dat_in, names_in)
 }
@@ -15,7 +15,7 @@ CountAlleleMism(dat_in, names_in)
 dat_in with count of mismatches appended on the last column
 }
 \description{
-Count number of mis-match alleles.
+Count number of mis-match alleles. Count is NA if input alleles are NA.
 }
 \examples{
 \dontrun{

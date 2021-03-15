@@ -1,5 +1,5 @@
 #' @name CleanAllele
-#' @title Clean messy HLA typing for downstream analysis.
+#' @title Clean messy HLA typing for downstream analysis. For NA alleles, if both loci are not NA or both are NA, then keep them as they are; if one of loci is NA, then assign the non-NA one to it.
 #' @param var_1
 #' Hla on locus 1.
 #' @param var_2
