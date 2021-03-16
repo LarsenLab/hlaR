@@ -2,24 +2,24 @@
 % Please edit documentation in R/eplet-MHC-I.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{Calculate HLA Class I eplet mismatch. Eplet Reference table and mistmatch calculation logic are based on MatchMaker.}
+\title{Calculate class I MHC eplet mismatch.}
 \usage{
 CalEpletMHCI(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{A dataframe with subject info(first 2 columns) and MHC I allele info.
+\item{dat_in}{A dataframe with subject info(first 2 columns) and class I MHC allele info.
 Each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor.}
 
-\item{ver}{Version number of MatchMaker based eplet reference to use.}
+\item{ver}{Version number of MatchMaker based eplet reference table to use. Mismatch calculation logic are based on MatchMaker too.}
 }
 \value{
 A list of data tables.
-single_detail: single moelcule level eplet mismatch table, including mismatch eplet name and count of each allele
-overall_count: original input data appended with count of unique mis-matched eplet
-overall_detail: percentage of mismatch across all subject of each eplet
+single_detail: single molecule level class I MHC eplet mismatch table, including mismatch eplet name and total count of each allele.
+overall_count: original input data appended with count of unique mismatched eplet.
+overall_detail: percentage of mismatch across all subject of each eplet.
 }
 \description{
-Calculate HLA Class I eplet mismatch. Eplet Reference table and mistmatch calculation logic are based on MatchMaker.
+Calculate class I MHC eplet mismatch.
 }
 \examples{
 \dontrun{

@@ -1,13 +1,13 @@
 #' @name CalAlleleMismFreq
-#' @title Calculate donor to recipient's allele mis-match. No mismatch calculated if input alleles are NA.
+#' @title Calculate donor to recipient's allele mismatch.
 #' @param dat_in
-#' A dataframe of clean HLA.
+#' A data frame of clean HLA.
 #' @param nms_don
 #' A vector of column names of donor's alleles, must be length of 2.
 #' @param nms_rcpt
 #' A vector of column names of recipient's alleles, must be length of 2.
 #' @return
-#' A dataframe of donor's mis-match alleles with frequency > 1.
+#' A data frame of donor's mismatch alleles with frequency > 1. No mismatch calculated if input alleles are NA.
 #' @import
 #' tidyverse
 #'

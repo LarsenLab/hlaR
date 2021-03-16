@@ -1,15 +1,15 @@
 #' @name CalAlleleTopN
-#' @title topN most frequent recipient/donor alleles. N can be defined by user, default n is 5.
+#' @title topN most frequent recipient/donor alleles.
 #' @param dat_in
-#' An cleaned HLA dataframe.
+#' An cleaned HLA data frame.
 #' @param nms_don
 #' A vector of donor's allele name(s).
 #' @param nms_rcpt
 #' A vector of recipient's allele name(s).
 #' @param top_n
-#' Number of top frequent alleles. Default n = 5.
+#' Number of top frequent alleles. Default n is 5.
 #' @return
-#' A dataframe of top_n most frequent alleles.
+#' A data frame of top_n most frequent alleles.
 #'
 #' @import
 #' tidyverse

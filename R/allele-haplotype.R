@@ -1,9 +1,9 @@
 #' @name ImputeHaplo
 #' @title Impute low resolution hla to high resolution typing.
 #' @param dat_in
-#' A dataframe with recipient/donor alleles info.
+#' A data frame with recipient/donor alleles info.
 #' @return
-#' A dataframe with the best pairs of haplotype combination.
+#' A data frame with the best pairs of haplotype combination.
 #' @import
 #' tidyverse
 #'

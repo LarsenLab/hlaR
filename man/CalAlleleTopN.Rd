@@ -2,24 +2,24 @@
 % Please edit documentation in R/allele-topn.R
 \name{CalAlleleTopN}
 \alias{CalAlleleTopN}
-\title{topN most frequent recipient/donor alleles. N can be defined by user, default n is 5.}
+\title{topN most frequent recipient/donor alleles.}
 \usage{
 CalAlleleTopN(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 }
 \arguments{
-\item{dat_in}{An cleaned HLA dataframe.}
+\item{dat_in}{An cleaned HLA data frame.}
 
 \item{nms_don}{A vector of donor's allele name(s).}
 
 \item{nms_rcpt}{A vector of recipient's allele name(s).}
 
-\item{top_n}{Number of top frequent alleles. Default n = 5.}
+\item{top_n}{Number of top frequent alleles. Default n is 5.}
 }
 \value{
-A dataframe of top_n most frequent alleles.
+A data frame of top_n most frequent alleles.
 }
 \description{
-topN most frequent recipient/donor alleles. N can be defined by user, default n is 5.
+topN most frequent recipient/donor alleles.
 }
 \examples{
 \dontrun{

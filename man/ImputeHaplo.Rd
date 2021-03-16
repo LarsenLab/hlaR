@@ -7,10 +7,10 @@
 ImputeHaplo(dat_in)
 }
 \arguments{
-\item{dat_in}{A dataframe with recipient/donor alleles info.}
+\item{dat_in}{A data frame with recipient/donor alleles info.}
 }
 \value{
-A dataframe with the best pairs of haplotype combination.
+A data frame with the best pairs of haplotype combination.
 }
 \description{
 Impute low resolution hla to high resolution typing.

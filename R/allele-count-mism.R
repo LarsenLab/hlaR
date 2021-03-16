@@ -1,11 +1,11 @@
 #' @name CountAlleleMism
-#' @title Count number of mis-match alleles. Count is NA if input alleles are NA.
+#' @title Count number of mismatch alleles.
 #' @param dat_in
-#' A dataframe with allele's mis-match flag.
+#' A dataframe with allele's mismatch flag.
 #' @param names_in
-#' A column names to count mis-matche.
+#' A column names to count mismatch.
 #' @return
-#' dat_in with count of mismatches appended on the last column
+#' dat_in with count of mismatches appended on the last column. Count is NA if input alleles are NA.
 #' @export
 #'
 #' @import

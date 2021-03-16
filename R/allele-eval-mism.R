@@ -1,5 +1,5 @@
 #' @name EvalAlleleMism
-#' @title Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.
+#' @title Evaluate mismatch alleles.
 #' @param don_1
 #' Donor's alpha1 domain.
 #' @param don_2
@@ -9,9 +9,9 @@
 #' @param recip_2
 #' Recipient's alpha2 or beta1 domain.
 #' @param hmz_cnt
-#' flag of the way to count mismatch at homozygous alleles. If flag = 1 then count as single, else count as double.
+#' Flag of the way to count mismatch at homozygous alleles. Homozygous alleles mismatch were considered single mismatch by default. Set flag = 2 if want count as double.
 #' @return
-#' A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
+#' A data frame with cleaned donor and recipients, and donor to recipient mismatch flags.
 #' @export
 #'
 #' @import

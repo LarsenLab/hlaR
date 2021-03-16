@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-eval-mism.R
 \name{EvalAlleleMism}
 \alias{EvalAlleleMism}
-\title{Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.}
+\title{Evaluate mismatch alleles.}
 \usage{
 EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 }
@@ -15,13 +15,13 @@ EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 
 \item{recip_2}{Recipient's alpha2 or beta1 domain.}
 
-\item{hmz_cnt}{flag of the way to count mismatch at homozygous alleles. If flag = 1 then count as single, else count as double.}
+\item{hmz_cnt}{Flag of the way to count mismatch at homozygous alleles. Homozygous alleles mismatch were considered single mismatch by default. Set flag = 2 if want count as double.}
 }
 \value{
-A data frame with cleaned donor and recipients, and donor to recipient mis-match flags.
+A data frame with cleaned donor and recipients, and donor to recipient mismatch flags.
 }
 \description{
-Evaluate mis-match alleles. Note that mismatches at homozygous alleles were considered single mismatches.
+Evaluate mismatch alleles.
 }
 \examples{
 \dontrun{
