@@ -52,7 +52,7 @@ ImputeHaplo <- function(dat_in){
   #* end of step 1 *#
 
   #* step 2: reshape input data table by recipient and donor *#
-  dat_ready <- dat_in %>% arrange(rowid) %>%
+  dat_ready <- dat_in %>% replace(., is.na(.), "") %>% arrange(rowid) %>%
     mutate_all(as.character) %>%
     mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
            a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
