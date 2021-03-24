@@ -73,6 +73,28 @@ ImputeHaplo <- function(dat_in){
   #* end of step 2 *#
 
   #* step 3: call FuncForCompHaplo() for each subjects and get top pairs haplotype combination *#
+  # if all of donor's alleles are NA
+  dat_not_ready <- dat_ready %>% mutate(count = rowSums(. == "" ))
+
+  # data with at least one hla value, it will be used for imputation function
+  dat_ready <- dat_not_ready %>% filter(count != 16) %>% select(-count)
+
+  # data with all NA hlas, it will append to imputation result
+  dat_not_ready <- dat_not_ready %>% filter(count == 16) %>% select(-count) %>%
+    mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
+           type = paste("raw"),
+           id = rowid,
+           a = "",
+           b = "",
+           c = "",
+           drb1 = "",
+           dqb1 = "",
+           drb345 = "",
+           freq = "",
+           rank = "",
+           cnt_pair = "" ) %>%
+    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+
   num_subj <- dim(dat_ready)[1]
   hpl_tp_raw <- vector(mode = "list", length = num_subj)
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
@@ -88,13 +110,9 @@ ImputeHaplo <- function(dat_in){
 
   hpl_tp_pairs <- as.data.frame(do.call(rbind, hpl_tp_pairs))
   row.names(hpl_tp_pairs) <- seq(1:dim(hpl_tp_pairs)[1])
+
+  hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_not_ready)
   #* end of step 4 *#
 
   return(hpl_tp_pairs)
 }
-
-
-
-
-
-
