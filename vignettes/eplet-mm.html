@@ -342,6 +342,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>Methods</h2>
 <div id="mhc-i" class="section level3">
 <h3>MHC I</h3>
+<p>###*** 03/29/2021 <strong><em>### # 1. single moleclue level report: if is.na(donor’s hla) then it won’t show up in the final report # 2. overall report: mm_cnt_tt is the total count of mismatch eplet ###</em></strong> end of 03/29/2021 ***###</p>
 <div id="notes" class="section level4">
 <h4>notes</h4>
 <ol style="list-style-type: decimal">
@@ -373,18 +374,20 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 </div>
 </div>
-<div id="examples" class="section level2">
-<h2>Examples</h2>
-<div id="example-1" class="section level3">
-<h3>Example 1</h3>
+<div id="example-1---mhc-i" class="section level2">
+<h2>Example 1 - MHC-I</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># use the testing data in the library</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># dat &lt;-  read.csv(system.file(&quot;extdata/example&quot;, &quot;MHC_II_test.csv&quot;, package = &quot;hlaR&quot;), sep = &quot;,&quot;, header = TRUE) </span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># re &lt;- CalEpletMHCII_s(dat)</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># head(re$count)</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># head(re$detail)</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># </span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># path_test &lt;- system.file(&quot;extdata/example&quot;, &quot;MHC_I_test.csv&quot;, package=&quot;hlaR&quot;)</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># test &lt;-  read.csv(path_test)</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a>dat_mhc1 &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;MHC_I_test.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>) </span>
+<span id="cb2-3"><a href="#cb2-3"></a>re_mhc1 &lt;-<span class="st"> </span><span class="kw">CalEpletMHCI</span>(dat_mhc1)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>re_mhc1_single &lt;-<span class="st"> </span>re_mhc1<span class="op">$</span>single_detail</span>
+<span id="cb2-5"><a href="#cb2-5"></a>re_mhc1_overall &lt;-<span class="st"> </span>re_mhc1<span class="op">$</span>overall_count</span></code></pre></div>
+<div id="example-2---mhc-ii" class="section level3">
+<h3>Example 2 - MHC-II</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># use the testing data in the library</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>dat_mhc2 &lt;-<span class="st">  </span><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;MHC_II_test.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>) </span>
+<span id="cb3-3"><a href="#cb3-3"></a>re_mhc2 &lt;-<span class="st"> </span><span class="kw">CalEpletMHCII</span>(dat_mhc2)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>re_mhc2_single &lt;-<span class="st"> </span>re_mhc2<span class="op">$</span>single_detail</span>
+<span id="cb3-5"><a href="#cb3-5"></a>re_mhc2_overall &lt;-<span class="st"> </span>re_mhc2<span class="op">$</span>overall_count</span></code></pre></div>
 </div>
 <div id="use-case-2-epilet-mm-for-transplant-cohort-clinical." class="section level3">
 <h3>Use case 2 Epilet MM for Transplant Cohort (clinical….</h3>
@@ -392,34 +395,34 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="import-recipient-and-donor-typing-data" class="section level5">
 <h5>import recipient and donor typing data</h5>
 <p><span class="citation">[@TODO]</span> describe import of data from package.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># library(tidyverse)</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># e_tx &lt;- readr::read_rds(&quot;~/platforms/e_tx_platform/data/proc/tidy_rds/e_tx_final_20201009.rds.gz&quot;)</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># </span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># tx_cohort &lt;- e_tx$hla_typing %&gt;% </span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#   filter(transplant_dt &gt;= &quot;2020-09-01&quot;) %&gt;% </span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#   select(-c(patient_full_nm:transplant_dt))</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># </span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># write_csv(tx_cohort, &quot;data/tx_cohort.csv&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># high_res_cohort &lt;- read_xlsb(&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;, sheet = &quot;EnterData&quot;, skip = 1) %&gt;% </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %&gt;% </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#    filter(Rec1stA != &quot;x&quot;,</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co">#           Rec1stA != &quot;&quot;) </span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co"># </span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co"># high_res_cohort &lt;- rowid_to_column(high_res_cohort, &quot;ID&quot;)</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># library(tidyverse)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># e_tx &lt;- readr::read_rds(&quot;~/platforms/e_tx_platform/data/proc/tidy_rds/e_tx_final_20201009.rds.gz&quot;)</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># tx_cohort &lt;- e_tx$hla_typing %&gt;% </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#   filter(transplant_dt &gt;= &quot;2020-09-01&quot;) %&gt;% </span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#   select(-c(patient_full_nm:transplant_dt))</span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co"># </span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># </span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co"># high_res_rename &lt;-  high_res_cohort %&gt;% </span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#   rename_with(~ str_replace(., &quot;Rec1st&quot;, &quot;rec_1&quot;), .cols = c(Rec1stA, Rec1stB, Rec1stC))</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># data(high_res_cohort)</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co"># </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co"># high_res_cohort &lt;- read_csv(&quot;add high res sample data&quot;)</span></span></code></pre></div>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co"># write_csv(tx_cohort, &quot;data/tx_cohort.csv&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># high_res_cohort &lt;- read_xlsb(&quot;~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb&quot;, sheet = &quot;EnterData&quot;, skip = 1) %&gt;% </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %&gt;% </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#    filter(Rec1stA != &quot;x&quot;,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#           Rec1stA != &quot;&quot;) </span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># </span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># high_res_cohort &lt;- rowid_to_column(high_res_cohort, &quot;ID&quot;)</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co"># </span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co"># high_res_rename &lt;-  high_res_cohort %&gt;% </span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#   rename_with(~ str_replace(., &quot;Rec1st&quot;, &quot;rec_1&quot;), .cols = c(Rec1stA, Rec1stB, Rec1stC))</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># data(high_res_cohort)</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># </span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># high_res_cohort &lt;- read_csv(&quot;add high res sample data&quot;)</span></span></code></pre></div>
 <p><span class="citation">[@TODO]</span> Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).</p>
 <p>Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.</p>
 <p>Describe the variables. recip_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># glimpse(high_res_cohort)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># glimpse(high_res_cohort)</span></span></code></pre></div>
 <p>Describe the function purpose, input output. Reference matchmaker</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># out &lt;- CalEpletMHCI_s(high_res_cohort)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># out &lt;- CalEpletMHCI_s(high_res_cohort)</span></span></code></pre></div>
 <p>Generate some visuals (base vs ggplot)</p>
 <p>histogram of eplet mm ? eplet mmm vs dsa at 5 years?</p>
 </div>
@@ -430,12 +433,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="import-recipient-and-donor-typing-data-1" class="section level5">
 <h5>import recipient and donor typing data</h5>
 <p><span class="citation">[@TODO]</span> describe import of data from package.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># data(assess_donors)</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># assess_donors &lt;- assess_donors</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># data(assess_donors)</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># assess_donors &lt;- assess_donors</span></span></code></pre></div>
 <p><span class="citation">[@TODO]</span> Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).</p>
 <p>Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.</p>
 <p>Describe the variables. recip_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># glimpse(assess_donors)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># glimpse(assess_donors)</span></span></code></pre></div>
 <p>Describe the function purpose, input output. Reference matchmaker</p>
 <p>Generate some visuals (base vs ggplot)</p>
 <p>histogram of epilet mm ? epilet mmm vs dsa at 5 years?</p>

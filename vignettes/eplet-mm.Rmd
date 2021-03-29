@@ -33,9 +33,14 @@ library(readxlsb)
 
 ### MHC I
 
+###*** 03/29/2021  ***###
+# 1. single moleclue level report: if is.na(donor's hla) then it won't show up in the final report 
+# 2. overall report: mm_cnt_tt is the total count of mismatch eplet
+###*** end of 03/29/2021 ***###
+
 #### notes
 
-1.  raw\_eplet is pulled from "Ep" worksheet from ABC\_Eplet\_Matching\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
+1.  raw\_eplet is pulled from "Ep" worksheet from ABC\_Eplet\_Matching\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html) 
 2.  raw\_lookup is generated on-the-fly based on raw\_eplet table
 3.  result generated from this function may slightly different with result from ABC\_Eplet\_Matching\_3.1.xlsb due to a few possible formatting issue in the excel
 4.  if allele from dat\_in is not in the raw eplet table, then it will set to NA
@@ -58,15 +63,12 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 **DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br> **DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br> **DPB**: if inter-loci eplets (av \>= 22 or other \<= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br> **DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br> **DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
 
 ## Example 1 - MHC-I
-
-single report: mis-match eplets and count for each allele
-overall report: total mis-match of each subject
 ```{r, message = FALSE}
 # use the testing data in the library
-dat <-  read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
-re <- CalEpletMHCI(dat)
-report_single <- re$single_detail
-report_overall <- re$overall_count
+dat_mhc1 <-  read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+re_mhc1 <- CalEpletMHCI(dat_mhc1)
+re_mhc1_single <- re_mhc1$single_detail
+re_mhc1_overall <- re_mhc1$overall_count
 
 ```
 
@@ -74,13 +76,10 @@ report_overall <- re$overall_count
 
 ```{r, message = FALSE}
 # use the testing data in the library
-# dat <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
-# re <- CalEpletMHCII_s(dat)
-# head(re$count)
-# head(re$detail)
-# 
-# path_test <- system.file("extdata/example", "MHC_I_test.csv", package="hlaR")
-# test <-  read.csv(path_test)
+dat_mhc2 <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+re_mhc2 <- CalEpletMHCII(dat_mhc2)
+re_mhc2_single <- re_mhc2$single_detail
+re_mhc2_overall <- re_mhc2$overall_count
 ```
 
 ### Use case 2 Epilet MM for Transplant Cohort  (clinical.... 
