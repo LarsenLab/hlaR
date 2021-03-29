@@ -57,9 +57,20 @@ compare eplet of donor's each alelle with all available recipient's eplets from 
 
 **DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br> **DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br> **DPB**: if inter-loci eplets (av \>= 22 or other \<= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br> **DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br> **DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
 
-## Examples
+## Example 1 - MHC-I
 
-### Example 1
+single report: mis-match eplets and count for each allele
+overall report: total mis-match of each subject
+```{r, message = FALSE}
+# use the testing data in the library
+dat <-  read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+re <- CalEpletMHCI(dat)
+report_single <- re$single_detail
+report_overall <- re$overall_count
+
+```
+
+### Example 2 - MHC-II
 
 ```{r, message = FALSE}
 # use the testing data in the library
