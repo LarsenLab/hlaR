@@ -219,40 +219,17 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     select(pair_id, everything())
   #* end of step 7 *#
 
-  #* step 8: final result - overall report *#
-  result_overall <- tbl_ref
+  #* step 8: final result -  overall report *#
+  result_overall <- result_single %>%
+    group_by(subject) %>%
+    mutate(mm_cnt_tt = sum(mm_cnt)) %>%
+    ungroup() %>%
+    select(pair_id, subject, mm_cnt_tt) %>%
+    distinct() %>%
+    arrange(pair_id)
 
-  st <- 3
-  for (i in 1:subj_num) {
-    ed <- st + 5
-    positions <- c(st:ed)
-    tmp <- tbl_ep_mm2 %>%
-      select(c(1, 2, all_of(positions))) %>%
-      setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
-      right_join(., tbl_ref,by = c("index", "type")) %>%
-      mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
-      select(index, type, eplet, var) %>%
-      setNames(c("index", "type", "eplet", subj_names[i]))
-
-    st <- ed + 1
-    result_overall <- left_join(result_overall, tmp, by = c("index", "type", "eplet"))
-  }
-
-  result_detail <- result_overall %>%
-    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
-           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = ""))
-
-  # count unique mismatch eplets
-  result_count <- result_detail %>%
-    map(., ~sum(!is.na(.))) %>%
-    data.frame() %>%
-    select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
-    gather() %>%
-    setNames(c("pair_id", "mm_count")) %>%
-    mutate(pair_id = as.numeric(str_replace(pair_id, "subj", ""))) %>%
-    right_join(., tbl_ready, by = "pair_id")
   #* end of step 8 *#
 
   return(list(single_detail = result_single,
-              overall_count = result_count))
+              overall_count = result_overall))
 }
