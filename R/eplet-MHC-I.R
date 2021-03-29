@@ -56,35 +56,35 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     distinct()
   #* end of step 1 *#
 
-  #* step 2: patient table *#
+  #* step 2: subject table *#
   nm_rec <- c("rec_a1", "rec_a2", "rec_b1", "rec_b2", "rec_c1", "rec_c2")
   nm_don <- c("don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
 
   tmp_rcpt <- dat_in %>%
-    filter(donor_type %in% c("recipient", "recip", "tmp_rcpt", "r")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", nm_rec))
+    filter(subject_type %in% c("recipient", "recip", "tmp_rcpt", "r")) %>%
+    select(-subject_type) %>%
+    setNames(c("pair_id", nm_rec))
 
   tmp_don <- dat_in %>%
-    filter(donor_type %in% c("donor", "don", "dn", "d")) %>%
-    select(-donor_type) %>%
-    setNames(c("part_id", nm_don))
+    filter(subject_type %in% c("donor", "don", "dn", "d")) %>%
+    select(-subject_type) %>%
+    setNames(c("pair_id", nm_don))
 
-  tbl_ready <- left_join(tmp_rcpt, tmp_don, by = c("part_id")) %>%
-    mutate(part_id_ori = part_id) %>%
-    arrange(part_id_ori) %>%
-    mutate(part_id = dense_rank(part_id_ori))
+  tbl_ready <- left_join(tmp_rcpt, tmp_don, by = c("pair_id")) %>%
+    mutate(pair_id_ori = pair_id) %>%
+    arrange(pair_id_ori) %>%
+    mutate(pair_id = dense_rank(pair_id_ori))
 
   rm(tmp_rcpt, tmp_don)
 
   # create id_match table in case pari_id is not sequential in the patient table
   id_match <- tbl_ready %>%
-    select(part_id_ori, part_id) %>%
-    mutate(part_id = as.character(part_id))
+    select(pair_id_ori, pair_id) %>%
+    mutate(pair_id = as.character(pair_id))
 
   tbl_ready <- tbl_ready %>%
-    select(-part_id_ori) %>%
-    select(part_id, everything())
+    select(-pair_id_ori) %>%
+    select(pair_id, everything())
 
   subj_num <- dim(tbl_ready)[1]
   tmp_names <- c(nm_rec, nm_don)
@@ -193,30 +193,30 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   result_single <-  data.frame(t(tbl_ep_mm2)) %>%
     unite("mm_eplets", names(.), na.rm = TRUE, sep = ",", remove = FALSE) %>%
     mutate(subject = gsub(".*_", "", rownames(.)),
-           part_id = gsub(".*subj", "", subject),
+           pair_id = gsub(".*subj", "", subject),
            gene = gsub("_.*", "", rownames(.)),
            mm_cnt = str_count(mm_eplets, ",")) %>%
-    select(subject, part_id, gene, mm_eplets, mm_cnt) %>%
+    select(subject, pair_id, gene, mm_eplets, mm_cnt) %>%
     filter(!subject %in% c("index", "type")) %>%
     mutate(mm_cnt = ifelse((is.na(mm_eplets) | mm_eplets == "NA" | mm_eplets == "") & mm_cnt == 0, 0,
                            ifelse((!is.na(mm_eplets) | mm_eplets != "NA" | mm_eplets != "") & mm_cnt == 0, 1, mm_cnt + 1)))
 
   don_allele <- tbl_ready %>%
-    select(part_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
+    select(pair_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
     pivot_longer(cols = starts_with("don_"),
                  names_to = "gene",
                  values_to = "hla") %>%
     mutate(gene = str_replace(gene, "don_", ""),
-           part_id = as.character(part_id))
+           pair_id = as.character(pair_id))
 
   # add hla to the result_single table
   result_single <- result_single %>%
-    left_join(., don_allele, by =c("part_id", "gene") ) %>%
-    select(part_id, subject, hla, mm_eplets, mm_cnt) %>%
-    left_join(., id_match, by = "part_id") %>%
-    select(-part_id) %>%
-    rename(part_id = part_id_ori) %>%
-    select(part_id, everything())
+    left_join(., don_allele, by =c("pair_id", "gene") ) %>%
+    select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
+    left_join(., id_match, by = "pair_id") %>%
+    select(-pair_id) %>%
+    rename(pair_id = pair_id_ori) %>%
+    select(pair_id, everything())
   #* end of step 7 *#
 
   #* step 8: final result - overall report *#
@@ -248,12 +248,11 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     data.frame() %>%
     select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
     gather() %>%
-    setNames(c("part_id", "mm_count")) %>%
-    mutate(part_id = as.numeric(str_replace(part_id, "subj", ""))) %>%
-    right_join(., tbl_ready, by = "part_id")
+    setNames(c("pair_id", "mm_count")) %>%
+    mutate(pair_id = as.numeric(str_replace(pair_id, "subj", ""))) %>%
+    right_join(., tbl_ready, by = "pair_id")
   #* end of step 8 *#
 
   return(list(single_detail = result_single,
-              overall_count = result_count,
-              overall_detail = result_detail))
+              overall_count = result_count))
 }

@@ -1,4 +1,4 @@
-participant_id,donor_type,a1,a2,b1,b2,c1,c2
+pair_id,subject_type,a1,a2,b1,b2,c1,c2
 1,recipient,A*33:03,A*31:01,B*44:03,B*48:01,C*14:03,C*08:01
 1,donor,A*30:01,A*03:01,B*42:01,B*07:02,C*07:02,C*17:01
 2,recipient,A*33:03,A*31:01,B*44:03,B*48:01,C*14:03,C*08:01
