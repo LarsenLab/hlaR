@@ -7,14 +7,14 @@
 CalEpletMHCII(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{A dataframe with subject info (first 2 columns) and class II MHC allele info.}
+\item{dat_in}{A dataframe with subject info (pair_id and subject_type) and both copies of copy of HLA DRB, DRw, DQB, DQA, DPB, and DPA.}
 
 \item{ver}{Version number of MatchMaker based class II MHC eplet reference table to use. Mismatch calculation logic are based on MatchMaker too.}
 }
 \value{
 A list of data tables.
 single_detail: single molecule level eplet mismatch table, including mismatch eplet name and count of each allele.
-overall_count: original input data appended with count of unique mismatched eplet.
+overall_count: original input data appended with total count of mismatched eplet.
 }
 \description{
 Calculate class II HLA eplet mismatch. Eplet Reference table and mismatch calculation logic are based on MatchMaker. Note: interlocus info only available in table v3 reference tables.
