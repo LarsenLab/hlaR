@@ -15,7 +15,7 @@
 #' @export
 
 ImputeHaplo <- function(dat_in){
-  #* step 1: import raw haplotype frequency table and do a brief cleaning *#
+  #* step 1: import and clean raw haplotype frequency table *#
   raw_hap_tbl <- read.csv(system.file("extdata/ref", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
@@ -36,7 +36,7 @@ ImputeHaplo <- function(dat_in){
            drb1 = str_sub(drb1, start = 6),
            dqb1 = str_sub(dqb1, start = 6),
            drb345 = str_sub(drb345, start = 6)) %>%
-    # split allele by ":" for comparison with input data
+    # split allele by ":" to compare with input data
     mutate(fst_a = sub("\\:.*", "", a),
            lst_a = sub(".*\\:", "", a),
            fst_b = sub("\\:.*", "", b),
@@ -51,67 +51,85 @@ ImputeHaplo <- function(dat_in){
            lst_drb345 = sub(".*\\:", "", drb345))
   #* end of step 1 *#
 
-  #* step 2: reshape input data table by recipient and donor *#
-  dat_ready <- dat_in %>% replace(., is.na(.), "") %>% arrange(rowid) %>%
-    mutate_all(as.character) %>%
-    mutate(a1 = ifelse(nchar(a1) == 1, paste0("0", a1), a1),
-           a2 = ifelse(nchar(a2) == 1, paste0("0", a2), a2),
-           b1 = ifelse(nchar(b1) == 1, paste0("0", b1), b1),
-           b2 = ifelse(nchar(b2) == 1, paste0("0", b2), b2),
-           c1 = ifelse(nchar(c1) == 1, paste0("0", c1), c1),
-           c2 = ifelse(nchar(c2) == 1, paste0("0", c2), c2),
-           drb1 = ifelse(nchar(drb1) == 1, paste0("0", drb1), drb1),
-           drb2 = ifelse(nchar(drb2) == 1, paste0("0", drb2), drb2),
-           dqb1 = ifelse(nchar(dqb1) == 1, paste0("0", dqb1), dqb1),
-           dqb2 = ifelse(nchar(dqb2) == 1, paste0("0", dqb2), dqb2),
-           drb31 = ifelse(nchar(drb31) == 1, paste0("0", drb31), drb31),
-           drb32 = ifelse(nchar(drb32) == 1, paste0("0", drb32), drb32),
-           drb41 = ifelse(nchar(drb41) == 1, paste0("0", drb41), drb41),
-           drb42 = ifelse(nchar(drb42) == 1, paste0("0", drb42), drb42),
-           drb51 = ifelse(nchar(drb51) == 1, paste0("0", drb51), drb51),
-           drb52 = ifelse(nchar(drb52) == 1, paste0("0", drb52), drb52))
-  #* end of step 2 *#
-
-  #* step 3: call FuncForCompHaplo() for each subjects and get top pairs haplotype combination *#
-  # if all of donor's alleles are NA
-  dat_not_ready <- dat_ready %>% mutate(count = rowSums(. == "" ))
-
-  # data with at least one hla value, it will be used for imputation function
-  dat_ready <- dat_not_ready %>% filter(count != 16) %>% select(-count)
-
-  # data with all NA hlas, it will append to imputation result
-  dat_not_ready <- dat_not_ready %>% filter(count == 16) %>% select(-count) %>%
-    mutate(subj = paste(paste(rowid, type, sep = "_"), ethnicity, sep = "_"),
-           type = paste("raw"),
-           id = rowid,
-           a = "",
-           b = "",
-           c = "",
-           drb1 = "",
-           dqb1 = "",
-           drb345 = "",
-           freq = "",
-           rank = "",
-           cnt_pair = "" ) %>%
-    select(subj, type, id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-
-  num_subj <- dim(dat_ready)[1]
-  hpl_tp_raw <- vector(mode = "list", length = num_subj)
-  hpl_tp_pairs <- vector(mode = "list", length = num_subj)
-
-  for (i in 1:num_subj){
-    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_ready[i, ])
+  #* step 2: format alleles *#
+  # 1 -> 01 , 1:03 -> 01:03, 02:03:06 -> 02:03
+  simple_clean <- function(in_char){
+    out_char <- ifelse(nchar(in_char) == 1, paste0("0", in_char), # paste a leading 0 if it's low resolution and one digit
+                       ifelse(str_count(in_char, ":") > 1, sub("(:[^:]+):.*", "\\1", in_char), # remove after 2nd : if number of : > 1
+                              ifelse(str_detect(in_char, ":") & nchar(gsub(":.*", "", in_char)) == 1, paste0("0", in_char), in_char))) # paste a leading 0 if high resolution and first part has only 1 digit
+    return(out_char)
   }
 
+  dat_in <- dat_in %>%
+              replace(., is.na(.), "") %>% # unify NA to ""
+              arrange(pair_id) %>%
+              mutate_all(as.character) %>%
+              mutate(a1 = simple_clean(a1),
+                     a2 = simple_clean(a2),
+                     b1 = simple_clean(b1),
+                     b2 = simple_clean(b2),
+                     c1 = simple_clean(c1),
+                     c2 = simple_clean(c2),
+                     drb1 = simple_clean(drb1),
+                     drb2 = simple_clean(drb2),
+                     dqb1 = simple_clean(dqb1),
+                     dqb2 = simple_clean(dqb2),
+                     drb31 = simple_clean(drb31),
+                     drb32 = simple_clean(drb32),
+                     drb41 = simple_clean(drb41),
+                     drb42 = simple_clean(drb42),
+                     drb51 = simple_clean(drb51),
+                     drb52 = simple_clean(drb52))
+  #* end of step 2 *#
+
+  #* step 3: seprate data into impute-ready and append-ready tables *#
+  # length of allele columns
+  len <- length(names(dat_in)[!(names(dat_in) %in% c("pair_id", "ethnicity", "subject_type"))])
+
+  # count number of NA alleles
+  dat_interm <- dat_in %>% mutate(count = rowSums(. == "" ))
+
+  # append-ready if data without enthinicity or with NA hlas
+  dat_4_app <- dat_interm %>%
+                filter(count == len | !(ethnicity %in% c("cau", "afa", "his", "nam", "api"))) %>%
+                select(-count) %>%
+                mutate(subj = paste(paste(pair_id, subject_type, sep = "_"), ethnicity, sep = "_"),
+                       dat_type = paste("raw"),
+                       a = "",
+                       b = "",
+                       c = "",
+                       drb1 = "",
+                       dqb1 = "",
+                       drb345 = "",
+                       freq = "",
+                       rank = "",
+                       cnt_pair = "" ) %>%
+                select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+
+  # impute-ready if data with enthinicity and has at least one hla value
+  dat_4_imp <- dat_interm %>%
+                filter(count != len & ethnicity %in% c("cau", "afa", "his", "nam", "api")) %>%
+                select(-count)
   #* end of step 3 *#
 
-  #* step 4: final table *#
-  names(hpl_tp_pairs) <- dat_ready$rowid
+  #* step 4: FuncForCompHaplo() for each subjects in dat_4_imp table *#
+  num_subj <- dim(dat_4_imp)[1]
+  hpl_tp_raw <- vector(mode = "list", length = num_subj)
+  hpl_tp_pairs <- vector(mode = "list", length = num_subj)
+  for (i in 1:num_subj){
+    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+  }
+  #* end of step 4 *#
+
+  #* step 5: final table - imputed talbe + dat_4_app *#
+  names(hpl_tp_pairs) <- dat_4_imp$pair_id
 
   hpl_tp_pairs <- as.data.frame(do.call(rbind, hpl_tp_pairs))
   row.names(hpl_tp_pairs) <- seq(1:dim(hpl_tp_pairs)[1])
 
-  hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_not_ready)
+  hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_4_app) %>%
+                  arrange(pair_id, desc(subj)) %>%
+                  replace(., is.na(.), "")
   #* end of step 4 *#
 
   return(hpl_tp_pairs)
