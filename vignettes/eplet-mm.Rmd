@@ -1,7 +1,7 @@
 ---
-title: "eplet mis-match"
+title: "Eplet Mismatch"
 description: |
-  This vignette shows you how to calculate mis-match eplets of MHC I and II HLAs
+  This vignette shows you how to calculate eplet mismatch for MHC I and II
 output:
   rmarkdown::html_vignette: default
 vignette: |
@@ -28,39 +28,28 @@ library(readxlsb)
 ```
 
 ## Aims
+In this vignette, we demonstrate single and overall eplet mismatch calculations for both MHCI and MHCII. 
 
-## Methods
+## Overview
+Eplets corresponding to the donor and recipient alleles are determined using the reference table of choice. 
+Overall Mismatch: 
+Overall mismatch describes the most common eplet implementation - eplets present in the donor alleles that are not in the corresponding recipient's alleles. From the output of this function, mm_cnt_tt is the total count of mismatched eplets between the recipient and the donor. 
+Single Antigen:
+Single antigen mismatch assigns the eplet mismatch to the specific donor antigen responsible for the mismatch. If one of the input donor alleles is NA, it will be excluded from the final report. 
 
-### MHC I
 
-###*** 03/29/2021  ***###
-# 1. single moleclue level report: if is.na(donor's hla) then it won't show up in the final report 
-# 2. overall report: mm_cnt_tt is the total count of mismatch eplet
-###*** end of 03/29/2021 ***###
 
-#### notes
+## Use Cases: 
+ To input retrospective data, submit paired recipient and donor with a matching pair_id. This function can also be used to examine mismatch between a single donor and multiple recipients. To achieve this result, repeat the donor information and match it in pairs with the different possible recipients. The same test can be performed with a single recipient and multiple donors. 
 
-1.  raw\_eplet is pulled from "Ep" worksheet from ABC\_Eplet\_Matching\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html) 
-2.  raw\_lookup is generated on-the-fly based on raw\_eplet table
-3.  result generated from this function may slightly different with result from ABC\_Eplet\_Matching\_3.1.xlsb due to a few possible formatting issue in the excel
-4.  if allele from dat\_in is not in the raw eplet table, then it will set to NA
 
-#### mm calculation logic
 
-compare eplet of donor's each alelle with all available recipient's eplets from A, B, and C
+### Example: Investigate the Importance of Eplet Mismatch in Retrospective Transplant Cohort 
+In this example, the transplant team or researcher would like to calculate the Class I and Class II eplet mismatch for a cohort of transplant recipients using high resolution or imputed four digit recipient and donor HLA typing data.
 
-### MHC II
+##### Step 1: Import recipient and donor typing data. We have an example cohort that can be loaded into the environment with the following code. This is  A cohort of 14 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
 
-#### notes
-
-1.  raw\_eplet is pulled from worksheets "A" and "B" from DRDQDP\_Antibody\_Analysis\_3.1.xlsb (password of protected sheets: hla) from [HLMatchmaker](http://www.epitopes.net/index.html)
-2.  raw\_lookup is generated on-the-fly based on raw\_eplet table
-3.  result generated from this function may slightly different with result from DRDQDP\_Antibody\_Analysis\_3.1.xlsb due to a few possible formatting issue in the excel
-4.  if allele from dat\_in is not in the raw eplet table, then it will set to NA
-
-#### mm calculation logics
-
-**DQB**: compare donor's 1 allele to recipient's 2 DDRDRQB alleles (1:2)<br> **DRB** and **DRw**: compare donor's 1 allele to recipient's DRB+DRw alleles (1:4)<br> **DPB**: if inter-loci eplets (av \>= 22 or other \<= 8) then compare donor's 1 allele to recipient's ALL B alleles (DQB, DRB, DRw, DPB) (1:8)<br>else compare donor's 1 allele with recipient's DPB alleles (1:2)<br> **DQA**: compare donor's 1 allele to recipient's 2 DQA alleles (1:2)<br> **DPA**: compare donor's 1 allele to recipient's 2 DPA alleles (1:2)<br>
+##### Step 2: Calculate MHCI mismatch, pull information from result using single and overall outputs. 
 
 ## Example 1 - MHC-I
 ```{r, message = FALSE}
@@ -72,7 +61,8 @@ re_mhc1_overall <- re_mhc1$overall_count
 
 ```
 
-### Example 2 - MHC-II
+
+##### Step 3: Calculate MHCII mismatch, pull information from result using single and overall outputs. 
 
 ```{r, message = FALSE}
 # use the testing data in the library
@@ -82,104 +72,35 @@ re_mhc2_single <- re_mhc2$single_detail
 re_mhc2_overall <- re_mhc2$overall_count
 ```
 
-### Use case 2 Epilet MM for Transplant Cohort  (clinical.... 
-
-Use case transplant team or researcher would like to calulate the Class I and Class II epilet mismatch for a cohort of transplant recipients using high resolution or imputed four digit recipient and donor HLA typing data.
-
-##### import recipient and donor typing data
-
-[@TODO] describe import of data from package.
-
-```{r}
-# library(tidyverse)
-# e_tx <- readr::read_rds("~/platforms/e_tx_platform/data/proc/tidy_rds/e_tx_final_20201009.rds.gz")
-# 
-# tx_cohort <- e_tx$hla_typing %>% 
-#   filter(transplant_dt >= "2020-09-01") %>% 
-#   select(-c(patient_full_nm:transplant_dt))
-# 
-# write_csv(tx_cohort, "data/tx_cohort.csv")
-```
-
-```{r}
-# high_res_cohort <- read_xlsb("~/data_archive/hlaR_data/4ABCEpletMatchingVs02prototype.xlsb", sheet = "EnterData", skip = 1) %>% 
-#    select(Rec1stA:Rec2ndC, Don1stA:Don2ndC) %>% 
-#    filter(Rec1stA != "x",
-#           Rec1stA != "") 
-# 
-# high_res_cohort <- rowid_to_column(high_res_cohort, "ID")
-# 
-# 
-# high_res_rename <-  high_res_cohort %>% 
-#   rename_with(~ str_replace(., "Rec1st", "rec_1"), .cols = c(Rec1stA, Rec1stB, Rec1stC))
 
 
-```
 
-```{r import sample cohort data}
-
-# data(high_res_cohort)
-# 
-# high_res_cohort <- read_csv("add high res sample data")
-```
-
-[@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
-
-Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.
-
-Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
-
-```{r explore data set}
-# glimpse(high_res_cohort)
-```
-
-Describe the function purpose, input output. Reference matchmaker
-
-```{r calculate class I and class II epilet mm}
-# out <- CalEpletMHCI_s(high_res_cohort)
-```
-
-Generate some visuals (base vs ggplot)
-
-histogram of eplet mm ? eplet mmm vs dsa at 5 years?
+##### Step 4: Use visuals to examine the data. 
+The first two histograms examine the distribution of MHCI and MHCII eplet mismatch in this population. The second histogram is a visualization of the most frequently mismatched MHC Class I eplets in our transplant cohort. DSA information can also be incorporated to examine the presence of specific eplets in patients who develop DSA. 
 
 ```{r visualize mm}
+hist(re_mhc1_overall$mm_cnt_tt)
+hist(re_mhc2_overall$mm_cnt_tt)
+
+mm_eplets <- strsplit(re_mhc1_single$mm_eplets, split = ",")
+mm_eplets <- as.data.frame(matrix(as.factor(unlist(mm_eplets))))
+colnames(mm_eplets) <- c("eplets")
+
+count<- mm_eplets %>%
+  group_by(eplets) %>%
+  summarize(count=n())
+
+count %>%
+  arrange(desc(count)) %>%
+  top_n(10) %>%
+  ggplot(aes(eplets, count)) +
+  geom_col()
 
 ```
 
-### Use Case 2 Assess epilet MM for potential donors
 
-Use case transplant team would like to calulate the Class I and Class II epilet mismatch for five potential donors for a recipient.   High resolution or imputed four digit recipient and donor HLA typing data for recipient and all donors is available
+##Sources
+Eplet reference tables are extracted from the HLAMatchMaker workbooks version 2.1 and 3.1 (http://www.epitopes.net/index.html). We have verified the results generated by hlaR in comparison to HLAMatchMaker. There are a small number of typographical errors in the HLAMatchMaker excel files that result in eplets identified in the reference table not carrying over to the results. Because of these errors, the eplet mismatch on hlaR is occasionally one or two points higher than that output by the excel files. If an allele from the input data is not present in the reference table, the result generated will be NA. 
 
-##### import recipient and donor typing data
-
-[@TODO] describe import of data from package.
-
-```{r import assess_donors data}
-# data(assess_donors)
-# assess_donors <- assess_donors
-```
-
-[@TODO] Describe the data frame. A cohort of 20 recipients with donor and recipient high resolution HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, and DQb and DQb).
-
-Maybe make this example discoverying epilet vs DSA. have DSA for Class I and Class at xx years.
-
-Describe the variables. recip\_id, recip HLA typing, donor HLA typing. Describe the format/data type for major variables
-
-```{r}
-# glimpse(assess_donors)
-```
-
-Describe the function purpose, input output. Reference matchmaker
-
-```{r calculate epilet mm for donors}
-
-```
-
-Generate some visuals (base vs ggplot)
-
-histogram of epilet mm ? epilet mmm vs dsa at 5 years?
-
-```{r visualize donor mm}
-
-```
+##MatchMaker Logic: 
+The MHC I function examines donor and recipient HLA A,B, and C. Each donor allele (A,B,C) is compared against ALL recipient alleles. The MHC II function compares donor and recipient HLA DR, DP, and DQ. Please note that DRBw is an alternate naming of DRB3,4,5. Mismatch comparisons for MHCII are slightly more complicated (logic extracted from HLAMatchMaker). For DRB+DRw, DQA,DQB, and DPA, the donor alleles are compared to the corresponding recipient alleles only (i.e. DRB+DRw compared to DRB+DRw, DQB compared to DQB). DPB is managed in two ways depending on if the eplets are interloci. If interloci, they are compared across ALL of the recipients B alleles (DQB, DRB+DRw, DPB). If not, they are compared only to the recipients DPB alleles. 
