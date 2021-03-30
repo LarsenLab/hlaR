@@ -19,7 +19,7 @@ b <- EvalAlleleMism(dat$DONOR_B1, dat$DONOR_B2, dat$RECIPIENT_B1, dat$RECIPIENT_
 b<br>
 
 ### haplotype
-dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
+dat <- read.csv(system.file("extdata/example", "Haplotype_test_small.csv", package = "hlaR"))<br>
 re <- ImputeHaplo(dat_in = dat[1:5,])<br>
 
 ### single molecule level eplet mis-match
