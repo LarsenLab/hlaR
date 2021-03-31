@@ -282,13 +282,13 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
               mutate(pair = rep(1:num_pairs, each  = 2)) %>%
               filter(pair %in% c(1))
 
-  if(dim(result)[1] > 1 ){# if there are more than 2 imputed combinations (at least 1 pair)
+  if(dim(result)[1] > 1 ){# if there are more than 1 imputed combinations (at least 1 pair)
     result <- result %>%
                 mutate(subj = paste(paste(tbl_in$pair_id, tbl_in$subject_type, sep = "_"), tbl_in$ethnicity, sep = "_"),
                        dat_type = "imputed",
                        drb345 = paste(drb, drb345, sep = "*")) %>%
                 select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
-  } else{ # if there is only one imputed combination (no pair)
+  } else{ # if there is only 1 imputed combination (no pair)
     result <- result %>%
                 setNames(gsub("afa_|cau_|his_|nam|api_", "", names(.))) %>%
                 mutate(subj = paste(paste(tbl_in$pair_id, tbl_in$subject_type, sep = "_"), tbl_in$ethnicity, sep = "_"),
