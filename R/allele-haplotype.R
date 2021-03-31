@@ -52,6 +52,15 @@ ImputeHaplo <- function(dat_in){
   #* end of step 1 *#
 
   #* step 2: format alleles *#
+  # throw error if there are none-: punctuations in the data
+  ck <- data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
+          mutate(across(everything(), as.numeric))
+
+  if(any(ck == 1)){
+    stop('there are punctuation marks other than ":" in your data, please check! ')
+    }
+  rm(ck)
+
   # 1 -> 01 , 1:03 -> 01:03, 02:03:06 -> 02:03
   simple_clean <- function(in_char){
     out_char <- ifelse(nchar(in_char) == 1, paste0("0", in_char), # paste a leading 0 if it's low resolution and one digit
@@ -116,12 +125,13 @@ ImputeHaplo <- function(dat_in){
   num_subj <- dim(dat_4_imp)[1]
   hpl_tp_raw <- vector(mode = "list", length = num_subj)
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
+
   for (i in 1:num_subj){
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
   }
   #* end of step 4 *#
 
-  #* step 5: final table - imputed talbe + dat_4_app *#
+  #* step 5: final table - imputed table + dat_4_app *#
   names(hpl_tp_pairs) <- dat_4_imp$pair_id
 
   hpl_tp_pairs <- as.data.frame(do.call(rbind, hpl_tp_pairs))
