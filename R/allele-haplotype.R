@@ -117,6 +117,7 @@ ImputeHaplo <- function(dat_in){
   hpl_tp_raw <- vector(mode = "list", length = num_subj)
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
   for (i in 1:num_subj){
+    print(i)
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
   }
   #* end of step 4 *#
