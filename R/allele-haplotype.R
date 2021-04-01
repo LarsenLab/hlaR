@@ -57,7 +57,8 @@ ImputeHaplo <- function(dat_in){
           mutate(across(everything(), as.numeric))
 
   if(any(ck == 1)){
-    stop('there are punctuation marks other than ":" in your data, please check! ')
+    stop('there are punctuation marks other than ":" in your data, please check!')
+    quit()
     }
   rm(ck)
 
