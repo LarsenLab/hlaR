@@ -53,13 +53,12 @@ ImputeHaplo <- function(dat_in){
 
   #* step 2: format alleles *#
   # throw error if there are none-: punctuations in the data
-  ck <- data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
-          mutate(across(everything(), as.numeric))
+  ck <- sum(data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
+          mutate(across(everything(), as.numeric)), na.rm=TRUE)
 
-  if(any(ck == 1)){
+  if(ck >= 1){
     stop('there are punctuation marks other than ":" in your data, please check!')
-    quit()
-    }
+   }
   rm(ck)
 
   # 1 -> 01 , 1:03 -> 01:03, 02:03:06 -> 02:03
@@ -141,6 +140,7 @@ ImputeHaplo <- function(dat_in){
   hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_4_app) %>%
                   arrange(pair_id, desc(subj)) %>%
                   replace(., is.na(.), "")
+
   #* end of step 4 *#
 
   return(hpl_tp_pairs)
