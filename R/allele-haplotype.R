@@ -52,14 +52,14 @@ ImputeHaplo <- function(dat_in){
   #* end of step 1 *#
 
   #* step 2: format alleles *#
-  # throw error if there are none-: punctuations in the data
-  ck <- sum(data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
+  # throw error if there are none-: punctuation in the data
+  non_punc <- sum(data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
           mutate(across(everything(), as.numeric)), na.rm=TRUE)
 
-  if(ck >= 1){
+  if(non_punc >= 1){
     stop('there are punctuation marks other than ":" in your data, please check!')
    }
-  rm(ck)
+  rm(non_punc)
 
   # 1 -> 01 , 1:03 -> 01:03, 02:03:06 -> 02:03
   simple_clean <- function(in_char){
