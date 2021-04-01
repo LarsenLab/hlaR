@@ -139,6 +139,7 @@ ImputeHaplo <- function(dat_in){
 
   hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_4_app) %>%
                   arrange(pair_id, desc(subj)) %>%
+                  mutate(freq = ifelse(as.numeric(freq) <= 0.0001, 0.0001, round(as.numeric(freq), 4)))  %>%
                   replace(., is.na(.), "")
 
   #* end of step 4 *#
