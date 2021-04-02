@@ -31,6 +31,16 @@
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCII <- function(dat_in, ver = 3) {
+  #* step 0: check if recipient and donor are paired *#
+  num_rcpt <- length(dat_in$subject_type[dat_in$subject_type %in% c("recipient", "recip", "rcpt", "r")])
+  num_don  <- length(dat_in$subject_type[dat_in$subject_type %in% c("donor", "don", "dn", "d")])
+  if(num_rcpt == num_don){
+    rm(num_rcpt, num_don)
+  } else{
+    stop("please check that every pair_id has both recipient and donor data.")
+  }
+  #* end of step 0 *#
+  #*
   #* step 1: import raw eplet tables *#
   if(ver == 2){
     tbl_raw_eplet_A <- read.csv(system.file("extdata/ref", "MHC_II_eplet_A_v2.csv", package = "hlaR"), check.names = FALSE)

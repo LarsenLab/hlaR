@@ -32,6 +32,15 @@
 # utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCI <- function(dat_in, ver = 3) {
+  #* step 0: check if recipient and donor are paired *#
+  num_rcpt <- length(dat_in$subject_type[dat_in$subject_type %in% c("recipient", "recip", "rcpt", "r")])
+  num_don  <- length(dat_in$subject_type[dat_in$subject_type %in% c("donor", "don", "dn", "d")])
+  if(num_rcpt == num_don){
+    rm(num_rcpt, num_don)
+  } else{
+    stop("please check that every pair_id has both recipient and donor data.")
+    }
+  #* end of step 0 *#
 
   #* step 1: import raw eplet table *#
   if(ver == 2){
@@ -61,7 +70,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   nm_don <- c("don_a1", "don_a2", "don_b1", "don_b2", "don_c1", "don_c2")
 
   tmp_rcpt <- dat_in %>%
-    filter(subject_type %in% c("recipient", "recip", "tmp_rcpt", "r")) %>%
+    filter(subject_type %in% c("recipient", "recip", "rcpt", "r")) %>%
     select(-subject_type) %>%
     setNames(c("pair_id", nm_rec))
 
