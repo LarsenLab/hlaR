@@ -1,5 +1,5 @@
 #' @name EvalAlleleMism
-#' @title Evaluate mismatched alleles.
+#' @title Evaluate mismatched alleles
 #' @description Compare donor and recipient HLA typing data to determine mismatched alleles. Input data can be high or low resolution, mismatch is evaluated at the allele level.
 #' @param don_1
 #' Donor's alpha1 domain.

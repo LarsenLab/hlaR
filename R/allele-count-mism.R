@@ -1,5 +1,5 @@
 #' @name CountAlleleMism
-#' @title Count HLA mismatch at the allele level.
+#' @title Count HLA mismatch at the allele level
 #' @description Donor and recipient HLA typing data is compared to determine allele level mismatch. The output of EvalAlleleMism is used as input for this function. Allele level mismatch can be calculated for both high and low resolution data. The generated count will return 'NA' if the input alleles are 'NA.'
 #' @param dat_in
 #' A dataframe with donor and recipient mismatched alleles as output from EvalAlleleMism function.

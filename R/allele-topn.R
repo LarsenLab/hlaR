@@ -1,5 +1,5 @@
 #' @name CalAlleleTopN
-#' @title topN most frequent HLA alleles.
+#' @title topN most frequent HLA alleles
 #' @description Input cleaned HLA data for a population of transplant donors and recipients to determine the most common alleles represented in the population.
 #' @param dat_in
 #' A data frame with clean HLA typing data.
