@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-topn.R
 \name{CalAlleleTopN}
 \alias{CalAlleleTopN}
-\title{topN most frequent HLA alleles.}
+\title{topN most frequent HLA alleles}
 \usage{
 CalAlleleTopN(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 }

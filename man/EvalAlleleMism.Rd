@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-eval-mism.R
 \name{EvalAlleleMism}
 \alias{EvalAlleleMism}
-\title{Evaluate mismatched alleles.}
+\title{Evaluate mismatched alleles}
 \usage{
 EvalAlleleMism(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 }

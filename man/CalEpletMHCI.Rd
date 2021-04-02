@@ -2,7 +2,7 @@
 % Please edit documentation in R/eplet-MHC-I.R
 \name{CalEpletMHCI}
 \alias{CalEpletMHCI}
-\title{Calculate class I MHC eplet mismatch.}
+\title{Calculate class I HLA eplet mismatch.}
 \usage{
 CalEpletMHCI(dat_in, ver = 3)
 }

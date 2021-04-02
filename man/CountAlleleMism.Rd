@@ -2,7 +2,7 @@
 % Please edit documentation in R/allele-count-mism.R
 \name{CountAlleleMism}
 \alias{CountAlleleMism}
-\title{Count HLA mismatch at the allele level.}
+\title{Count HLA mismatch at the allele level}
 \usage{
 CountAlleleMism(dat_in, names_in)
 }
