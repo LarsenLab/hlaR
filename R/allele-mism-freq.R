@@ -1,13 +1,14 @@
 #' @name CalAlleleMismFreq
-#' @title Calculate donor to recipient's allele mismatch.
+#' @title Evaluate the frequency of specific allele mismatches
+#' @description This function evaluates allele level mismatch between donor and recipient and then presents the most commonly mismatched alleles. This function is most effectively used to study the most common mismatches within a transplant population.
 #' @param dat_in
-#' A data frame of clean HLA.
+#' A data frame of clean HLA typing data.
 #' @param nms_don
 #' A vector of column names of donor's alleles, must be length of 2.
 #' @param nms_rcpt
 #' A vector of column names of recipient's alleles, must be length of 2.
 #' @return
-#' A data frame of donor's mismatch alleles with frequency > 1. No mismatch calculated if input alleles are NA.
+#' A data frame of donor's mismatched alleles with frequency > 1. No mismatch is calculated if input alleles are NA.
 #' @import
 #' tidyverse
 #'

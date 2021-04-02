@@ -1,5 +1,6 @@
 #' @name EvalAlleleMism
-#' @title Evaluate mismatch alleles.
+#' @title Evaluate mismatched alleles.
+#' @description Compare donor and recipient HLA typing data to determine mismatched alleles. Input data can be high or low resolution, mismatch is evaluated at the allele level.
 #' @param don_1
 #' Donor's alpha1 domain.
 #' @param don_2
@@ -9,9 +10,9 @@
 #' @param recip_2
 #' Recipient's alpha2 or beta1 domain.
 #' @param hmz_cnt
-#' Flag of the way to count mismatch at homozygous alleles. Homozygous alleles mismatch were considered single mismatch by default. Set flag = 2 if want count as double.
+#' Use hmz_cnt to determine how mismatch at homozygous alleles should be handled. By default, a mismatch at a homozygous allele is considered a single mismatch. Set hmz_cnt = 2 to count homozygous mismatches as double.
 #' @return
-#' A data frame with cleaned donor and recipients, and donor to recipient mismatch flags.
+#' A data frame of cleaned donor and recipient HLA typing data, with mismatched donor-to-recipient alleles flagged.
 #' @export
 #'
 #' @import

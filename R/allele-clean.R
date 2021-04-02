@@ -1,11 +1,12 @@
 #' @name CleanAllele
-#' @title Clean messy HLA typing for downstream analysis. For NA alleles, if both loci are not NA or both are NA, then keep them as they are; if one of loci is NA, then assign the non-NA one to it.
+#' @title Clean messy HLA typing data
+#' @description This function takes raw “messy” HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
 #' @param var_1
-#' Hla on locus 1.
+#' HLA on allele 1.
 #' @param var_2
-#' Hla on locus 2.
+#' HLA on allele 2.
 #' @return
-#' A data frame with cleaned hla of each locus.
+#' A data frame of cleaned HLA data for each loci.
 #' @export
 #'
 #' @import

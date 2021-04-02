@@ -1,15 +1,16 @@
 #' @name CalEpletMHCI
 #' @title Calculate class I MHC eplet mismatch.
+#' @description Use high resolution HLA class I data to calculate class I eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from HLAMatchMaker, developed by Rene Dusquesnoy. Current reference tables supported are HLAMatchMaker v2 and v3.
 #' @param dat_in
-#' A dataframe with subject info(pair_id and subject_type) and both copies of each copy of HLA A, B, and C.
-#' Each unique participant id has 2 rows associated with it, 1 for recipient, 1 for donor.
+#' A dataframe with subject info (pair_id and subject_type) and both copies of each class I locus (HLA A, B, and C).
+#' Each unique pair_id has 2 rows associated with it, 1 for recipient, 1 for donor.
 #' @param ver
-#' Version number of MatchMaker based eplet reference table to use. Mismatch calculation logic are based on MatchMaker too.
+#' Version number of MatchMaker based eplet reference table to use.
 #' @return
 #' A list of data tables.
-#' single_detail: single molecule level class I MHC eplet mismatch table, including mismatch eplet name and total count of each allele.
-#' overall_count: original input data appended with total count of mismatched eplet.
-#' overall_detail: percentage of mismatch across all subject of each eplet.
+#' single_detail: single molecule class I MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
+#' overall_count: original input data appended with total count of mismatched eplets.
+#' overall_detail: percentage of mismatch across all subjects for each eplet.
 #' @export
 #'
 #' @import

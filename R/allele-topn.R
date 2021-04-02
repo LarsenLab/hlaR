@@ -1,13 +1,14 @@
 #' @name CalAlleleTopN
-#' @title topN most frequent recipient/donor alleles.
+#' @title topN most frequent HLA alleles.
+#' @description Input cleaned HLA data for a population of transplant donors and recipients to determine the most common alleles represented in the population.
 #' @param dat_in
-#' An cleaned HLA data frame.
+#' A data frame with clean HLA typing data.
 #' @param nms_don
-#' A vector of donor's allele name(s).
+#' A vector of donor allele name(s).
 #' @param nms_rcpt
-#' A vector of recipient's allele name(s).
+#' A vector of recipient allele name(s).
 #' @param top_n
-#' Number of top frequent alleles. Default n is 5.
+#' Number of alleles to return. Default n is 5.
 #' @return
 #' A data frame of top_n most frequent alleles.
 #'
