@@ -18,8 +18,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r libraries, message=FALSE}
-library(hlaR)
+library(readr)
 library(tidyverse)
+library(hlaR)
 ```
 
 ## Vignette Aims
@@ -32,14 +33,14 @@ A sample HLA typing data derived from a cohort of 200 kidney transplant recipien
 A set of low resolution HLA typing for 200 kidney transplant donor recipient pairs is provided. This data has already been cleaned using the `CleanHLAallele` function. 
 
 ```{r}
-# tx_cohort_clean <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
+tx_cohort_clean <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
 ```
 
 ## Generate List of Possible Haplotypes and Sort Most likely Pairs
 Use the `CompHaploTbl` Function to generate a list of high resolution haplotypes that fit the patient's low resolution data. The haplotypes are sorted by a count measure, "cnt" that represents the number of high resolution antigens that match the low resolution input. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible combinations of haplotypes. For each combination, calculate the count, again representing the number of high resolution antigens that match the low resolution input, without counting duplicates. Results are arranged by descending count, and pairs with the same count are arranged by descending population frequency. 
 
 ```{r}
-# haplotbl<- ImputeHaplo(tx_cohort_clean[1:10,])
+haplotbl<- ImputeHaplo(tx_cohort_clean)
 ```
 
 ## Impute high-resolution data
