@@ -320,7 +320,8 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     left_join(., allele_detail, by = c("name", "gene")) %>% # join raw hla typing back to the output table
     dplyr::rename(subject = name) %>%
     select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
-    filter(!is.na(hla))
+    filter(!is.na(hla)) %>%
+    filter(mm_cnt != 0)
 
   #* step 6: final result - overall count *#
   # count unique mismatch eplets
