@@ -6,6 +6,7 @@
 #' A data frame with the best pairs of haplotype combination.
 #' @import
 #' tidyverse
+#' utils
 #'
 #' @examples
 #' \dontrun{
@@ -126,12 +127,12 @@ ImputeHaplo <- function(dat_in){
   hpl_tp_raw <- vector(mode = "list", length = num_subj)
   hpl_tp_pairs <- vector(mode = "list", length = num_subj)
 
-  # pb <- txtProgressBar(min = 0, max = num_subj, initial = 0, style = 3)
+  pb <- txtProgressBar(min = 0, max = num_subj, initial = 0, style = 3)
   for (i in 1:num_subj){
-  # setTxtProgressBar(pb, i)
-    print(paste0("working on subject #", i))
-    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
-  #  Sys.sleep(time = 1)
+     setTxtProgressBar(pb, i)
+     # print(paste0("working on subject #", i))
+     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+     Sys.sleep(time = 1)
   }
   # close(pb)
   #* end of step 4 *#
