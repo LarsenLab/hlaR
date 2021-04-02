@@ -1,9 +1,10 @@
 #' @name ImputeHaplo
-#' @title Impute low resolution hla to high resolution typing.
+#' @title Imputation
+#' @description Impute low resolution HLA typing data to the most likely high resolution equivalent. Imputation is computationally intensive, so large datasets may encounter delays in processing. This function uses data from the National Marrow Donor Program (haplostats.org), and is currently limited to HLA A, B, C, and DRB loci.
 #' @param dat_in
-#' A data frame with recipient/donor alleles info.
+#' A data frame with low resolution HLA data.
 #' @return
-#' A data frame with the best pairs of haplotype combination.
+#' A data frame with high resolution HLA data pulled from the most likely pair of haplotypes matching the input low resolution data.
 #' @import
 #' tidyverse
 #' utils

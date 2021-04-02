@@ -1,5 +1,6 @@
 #' @name FuncForCompHaplo
-#' @title Extracts combinations from haplo frequency table, it's called by CompHaploTbl().
+#' @title Compare Haplotypes
+#' @description This function generates the ranked haplotypes for high resolution imputation. It is called by the ImputeHaplo() function.
 #' @param tbl_raw
 #' A raw haplotype frequency table downloaded from NMDP website.
 #' @param tbl_in
