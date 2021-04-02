@@ -39,7 +39,7 @@ tx_cohort_clean <- read.csv(system.file("extdata/example", "Haplotype_test.csv",
 ## Generate List of Possible Haplotypes and Sort Most likely Pairs
 Use the `ImputeHaplo` Function to generate a list of high resolution haplotypes that fit the patient's low resolution data. The haplotypes are sorted by a count measure, "cnt" that represents the number of high resolution antigens that match the low resolution input data. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible pairs of haplotypes. For each pair of haplotypes, the overall count of low resolution input antigens matched by the imputed high resolution data is calculated. Results are then arranged by descending count, and pairs with the same count are arranged by descending population frequency. 
 
-```{r}
+```{r, echo=FALSE, results='hide', fig.keep='all'}
 haplotbl<- ImputeHaplo(tx_cohort_clean)
 ```
 
