@@ -2,18 +2,18 @@
 % Please edit documentation in R/allele-haplotype.R
 \name{ImputeHaplo}
 \alias{ImputeHaplo}
-\title{Impute low resolution hla to high resolution typing.}
+\title{Imputation}
 \usage{
 ImputeHaplo(dat_in)
 }
 \arguments{
-\item{dat_in}{A data frame with recipient/donor alleles info.}
+\item{dat_in}{A data frame with low resolution HLA data.}
 }
 \value{
-A data frame with the best pairs of haplotype combination.
+A data frame with high resolution HLA data pulled from the most likely pair of haplotypes matching the input low resolution data.
 }
 \description{
-Impute low resolution hla to high resolution typing.
+Impute low resolution HLA typing data to the most likely high resolution equivalent. Imputation is computationally intensive, so large datasets may encounter delays in processing. This function uses data from the National Marrow Donor Program (haplostats.org), and is currently limited to HLA A, B, C, and DRB loci.
 }
 \examples{
 \dontrun{

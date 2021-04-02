@@ -2,7 +2,7 @@
 % Please edit documentation in R/func-for-haplotype.R
 \name{FuncForCompHaplo}
 \alias{FuncForCompHaplo}
-\title{Extracts combinations from haplo frequency table, it's called by CompHaploTbl().}
+\title{Compare Haplotypes}
 \usage{
 FuncForCompHaplo(tbl_raw, tbl_in)
 }
@@ -12,5 +12,5 @@ FuncForCompHaplo(tbl_raw, tbl_in)
 \item{tbl_in}{A dataframe with alleles info.}
 }
 \description{
-Extracts combinations from haplo frequency table, it's called by CompHaploTbl().
+This function generates the ranked haplotypes for high resolution imputation. It is called by the ImputeHaplo() function.
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/allele-count-mism.R
 \name{CountAlleleMism}
 \alias{CountAlleleMism}
-\title{Count number of mismatch alleles.}
+\title{Count HLA mismatch at the allele level.}
 \usage{
 CountAlleleMism(dat_in, names_in)
 }
 \arguments{
-\item{dat_in}{A dataframe with allele's mismatch flag.}
+\item{dat_in}{A dataframe with donor and recipient mismatched alleles as output from EvalAlleleMism function.}
 
-\item{names_in}{A column names to count mismatch.}
+\item{names_in}{A column containing the names of HLA loci for which to count mismatch.}
 }
 \value{
-dat_in with count of mismatches appended on the last column. Count is NA if input alleles are NA.
+The input data, 'dat_in' is returned with the count of mismatches appended as the last column.
 }
 \description{
-Count number of mismatch alleles.
+Donor and recipient HLA typing data is compared to determine allele level mismatch. The output of EvalAlleleMism is used as input for this function. Allele level mismatch can be calculated for both high and low resolution data. The generated count will return 'NA' if the input alleles are 'NA.'
 }
 \examples{
 \dontrun{

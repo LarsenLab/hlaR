@@ -2,20 +2,20 @@
 % Please edit documentation in R/allele-clean.R
 \name{CleanAllele}
 \alias{CleanAllele}
-\title{Clean messy HLA typing for downstream analysis. For NA alleles, if both loci are not NA or both are NA, then keep them as they are; if one of loci is NA, then assign the non-NA one to it.}
+\title{Clean messy HLA typing data}
 \usage{
 CleanAllele(var_1, var_2)
 }
 \arguments{
-\item{var_1}{Hla on locus 1.}
+\item{var_1}{HLA on allele 1.}
 
-\item{var_2}{Hla on locus 2.}
+\item{var_2}{HLA on allele 2.}
 }
 \value{
-A data frame with cleaned hla of each locus.
+A data frame of cleaned HLA data for each loci.
 }
 \description{
-Clean messy HLA typing for downstream analysis. For NA alleles, if both loci are not NA or both are NA, then keep them as they are; if one of loci is NA, then assign the non-NA one to it.
+This function takes raw “messy” HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
 }
 \examples{
 \dontrun{

@@ -2,22 +2,24 @@
 % Please edit documentation in R/eplet-MHC-II.R
 \name{CalEpletMHCII}
 \alias{CalEpletMHCII}
-\title{Calculate class II HLA eplet mismatch. Eplet Reference table and mismatch calculation logic are based on MatchMaker. Note: interlocus info only available in table v3 reference tables.}
+\title{Calculate class II HLA eplet mismatch.}
 \usage{
 CalEpletMHCII(dat_in, ver = 3)
 }
 \arguments{
-\item{dat_in}{A dataframe with subject info (pair_id and subject_type) and both copies of copy of HLA DRB, DRw, DQB, DQA, DPB, and DPA.}
+\item{dat_in}{A dataframe with subject info (pair_id and subject_type) and both copies of each class II locus (HLA DRB, DRw, DQB, DQA, DPB, and DPA)
+Each unique pair_id has 2 rows associated with it, 1 for recipient, 1 for donor..}
 
-\item{ver}{Version number of MatchMaker based class II MHC eplet reference table to use. Mismatch calculation logic are based on MatchMaker too.}
+\item{ver}{Version number of MatchMaker based eplet reference table to use.}
 }
 \value{
 A list of data tables.
-single_detail: single molecule level eplet mismatch table, including mismatch eplet name and count of each allele.
-overall_count: original input data appended with total count of mismatched eplet.
+single_detail: single molecule class II MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
+overall_count: original input data appended with total count of mismatched eplets.
+overall_detail: percentage of mismatch across all subjects for each eplet.
 }
 \description{
-Calculate class II HLA eplet mismatch. Eplet Reference table and mismatch calculation logic are based on MatchMaker. Note: interlocus info only available in table v3 reference tables.
+Use high resolution HLA class II data to calculate class II eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from HLAMatchMaker, developed by Rene Dusquesnoy. Current reference tables supported are HLAMatchMaker v2 and v3. Note: interlocus info only available in v3 reference tables.
 }
 \examples{
 \dontrun{
