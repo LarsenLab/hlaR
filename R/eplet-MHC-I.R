@@ -226,7 +226,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     left_join(., id_match, by = "pair_id") %>%
     select(-pair_id) %>%
     rename(pair_id = pair_id_ori) %>%
-    filter(mm_cnt != 0) %>% # # keep mismatch eplets only
+    # filter(mm_cnt != 0) %>% # keep mismatch eplets only
     select(pair_id, everything())
   #* end of step 7 *#
 
