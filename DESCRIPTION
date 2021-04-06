@@ -1,6 +1,6 @@
 Package: hlaR
 Type: Package
-Title: Tools for HLA data
+Title: Tools for HLA Data
 Version: 0.1.0
 Description: A streamlined tool for eplet analysis of donor and recipient HLA antigen mismatch. 
               Messy, low-resolution HLA typing data is cleaned, and imputed to high-resolution using the NMDP haplotype reference database. 
