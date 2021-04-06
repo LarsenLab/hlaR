@@ -8,19 +8,19 @@ library(hlaR)<br>
 #### - clean
 library(readr)<br>
 clean <- read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
-clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)<br>
-clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB12)<br>
+clean1 <- CleanAllele(clean$recipient_a1, clean$recipient_a2)<br>
+clean2 <- CleanAllele(clean$donor_a1, clean$donor_a2)<br>
 
 #### - mis-match
 dat <- read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
-a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2)<br>
-a<br>
-b <- EvalAlleleMism(dat$DONOR_B1, dat$DONOR_B2, dat$RECIPIENT_B1, dat$RECIPIENT_B2)<br>
-b<br>
+mm1 <- EvalAlleleMism(dat$donor_a1, dat$donor_a2, dat$recipient_a1, dat$recipient_a2)<br>
+mm1 <br>
+mm2 <- EvalAlleleMism(dat$donor_b1, dat$donor_b2, dat$recipient_b1, dat$recipient_b2)<br>
+mm2<br>
 
 ### haplotype
-dat <- read.csv(system.file("extdata/example", "Haplotype_test_small.csv", package = "hlaR"))<br>
-re <- ImputeHaplo(dat_in = dat[1:5,])<br>
+dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
+re <- ImputeHaplo(dat_in = dat)<br>
 
 ### single molecule level eplet mis-match
 #### - MHC class I
@@ -28,13 +28,11 @@ dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR
 eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
 single_detail <- eplet_mm1_v2$single_detail<br>
 overall_count <- eplet_mm1_v2$overall_count<br>
-overall_detail <- eplet_mm1_v2$overall_dertail<br>
 
-eplet_mm1_v3 <- CalEpletMHCI_s(dat, ver = 3)<br>
+eplet_mm1_v3 <- CalEpletMHCI(dat, ver = 3)<br>
 (or simply eplet_mm1_v3 <- CalEpletMHCI(dat) )<br>
 single_detail <- eplet_mm1_v3$single_detail<br>
 overall_count <- eplet_mm1_v3$overall_count<br>
-overall_detail <- eplet_mm1_v3$overall_dertail<br>
 #### - MHC class II
 dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
@@ -54,14 +52,14 @@ classII <- CountAlleleMism(hla_mm_cnt, c("mism_drb1", "mism_dqa", "mism_dqb"))<b
 dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
 don <- c("donor.a1", "donor.a2")<br>
 rcpt <- c("recipient.a1", "recipient.a2")<br>
-result <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)<br>
-result<br>
+re <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)<br>
+re<br>
 #### - frequency(freq count > 1) of donor mis-match alleles to recipients
 dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))<br>
 don <- c("donor.a1", "donor.a2")<br>
 rcpt <- c("recipient.a1", "recipient.a2")<br>
-result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
-result
+re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
+re
 
 
 
