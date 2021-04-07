@@ -22,7 +22,8 @@
 #' stringr
 #' purrr
 #' tidyr
-#'
+#' @importFrom
+#' stats setNames
 #' @examples
 #' \dontrun{
 # dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)

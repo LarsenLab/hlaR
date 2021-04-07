@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette: default
 vignette: |
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{allele-haplotype}
+  %\VignetteIndexEntry{Imputation}
   %\usepackage[utf8]{inputenc}
 ---
 

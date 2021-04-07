@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="load-test-data-set" class="section level2">
 <h2>Load Test Data Set</h2>
 <p>A sample dataset derived from a cohort of 200 kidney transplant recipients is provided to demonstrate the <code>ImputeHaplo</code> function. The data consists of donor and recipient cleaned HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5). This data has already been cleaned using the <code>CleanAllele</code> function.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tx_cohort_clean &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;Haplotype_test.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># tx_cohort_clean &lt;- read.csv(system.file(&quot;extdata/example&quot;, &quot;Haplotype_test.csv&quot;, package = &quot;hlaR&quot;))</span></span></code></pre></div>
 </div>
 <div id="generate-list-of-possible-haplotypes-and-sort-most-likely-pairs" class="section level2">
 <h2>Generate List of Possible Haplotypes and Sort Most likely Pairs</h2>

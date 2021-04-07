@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette: default
 vignette: |
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{eplet mis-match}
+  %\VignetteIndexEntry{Eplet Mismatch}
   %\usepackage[utf8]{inputenc}
 ---
 
@@ -76,14 +76,14 @@ mm_eplets <- as.data.frame(matrix(as.factor(unlist(mm_eplets))))
 colnames(mm_eplets) <- c("eplets")
 
 count<- mm_eplets %>%
-  group_by(eplets) %>%
-  summarize(count=n())
+        group_by(eplets) %>%
+        summarize(count=n())
 
 count %>%
-  arrange(desc(count)) %>%
-  top_n(10) %>%
-  ggplot(aes(eplets, count)) +
-  geom_col()
+    arrange(desc(count)) %>%
+    top_n(10) %>%
+    ggplot(aes(eplets, count)) +
+    geom_col()
 
 ```
 
