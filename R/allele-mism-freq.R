@@ -11,8 +11,7 @@
 #' A data frame of donor's mismatched alleles with frequency > 1. No mismatch is calculated if input alleles are NA.
 #' @import
 #' tidyverse
-#' @importFrom
-#' stats setNames
+#'
 #' @examples
 #' \dontrun{
 # dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))

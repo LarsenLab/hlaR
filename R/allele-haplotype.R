@@ -18,11 +18,7 @@
 
 ImputeHaplo <- function(dat_in){
   #* step 1: import and clean raw haplotype frequency table *#
-  p1 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part1.csv", check.names = FALSE)
-  p2 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part2.csv", check.names = FALSE)
-  p3 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part3.csv", check.names = FALSE)
-
-  raw_hap_tbl <- data.frame(rbind(p1, p2, p3)) %>%
+  raw_hap_tbl <- read.csv(system.file("extdata/ref", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
            afa_freq, afa_rank, api_freq, api_rank, cau_freq, cau_rank, his_freq, his_rank, nam_freq, nam_rank) %>%
@@ -136,7 +132,7 @@ ImputeHaplo <- function(dat_in){
   for (i in 1:num_subj){
      setTxtProgressBar(pb, i)
      # print(paste0("working on subject #", i))
-     hpl_tp_pairs[[i]] <- FuncForCompHaplo99(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
      Sys.sleep(time = 1)
   }
   # close(pb)
