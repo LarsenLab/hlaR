@@ -136,7 +136,7 @@ ImputeHaplo <- function(dat_in){
   for (i in 1:num_subj){
     setTxtProgressBar(pb, i)
     # print(paste0("working on subject #", i))
-    hpl_tp_pairs[[i]] <- FuncForCompHaplo99(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
     Sys.sleep(time = 1)
   }
   # close(pb)
