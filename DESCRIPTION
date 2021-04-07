@@ -1,11 +1,11 @@
 Package: hlaR
 Type: Package
-Title: Tools for HLA data
+Title: Tools for HLA Data
 Version: 0.1.0
-Description: This package is a streamlined tool for eplet analysis of donor and recipient HLA antigen mismatch. 
-              Messy, low-resolution HLA typing data is cleaned, and imputed to high-resolution using the NMDP haplotype reference database. 
-              High resolution data is analyzed for overall or single antigen eplet mismatch using a reference table (currently supporting HLAMatchMaker v2, v3). 
-              Data can enter or exit the workflow at different points depending on the user's aims and initial data quality. 
+Description: A streamlined tool for eplet analysis of donor and recipient HLA antigen mismatch. 
+             Messy, low-resolution HLA typing data is cleaned, and imputed to high-resolution using the NMDP haplotype reference database. 
+             High resolution data is analyzed for overall or single antigen eplet mismatch using a reference table (currently supporting HLAMatchMaker v2, v3). 
+             Data can enter or exit the workflow at different points depending on the user's aims and initial data quality. 
 Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),
              person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("aut")),
              person("Christian P","Larsen",email = "clarsen@emory.edu", role = c("cph", "aut")))
@@ -32,6 +32,5 @@ Imports:
   tidyr,
   utils,
   readr,
-  here,
-  readxlsb
+  here
 

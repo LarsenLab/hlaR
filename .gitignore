@@ -4,5 +4,3 @@
 .Ruserdata
 inst/doc
 .DS_Store
-inst/extdata/matchmaker/*.*
-inst/extdata/matchmaker/check/*.*
