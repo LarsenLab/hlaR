@@ -18,7 +18,11 @@
 
 ImputeHaplo <- function(dat_in){
   #* step 1: import and clean raw haplotype frequency table *#
-  raw_hap_tbl <- read.csv(system.file("extdata/ref", "A_C_B_DRB345_DRB1_DQB1.csv", package = "hlaR"), check.names = FALSE) %>%
+  p1 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part1.csv", check.names = FALSE)
+  p2 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part2.csv", check.names = FALSE)
+  p3 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part3.csv", check.names = FALSE)
+
+  raw_hap_tbl <- data.frame(rbind(p1, p2, p3)) %>%
     rename_all(. %>% tolower) %>%
     select(a, c, b, drb1, dqb1, drb345,
            afa_freq, afa_rank, api_freq, api_rank, cau_freq, cau_rank, his_freq, his_rank, nam_freq, nam_rank) %>%
@@ -56,11 +60,11 @@ ImputeHaplo <- function(dat_in){
   #* step 2: format alleles *#
   # throw error if there are none-: punctuation in the data
   non_punc <- sum(data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
-          mutate(across(everything(), as.numeric)), na.rm=TRUE)
+                    mutate(across(everything(), as.numeric)), na.rm=TRUE)
 
   if(non_punc >= 1){
     stop('there are punctuation marks other than ":" in your data, please check!')
-   }
+  }
   rm(non_punc)
 
   # 1 -> 01 , 1:03 -> 01:03, 02:03:06 -> 02:03
@@ -72,25 +76,25 @@ ImputeHaplo <- function(dat_in){
   }
 
   dat_in <- dat_in %>%
-              replace(., is.na(.), "") %>% # unify NA to ""
-              arrange(pair_id) %>%
-              mutate_all(as.character) %>%
-              mutate(a1 = simple_clean(a1),
-                     a2 = simple_clean(a2),
-                     b1 = simple_clean(b1),
-                     b2 = simple_clean(b2),
-                     c1 = simple_clean(c1),
-                     c2 = simple_clean(c2),
-                     drb1 = simple_clean(drb1),
-                     drb2 = simple_clean(drb2),
-                     dqb1 = simple_clean(dqb1),
-                     dqb2 = simple_clean(dqb2),
-                     drb31 = simple_clean(drb31),
-                     drb32 = simple_clean(drb32),
-                     drb41 = simple_clean(drb41),
-                     drb42 = simple_clean(drb42),
-                     drb51 = simple_clean(drb51),
-                     drb52 = simple_clean(drb52))
+    replace(., is.na(.), "") %>% # unify NA to ""
+    arrange(pair_id) %>%
+    mutate_all(as.character) %>%
+    mutate(a1 = simple_clean(a1),
+           a2 = simple_clean(a2),
+           b1 = simple_clean(b1),
+           b2 = simple_clean(b2),
+           c1 = simple_clean(c1),
+           c2 = simple_clean(c2),
+           drb1 = simple_clean(drb1),
+           drb2 = simple_clean(drb2),
+           dqb1 = simple_clean(dqb1),
+           dqb2 = simple_clean(dqb2),
+           drb31 = simple_clean(drb31),
+           drb32 = simple_clean(drb32),
+           drb41 = simple_clean(drb41),
+           drb42 = simple_clean(drb42),
+           drb51 = simple_clean(drb51),
+           drb52 = simple_clean(drb52))
   #* end of step 2 *#
 
   #* step 3: seprate data into impute-ready and append-ready tables *#
@@ -102,25 +106,25 @@ ImputeHaplo <- function(dat_in){
 
   # append-ready if data without enthinicity or with NA hlas
   dat_4_app <- dat_interm %>%
-                filter(count == len | !(ethnicity %in% c("cau", "afa", "his", "nam", "api"))) %>%
-                select(-count) %>%
-                mutate(subj = paste(paste(pair_id, subject_type, sep = "_"), ethnicity, sep = "_"),
-                       dat_type = paste("raw"),
-                       a = "",
-                       b = "",
-                       c = "",
-                       drb1 = "",
-                       dqb1 = "",
-                       drb345 = "",
-                       freq = "",
-                       rank = "",
-                       cnt_pair = "" ) %>%
-                select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+    filter(count == len | !(ethnicity %in% c("cau", "afa", "his", "nam", "api"))) %>%
+    select(-count) %>%
+    mutate(subj = paste(paste(pair_id, subject_type, sep = "_"), ethnicity, sep = "_"),
+           dat_type = paste("raw"),
+           a = "",
+           b = "",
+           c = "",
+           drb1 = "",
+           dqb1 = "",
+           drb345 = "",
+           freq = "",
+           rank = "",
+           cnt_pair = "" ) %>%
+    select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
 
   # impute-ready if data with enthinicity and has at least one hla value
   dat_4_imp <- dat_interm %>%
-                filter(count != len & ethnicity %in% c("cau", "afa", "his", "nam", "api")) %>%
-                select(-count)
+    filter(count != len & ethnicity %in% c("cau", "afa", "his", "nam", "api")) %>%
+    select(-count)
   #* end of step 3 *#
 
   #* step 4: FuncForCompHaplo() for each subjects in dat_4_imp table *#
@@ -130,10 +134,10 @@ ImputeHaplo <- function(dat_in){
 
   pb <- txtProgressBar(min = 0, max = num_subj, initial = 0, style = 3)
   for (i in 1:num_subj){
-     setTxtProgressBar(pb, i)
-     # print(paste0("working on subject #", i))
-     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
-     Sys.sleep(time = 1)
+    setTxtProgressBar(pb, i)
+    # print(paste0("working on subject #", i))
+    hpl_tp_pairs[[i]] <- FuncForCompHaplo99(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+    Sys.sleep(time = 1)
   }
   # close(pb)
   #* end of step 4 *#
@@ -145,9 +149,9 @@ ImputeHaplo <- function(dat_in){
   row.names(hpl_tp_pairs) <- seq(1:dim(hpl_tp_pairs)[1])
 
   hpl_tp_pairs <- rbind(hpl_tp_pairs, dat_4_app) %>%
-                  arrange(pair_id, desc(subj)) %>%
-                  mutate(freq = ifelse(as.numeric(freq) <= 0.0001, 0.0001, round(as.numeric(freq), 4)))  %>%
-                  replace(., is.na(.), "")
+    arrange(pair_id, desc(subj)) %>%
+    mutate(freq = ifelse(as.numeric(freq) <= 0.0001, 0.0001, round(as.numeric(freq), 4)))  %>%
+    replace(., is.na(.), "")
 
   #* end of step 4 *#
 
