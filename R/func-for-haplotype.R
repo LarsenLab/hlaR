@@ -7,6 +7,8 @@
 #' A dataframe with alleles info.
 #' @import
 #' tidyverse
+#' @importFrom
+#' stats setNames
 
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 0: reshape raw data so it can be binded with paired imputed haplotype data  *#
