@@ -139,7 +139,7 @@ ImputeHaplo <- function(dat_in){
     hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
     Sys.sleep(time = 1)
   }
-  # close(pb)
+  close(pb)
   #* end of step 4 *#
 
   #* step 5: final table - imputed table + dat_4_app *#
