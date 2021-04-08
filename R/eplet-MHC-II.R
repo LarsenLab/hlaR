@@ -1,6 +1,6 @@
 #' @name CalEpletMHCII
 #' @title Calculate class II HLA eplet mismatch.
-#' @description Use high resolution HLA class II data to calculate class II eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from HLAMatchMaker, developed by Rene Dusquesnoy. Current reference tables supported are HLAMatchMaker v2 and v3. Note: interlocus info only available in v3 reference tables.
+#' @description Use high resolution HLA class II data to calculate class II eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from 'HLAMatchMaker', developed by Rene Dusquesnoy. Current reference tables supported are 'HLAMatchMaker' v2 and v3. Note: interlocus info only available in v3 reference tables.
 #' @param dat_in
 #' A dataframe with subject info (pair_id and subject_type) and both copies of each class II locus (HLA DRB, DRw, DQB, DQA, DPB, and DPA)
 #' Each unique pair_id has 2 rows associated with it, 1 for recipient, 1 for donor..

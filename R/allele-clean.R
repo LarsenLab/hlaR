@@ -1,6 +1,6 @@
 #' @name CleanAllele
 #' @title Clean messy HLA typing data
-#' @description This function takes raw “messy” HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
+#' @description This function takes raw messy HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
 #' @param var_1
 #' HLA on allele 1.
 #' @param var_2
