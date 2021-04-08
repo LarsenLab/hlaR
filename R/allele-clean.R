@@ -6,7 +6,11 @@
 #' @param var_2
 #' HLA on allele 2.
 #' @return
-#' A data frame of cleaned HLA data for each loci.
+#' A data frame with 4 columns:
+#' - `var_1`: raw messy input hla, identical with first input
+#' - `var_2`: raw messy input hla, identical with second input
+#' - `locus1_clean`: cleaned hla of var_1
+#' - `locus2_clean`: cleaned hla of var_2
 #' @export
 #'
 #' @import
@@ -15,11 +19,9 @@
 #' readr
 #'
 #' @examples
-#' \dontrun{
-# dat <-  read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR")) %>% rename_all(. %>% tolower %>% gsub("[[:blank:]]|[[:punct:]]", ".", .))
-#' clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
-#' clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
-#' }
+#' dat <-  read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
+#' clean1 <- CleanAllele(dat$recipient_a1, dat$recipient_a2)
+#' clean2 <- CleanAllele(dat$donor_drb11, dat$donor_drb12)
 #'
 
 CleanAllele <- function(var_1, var_2) {
@@ -91,7 +93,7 @@ CleanAllele <- function(var_1, var_2) {
   result <- tmp %>%
               mutate(locus1_clean = ifelse(clean1 != "", clean1, ifelse(clean2 != "", clean2, "")),
                      locus2_clean = ifelse(clean2 != "", clean2, ifelse(clean1 != "", clean1, ""))) %>%
-              select(var_1, clean1, locus1_clean, var_2, clean2, locus2_clean)
+              select(var_1, var_2, locus1_clean, locus2_clean)
   #* end of step 3*#
 
   return(result)
