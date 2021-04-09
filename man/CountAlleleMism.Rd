@@ -7,19 +7,18 @@
 CountAlleleMism(dat_in, names_in)
 }
 \arguments{
-\item{dat_in}{A dataframe with donor and recipient mismatched alleles as output from EvalAlleleMism function.}
+\item{dat_in}{A data frame with donor and recipient mismatched alleles. It's a output from EvalAlleleMism function.}
 
-\item{names_in}{A column containing the names of HLA loci for which to count mismatch.}
+\item{names_in}{A vector of HLA loci name to count mismatch for.}
 }
 \value{
-The input data, 'dat_in' is returned with the count of mismatches appended as the last column.
+A tibble of input data (subject id and hla loci) followed by mismatch hla count of each subject.
 }
 \description{
-Donor and recipient HLA typing data is compared to determine allele level mismatch. The output of EvalAlleleMism is used as input for this function. Allele level mismatch can be calculated for both high and low resolution data. The generated count will return 'NA' if the input alleles are 'NA.'
+Donor and recipient HLA(Human Leukocyte Antigen) typing data is compared to determine allele level mismatch. The output of EvalAlleleMism is used as input for this function. Allele level mismatch can be calculated for both high and low resolution data. The generated count will return NA if the input alleles are NA.
 }
 \examples{
-\dontrun{
-classI <- CountAlleleMism(hla_mm_cnt, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
-classII <- CountAlleleMism(hla_mm_cnt, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))
-}
+hla <- read.csv(system.file("extdata/example", "HLA_MisMatch_count_test.csv", package = "hlaR"))
+classI <- CountAlleleMism(hla, c("mism.a1", "mism.a2", "mism.b1", "mism.b2"))
+classII <- CountAlleleMism(hla, c("mism.dqa12", "mism.dqb11", "mism.dqb12"))
 }

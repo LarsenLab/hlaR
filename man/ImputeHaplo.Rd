@@ -13,10 +13,11 @@ ImputeHaplo(dat_in)
 A data frame with high resolution HLA data pulled from the most likely pair of haplotypes matching the input low resolution data.
 }
 \description{
-Impute low resolution HLA typing data to the most likely high resolution equivalent. Imputation is computationally intensive, so large datasets may encounter delays in processing. This function uses data from the National Marrow Donor Program (haplostats.org), and is currently limited to HLA A, B, C, and DRB loci.
+Impute low or mixed resolution HLA(Human Leukocyte Antigen) typing to the most likely high resolution equivalent. Imputation is computationally intensive, so large dataset may encounter delays in processing. This function uses data from the NMDP(National Marrow Donor Program), and is currently limited to HLA A, B, C, and DRB loci.
 }
 \examples{
-\dontrun{
-result <- ImputeHaplo(dat_in = dat)
+\donttest{
+dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
+result <- ImputeHaplo(dat_in = dat[c(1:2), ])
 }
 }

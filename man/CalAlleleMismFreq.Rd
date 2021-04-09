@@ -20,7 +20,8 @@ A data frame of donor's mismatched alleles with frequency > 1. No mismatch is ca
 This function evaluates allele level mismatch between donor and recipient and then presents the most commonly mismatched alleles. This function is most effectively used to study the most common mismatches within a transplant population.
 }
 \examples{
-\dontrun{
-result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
-}
+dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
+don <- c("donor.a1", "donor.a2")
+rcpt <- c("recipient.a1", "recipient.a2")
+re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
 }

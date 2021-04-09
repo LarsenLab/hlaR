@@ -9,20 +9,21 @@ CalAlleleTopN(dat_in, nms_don = c(), nms_rcpt = c(), top_n = 5)
 \arguments{
 \item{dat_in}{A data frame with clean HLA typing data.}
 
-\item{nms_don}{A vector of donor allele name(s).}
+\item{nms_don}{A vector of donor's allele name(s).}
 
-\item{nms_rcpt}{A vector of recipient allele name(s).}
+\item{nms_rcpt}{A vector of recipient's allele name(s).}
 
-\item{top_n}{Number of alleles to return. Default n is 5.}
+\item{top_n}{Number of alleles to return. Default is 5.}
 }
 \value{
-A data frame of top_n most frequent alleles.
+A tibble of top_n most frequent alleles.
 }
 \description{
-Input cleaned HLA data for a population of transplant donors and recipients to determine the most common alleles represented in the population.
+Input cleaned HLA(Human Leukocyte Antigen) data for a population of transplant donors and recipients to determine the most common alleles represented in the population.
 }
 \examples{
-\dontrun{
-result <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
-}
+dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
+don <- c("donor.a1", "donor.a2")
+rcpt <- c("recipient.a1", "recipient.a2")
+re <- CalAlleleTopN(dat_in = dat, nms_don = don, nms_rcpt = rcpt, top_n = 2)
 }

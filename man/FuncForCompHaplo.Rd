@@ -7,10 +7,20 @@
 FuncForCompHaplo(tbl_raw, tbl_in)
 }
 \arguments{
-\item{tbl_raw}{A raw haplotype frequency table downloaded from NMDP website.}
+\item{tbl_raw}{A raw haplotype frequency table provided by National Marrow Donor Program.}
 
-\item{tbl_in}{A dataframe with alleles info.}
+\item{tbl_in}{A data frame with low or mixed resolution HLA typing.}
+}
+\value{
+A data frame of imputed high resolution haplotypes.
 }
 \description{
-This function generates the ranked haplotypes for high resolution imputation. It is called by the ImputeHaplo() function.
+This function generates the ranked haplotypes for high resolution imputation. It is called within the ImputeHaplo function.
+}
+\examples{
+\dontrun{
+for (i in 1:num_subj){
+re[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat[i, ])
+}
+}
 }

@@ -12,15 +12,16 @@ CleanAllele(var_1, var_2)
 \item{var_2}{HLA on allele 2.}
 }
 \value{
-A data frame of cleaned HLA data for each loci.
+A data frame with 4 columns:
+- `var_1`: raw messy input hla, identical with first input
+- `var_2`: raw messy input hla, identical with second input
+- `locus1_clean`: cleaned hla of var_1
+- `locus2_clean`: cleaned hla of var_2
 }
 \description{
-This function takes raw “messy” HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
+This function takes raw messy HLA(Human Leukocyte Antigen) typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
 }
 \examples{
-\dontrun{
-clean1 <- CleanAllele(clean$RECIPIENT_A1, clean$RECIPIENT_A2)
-clean2 <- CleanAllele(clean$DONOR_DRB11, clean$DONOR_DRB11)
-}
-
+dat <-  read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
+re <- CleanAllele(dat$recipient_a1, dat$recipient_a2)
 }
