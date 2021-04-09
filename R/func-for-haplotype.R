@@ -1,14 +1,23 @@
 #' @name FuncForCompHaplo
 #' @title Compare Haplotypes
-#' @description This function generates the ranked haplotypes for high resolution imputation. It is called by the ImputeHaplo() function.
+#' @description This function generates the ranked haplotypes for high resolution imputation. It is called within the ImputeHaplo function.
 #' @param tbl_raw
-#' A raw haplotype frequency table downloaded from NMDP website.
+#' A raw haplotype frequency table provided by National Marrow Donor Program.
 #' @param tbl_in
-#' A dataframe with alleles info.
+#' A data frame with low or mixed resolution HLA typing.
+#' @return
+#' A data frame of imputed high resolution haplotypes.
 #' @import
 #' tidyverse
 #' @importFrom
 #' stats setNames
+#' @examples
+#' \dontrun{
+# Not run:
+#' for (i in 1:num_subj){
+#' re[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat[i, ])
+#' }
+#' }
 
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   #* step 0: reshape raw data so it can be binded with paired imputed haplotype data  *#
