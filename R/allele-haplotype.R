@@ -1,6 +1,6 @@
 #' @name ImputeHaplo
 #' @title Imputation
-#' @description Impute low resolution HLA typing data to the most likely high resolution equivalent. Imputation is computationally intensive, so large datasets may encounter delays in processing. This function uses data from the National Marrow Donor Program (haplostats.org), and is currently limited to HLA A, B, C, and DRB loci.
+#' @description Impute low or mixed resolution HLA(Human Leukocyte Antigen) typing to the most likely high resolution equivalent. Imputation is computationally intensive, so large dataset may encounter delays in processing. This function uses data from the NMDP(National Marrow Donor Program), and is currently limited to HLA A, B, C, and DRB loci.
 #' @param dat_in
 #' A data frame with low resolution HLA data.
 #' @return
@@ -10,9 +10,9 @@
 #' utils
 #'
 #' @examples
-#' \dontrun{
-# dat <- read_csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
-#' result <- ImputeHaplo(dat_in = dat)
+#' \donttest{
+#' dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))
+#' result <- ImputeHaplo(dat_in = dat[c(1:2), ])
 #' }
 #' @export
 

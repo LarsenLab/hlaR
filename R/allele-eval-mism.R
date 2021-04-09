@@ -1,6 +1,6 @@
 #' @name EvalAlleleMism
 #' @title Evaluate mismatched alleles
-#' @description Compare donor and recipient HLA typing data to determine mismatched alleles. Input data can be high or low resolution, mismatch is evaluated at the allele level.
+#' @description Compare donor and recipient HLA(Human Leukocyte Antigen) typing data to determine mismatched alleles. Input data can be high or low resolution, mismatch is evaluated at the allele level.
 #' @param don_1
 #' Donor's alpha1 domain.
 #' @param don_2
@@ -12,19 +12,15 @@
 #' @param hmz_cnt
 #' Use hmz_cnt to determine how mismatch at homozygous alleles should be handled. By default, a mismatch at a homozygous allele is considered a single mismatch. Set hmz_cnt = 2 to count homozygous mismatches as double.
 #' @return
-#' A data frame of cleaned donor and recipient HLA typing data, with mismatched donor-to-recipient alleles flagged.
+#' A data frame of original input columns followed by mism_cnt of each donor/recipient pair.
 #' @export
 #'
 #' @import
 #' tidyverse
 #'
 #' @examples
-#' \dontrun{
-# input hlas could be either raw or cleaned
-# dat <- read_csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
-#' a <- EvalAlleleMism(dat$DONOR_A1, dat$DONOR_A2, dat$RECIPIENT_A1, dat$RECIPIENT_A2, hmz_cnt = 2)
-# a
-#' }
+#' dat <- read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
+#' re <- EvalAlleleMism(dat$donor_a1, dat$donor_a2, dat$recipient_a1, dat$recipient_a2, hmz_cnt = 2)
 
 EvalAlleleMism <- function(don_1, don_2, recip_1, recip_2, hmz_cnt = 1)
 {

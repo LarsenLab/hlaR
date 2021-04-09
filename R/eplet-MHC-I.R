@@ -1,16 +1,14 @@
 #' @name CalEpletMHCI
-#' @title Calculate class I HLA eplet mismatch.
-#' @description Use high resolution HLA class I data to calculate class I eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from 'HLAMatchMaker', developed by Rene Dusquesnoy. Current reference tables supported are 'HLAMatchMaker' v2 and v3.
+#' @title Calculate class I HLA eplet mismatch
+#' @description Use high resolution HLA(Human Leukocyte Antigen) class I data to calculate class I eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from 'HLAMatchMaker', developed by Rene Dusquesnoy. Current reference tables supported are 'HLAMatchMaker' v2 and v3.
 #' @param dat_in
-#' A dataframe with subject info (pair_id and subject_type) and both copies of each class I locus (HLA A, B, and C).
-#' Each unique pair_id has 2 rows associated with it, 1 for recipient, 1 for donor.
+#' A dataframe of recipient and donor's high resolution MHC I data. Each recipient and donor pair are linked by are the “pair_id” column and differentiated by the “subject_type” column.
 #' @param ver
-#' Version number of MatchMaker based eplet reference table to use.
+#' Version number of HLAMatchMaker based eplet reference table to use.
 #' @return
 #' A list of data tables.
-#' single_detail: single molecule class I MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
-#' overall_count: original input data appended with total count of mismatched eplets.
-#' overall_detail: percentage of mismatch across all subjects for each eplet.
+#' - `single_detail`: single molecule class I MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
+#' - `overall_count`: original input data appended with total count of mismatched eplets.
 #' @export
 #'
 #' @import
@@ -25,13 +23,8 @@
 #' @importFrom
 #' stats setNames
 #' @examples
-#' \dontrun{
-# dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)
+#' dat<-read.csv(system.file("extdata/example","MHC_I_test.csv",package="hlaR"),sep=",",header=TRUE)
 #' re <- CalEpletMHCI(dat_in = dat, ver = 3)
-#' }
-#'
-# below is an example to use globalVariables() to suppress "no visible global variable" note
-# utils::globalVariables(c("value", "locus", "index", "type", "mm"))
 
 CalEpletMHCI <- function(dat_in, ver = 3) {
   #* step 0: check if recipient and donor are paired *#

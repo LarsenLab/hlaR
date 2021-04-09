@@ -1,6 +1,6 @@
 #' @name CleanAllele
 #' @title Clean messy HLA typing data
-#' @description This function takes raw messy HLA typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
+#' @description This function takes raw messy HLA(Human Leukocyte Antigen) typing data as input. It removes inconsistent formatting and unnecessary symbols. If one of two alleles at a loci is NA, the locus is assumed to be homozygous.
 #' @param var_1
 #' HLA on allele 1.
 #' @param var_2
@@ -20,9 +20,7 @@
 #'
 #' @examples
 #' dat <-  read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))
-#' clean1 <- CleanAllele(dat$recipient_a1, dat$recipient_a2)
-#' clean2 <- CleanAllele(dat$donor_drb11, dat$donor_drb12)
-#'
+#' re <- CleanAllele(dat$recipient_a1, dat$recipient_a2)
 
 CleanAllele <- function(var_1, var_2) {
   #* step 1: some definitions *#

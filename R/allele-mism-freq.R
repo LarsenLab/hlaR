@@ -14,14 +14,12 @@
 #' @importFrom
 #' stats setNames
 #' @examples
-#' \dontrun{
-# dat <- read_csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
-# don <- c("donor.a1", "donor.a2")
-# rcpt <- c("recipient.a1", "recipient.a2")
-#' result <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
-#' }
+#' dat <- read.csv(system.file("extdata/example", "HLA_MisMatch_test.csv", package = "hlaR"))
+#' don <- c("donor.a1", "donor.a2")
+#' rcpt <- c("recipient.a1", "recipient.a2")
+#' re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)
 #' @export
-#'
+
 CalAlleleMismFreq <- function(dat_in, nms_don = c(), nms_rcpt = c()){
   #* step 1: data prep *#
   dat_don <- dat_in %>%
