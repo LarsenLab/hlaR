@@ -1,4 +1,7 @@
 ## Installation
+### CRAN install
+install.packages("hlaR")<br>
+### github install<br>
 library(devtools)<br>
 install_github("LarsenLab/hlaR")<br>
 library(hlaR)<br> 
@@ -60,6 +63,9 @@ don <- c("donor.a1", "donor.a2")<br>
 rcpt <- c("recipient.a1", "recipient.a2")<br>
 re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 re
+
+## ToDo CRAN v2<br>
+- ImputeHaplo(): error check on none ":" punctuation -  only apply to loci columns, skip check on pair_id/subject_type/ethnicity as pair_id may contain some special symbols
 
 
 
