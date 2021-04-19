@@ -65,7 +65,8 @@ re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br>
 re
 
 ## ToDo CRAN v2<br>
-- ImputeHaplo(): error check on none ":" punctuation -  only apply to loci columns, skip check on pair_id/subject_type/ethnicity as pair_id may contain some special symbols
+- ImputeHaplo(): error check on none ":" punctuation (br)correction: only apply to loci columns, skip check on pair_id/subject_type/ethnicity as pair_id may contain some special symbols<br>
+- CleanAllele(): incorrect logic for v1.2/v2.2 <br>correction: ifelse(grepl("[^A-Za-z]+$", v1.1), v1.1, "")
 
 
 
