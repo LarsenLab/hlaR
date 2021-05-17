@@ -71,7 +71,7 @@ correction: 1.line#5-57: use letters_only(); adjust statement ifelse(grepl("[^A-
 2.remove space within string in addionn to around string <br>
 - EvalAlleleMism() <br>1.drb3/4/5: clean DRBX * NNNN, change them to blank <br>2.logics of mis-match: compare donor's allele to recipient's none-na alleles (add vec <- c(tmp[i,3],tmp[i,4]), vec <- vec[!is.na(vec)]) before comparison. check hla_mm_May12.Rmd in etx repo <br>
 - haplotype final table: add a flag if the max count doesn't reach the number of unique low res antigens <br>
-- haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it?
+- haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it? ( ex: 13982771, 3163)
 
 
 
