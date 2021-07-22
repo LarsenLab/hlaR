@@ -68,6 +68,7 @@ re
 - ImputeHaplo(): error check on none ":" punctuation (br)correction: only apply to loci columns, skip check on pair_id/subject_type/ethnicity as pair_id may contain some special symbols <br>
 - CleanAllele(): incorrect logic for v1.2/v2.2 <br>
 correction: 1.line#5-57: use letters_only(); adjust statement ifelse(grepl("[^A-Za-z]+$", v1.1), v1.1, "") <br>
+code available in e_txki, hlaRLocalFunctions.R, starting from line #9 <br>
 2.remove space within string in addionn to around string <br>
 - add alleleclean to etxki pipeline for messy or clean data, check hla_mm_May12.Rmd in etx repo <br>
 - haplotype final table: add a flag if the max count doesn't reach the number of unique low res antigens <br>
