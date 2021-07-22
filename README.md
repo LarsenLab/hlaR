@@ -75,6 +75,7 @@ code available in e_txki, hlaRLocalFunctions.R, starting from line #9 <br>
 - haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it? ( ex: 13982771, 3163) <br>
 - haplotype: additional function to deal with if max-count != count-of-low-res, the replace none-low-res with most-commom-low-res
 3. fix memory issue given too many NA hlas during imputation calcualtion (code are available in folder "4nextversion")
+4. haplotype for NA race
 
 
 
