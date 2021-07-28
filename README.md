@@ -73,7 +73,7 @@ correction: 1.line#5-57: use letters_only(); adjust statement ifelse(grepl("[^A-
 - haplotype final table: add a flag if the max count doesn't reach the number of unique low res antigens <br>
 - haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it? ( ex: 13982771, 3163) <br>
 - haplotype: additional function to deal with if max-count != count-of-low-res, the replace none-low-res with most-commom-low-res
-3. fix memory issue given too many NA hlas during imputation calcualtion (code are available in folder "4nextversion")
+3. fix memory issue given too many NA hlas during imputation calculation (code are available in folder "4nextversion")
 
 
 
