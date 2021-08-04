@@ -73,11 +73,11 @@ code available in e_txki, hlaRLocalFunctions.R, starting from line #9 <br>
 - ~~add alleleclean to etxki pipeline for messy or clean data, check hla_mm_May12.Rmd in etx repo~~
 - ~~haplotype final table: add a flag if the max count doesn't reach the number of unique low res antigens~~
 - ~~haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it? (ex: 13982771, 3163)~~<br>
-- haplotype: additional function to deal with if max-count != count-of-low-res, the replace none-low-res with most-commom-low-res
+~~- haplotype: additional function to deal with if max-count != count-of-low-res, the replace none-low-res with most-commom-low-res~~
 ~~3. fix memory issue given too many NA hlas during imputation calcualtion (code are available in folder "4nextversion")~~
 ~~4. haplotype for NA race~~
-5. discussion: what to do if low-res part of imputed hla?
-6. note: drb345 = "NNNN" in final table
+~~5. discussion: what to do if low-res part of imputed hla?~~
+~~6. note: drb345 = "NNNN" in final table~~
 7. eplet mismatch: add unique-count in addition to all-count in overall table
 
 
