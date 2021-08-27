@@ -79,6 +79,7 @@ code available in e_txki, hlaRLocalFunctions.R, starting from line #9 <br>
 ~~5. discussion: what to do if low-res part of imputed hla?~~
 ~~6. note: drb345 = "NNNN" in final table~~
 ~~7. eplet mismatch: add unique-count in addition to all-count in overall table~~
+8. MM reference tables: all upper cases
 
 
 
