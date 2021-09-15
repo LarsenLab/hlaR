@@ -26,7 +26,7 @@ utils::globalVariables(c("a", "a1", "allele","a1_mm", "a2", "a2_mm", "afa_freq",
                          "rec_drw1", "rec_drw2", "rname",
                          "subj", "subject", "subject_type",
                          "type",
-                         "v1", "v1.1", "v1.10", "v1.1st", "v1.1st.2", "v1.2", "v1.3", "v1.4", "v1.5", "v1.6", "v1.7", "v1.8",
+                         "v1", "v1.1", "v1.0", "v1.11", "v2.0", "v2.11", "v1.10", "v1.1st", "v1.1st.2", "v1.2", "v1.3", "v1.4", "v1.5", "v1.6", "v1.7", "v1.8",
                          "v1.9", "v1.last", "v1.last.2", "v2", "v2.1", "v2.10", "v2.1st", "v2.1st.2", "v2.2", "v2.3", "v2.4",
                          "v2.5", "v2.6", "v2.7", "v2.8", "v2.9", "v2.last", "v2.last.2", "value", "variable",
                          ".", ":="))
