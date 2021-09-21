@@ -34,7 +34,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     rm(num_rcpt, num_don)
   } else{
     stop("please check that every pair_id has both recipient and donor data.")
-    }
+  }
   #* end of step 0 *#
 
   #* step 1: import raw eplet table *#
@@ -48,10 +48,10 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     setNames(paste(tbl_raw_eplet$type, tbl_raw_eplet$index, sep = "_" )) %>%
     rownames_to_column(var = "locus") %>%
     mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
-    filter(!locus %in% c("index", "type") ) %>%
+    dplyr::filter(!locus %in% c("index", "type") ) %>%
     distinct() %>%
     reshape2::melt(id.vars = "locus") %>%
-    filter(value != "" ) %>%
+    dplyr::filter(value != "" ) %>%
     distinct() %>%
     mutate(index = as.numeric(sub(".*\\_", "", variable)),
            type = sub("\\_.*", "", variable)) %>%
@@ -134,9 +134,9 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   # for each subject, compare eplets of donor's EACH allele for ALL of recipients'
   for (i in 1:subj_num) {
     ed <- st + 11
-    positions <- c(st:ed)
+    pos <- c(st:ed)
     tmp <- tbl_ep %>%
-      select(all_of(positions))
+      select(all_of(pos))
     subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c(nm_rec, nm_don)
@@ -160,6 +160,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     tbl_ep_mm <- cbind(tbl_ep_mm, tmp)
     st <- ed + 1
   }
+  rm(st)
   #* end of step 5 *#
 
   #* step 6: compare mis-match with tbl_ref table *#
@@ -169,9 +170,9 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   # for each subject
   for (i in 1:subj_num) {
     ed <- st + 5
-    positions <- c(st:ed)
+    pos <- c(st:ed)
     tmp <- tbl_ep_mm %>%
-      select(c(1, 2, all_of(positions)))
+      select(c(1, 2, all_of(pos)))
 
     ori_name <- colnames(tmp)[-c(1,2)]
     tmp2 <- left_join(tbl_ref, tmp, by = c("index", "type")) %>%
@@ -188,13 +189,14 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     tbl_ep_mm2 <- tbl_ep_mm2 %>%
       left_join(., tmp2, by = c("index", "type"))
   }
+  rm(st)
   #* end of step 6 *#
 
   #* step 7: final result - single molecule report *#
   # subject names
   subj_names <- unique(sub(".*\\_", "", names(tbl_ep_mm2)[-c(1:2)]))
 
-  result_single <-  data.frame(t(tbl_ep_mm2)) %>%
+  re_s <-  data.frame(t(tbl_ep_mm2)) %>%
     unite("mm_eplets", names(.), na.rm = TRUE, sep = ",", remove = FALSE) %>%
     mutate(subject = gsub(".*_", "", rownames(.)),
            pair_id = gsub(".*subj", "", subject),
@@ -214,7 +216,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
            pair_id = as.character(pair_id))
 
   # add hla to the result_single table
-  result_single <- result_single %>%
+  re_s <- re_s %>%
     left_join(., don_allele, by =c("pair_id", "gene") ) %>%
     select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
     left_join(., id_match, by = "pair_id") %>%
@@ -224,8 +226,8 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     select(pair_id, everything())
   #* end of step 7 *#
 
-  #* step 8: final result -  overall report *#
-  result_overall <- result_single %>%
+  #* step 8: mismatch count total *#
+  re_o <- re_s %>%
     group_by(subject) %>%
     mutate(mm_cnt_tt = sum(mm_cnt)) %>%
     ungroup() %>%
@@ -235,6 +237,38 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
 
   #* end of step 8 *#
 
-  return(list(single_detail = result_single,
-              overall_count = result_overall))
+  #*step 9: mismatch count unique total*#
+  re_o_uni <- tbl_ref
+
+  st <- 3
+  for (i in 1:subj_num) {
+    ed <- st + 5
+    pos <- c(st:ed)
+    tmp <- tbl_ep_mm2 %>%
+      select(c(1, 2, all_of(pos))) %>%
+      setNames(c("index", "type", "a1_mm", "a2_mm", "b1_mm", "b2_mm", "c1_mm", "c2_mm")) %>%
+      right_join(., tbl_ref,by = c("index", "type")) %>%
+      mutate(var = ifelse(eplet %in% c(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm), eplet, NA)) %>%
+      select(index, type, eplet, var) %>%
+      setNames(c("index", "type", "eplet", subj_names[i]))
+
+    st <- ed + 1
+    re_o_uni <- left_join(re_o_uni, tmp, by = c("index", "type", "eplet"))
+  }
+  rm(st)
+
+  re_o_uni <- re_o_uni %>%
+    mutate(mm_cnt = subj_num - rowSums(is.na(.)),
+           mm_pect = paste(round((subj_num - rowSums(is.na(.))) / subj_num * 100, 1), "%", sep = "")) %>%
+    map(., ~sum(!is.na(.))) %>%
+    data.frame() %>%
+    select(-c(index, type, eplet, mm_cnt, mm_pect)) %>%
+    gather() %>%
+    setNames(c("subject", "mm_cnt_uniq"))
+
+  re_o <- re_o %>% left_join(., re_o_uni, by = "subject")
+  #* end of step 9 *#
+
+  return(list(single_detail = re_s,
+              overall_count = re_o))
 }
