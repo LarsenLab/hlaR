@@ -315,7 +315,7 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
   #* end of step 4 *#
 
   #* step 5: final result - single molecule *#
-  result_single <- rbind(result_a_single, result_b_single) %>%
+  re_s <- rbind(result_a_single, result_b_single) %>%
     mutate(name = subject,
            match_id = as.numeric(str_replace(name, "subj", ""))) %>%
     select(name, gene, mm_eplets, mm_cnt, match_id) %>%
@@ -327,20 +327,38 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     dplyr::rename(subject = name) %>%
     select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
     filter(!is.na(hla)) # %>%
-    # filter(mm_cnt != 0)
+  # filter(mm_cnt != 0)
 
-  #* step 6: final result - overall count *#
+  #* step 6: overall count, all and unique *#
   # count unique mismatch eplets
-  result_overall <- result_single %>%
+  re_o <- re_s %>%
     group_by(subject) %>%
     mutate(mm_cnt_tt = sum(mm_cnt)) %>%
     ungroup() %>%
     select(pair_id, subject, mm_cnt_tt) %>%
     distinct() %>%
     arrange(pair_id)
+
+  re_o_uni <- rbind(result_a_single, result_b_single) %>%
+    mutate(pair_id = as.numeric(str_replace(subject, "subj", ""))) %>%
+    select(subject, gene, mm_eplets, mm_cnt, pair_id) %>%
+    group_by(subject, pair_id) %>%
+    select(pair_id, subject, mm_eplets) %>%
+    mutate(rn = row_number()) %>%
+    pivot_wider(names_from = rn,
+                values_from = c("mm_eplets")) %>%
+    ungroup() %>%
+    select(names(.)[!is.na(names(.))]) %>%
+    unite("mm_eplets", `1`:`12`, na.rm = TRUE, sep = ",", remove = FALSE) %>%
+    mutate(mm_eplets = sapply(strsplit(mm_eplets, ","),
+                              function(x) x = paste(unique(x), collapse = ","))) %>%
+    mutate(mm_cn_uniq = str_count(mm_eplets, ",")) %>%
+    select(subject, mm_cn_uniq)
+
+  re_o <- re_o %>% left_join(., re_o_uni, by = "subject")
   #* end of step 6 *#
 
-  return(list(single_detail = result_single,
-              overall_count = result_overall))
+  return(list(single_detail = re_s,
+              overall_count = re_o))
 }
 
