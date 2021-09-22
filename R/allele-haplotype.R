@@ -18,14 +18,17 @@
 
 ImputeHaplo <- function(dat_in){
   #* step 1: import and clean raw haplotype frequency table *#
+  # ref_tbl <- FuncProcRefTbl()
+  # tbl4eth <- ref_tbl$tbl_all
+  # tbl4NAeth <- ref_tbl$tbl_uniq
+  # rm(ref_tbl)
   p1 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part1.csv", check.names = FALSE)
   p2 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part2.csv", check.names = FALSE)
   p3 <- read.csv("https://raw.githubusercontent.com/LarsenLab/public-data/master/A_C_B_DRB345_DRB1_DQB1_part3.csv", check.names = FALSE)
 
-  raw_hap_tbl <- data.frame(rbind(p1, p2, p3)) %>%
+  #* step 1: import and process reference tables *#
+  tbl_ref <- data.frame(rbind(p1, p2, p3)) %>%
     rename_all(. %>% tolower) %>%
-    select(a, c, b, drb1, dqb1, drb345,
-           afa_freq, afa_rank, api_freq, api_rank, cau_freq, cau_rank, his_freq, his_rank, nam_freq, nam_rank) %>%
     mutate(idx = as.numeric(rownames(.)),
            drb = str_sub(drb345, 1, 4)) %>%
     # remove trailing g
@@ -57,8 +60,48 @@ ImputeHaplo <- function(dat_in){
            lst_drb345 = sub(".*\\:", "", drb345))
   #* end of step 1 *#
 
+  #* step 2: some definitions *#
+  # column names in the return table
+  nms_keep <- c("a", "c", "b", "drb345", "drb1", "dqb1",
+                "idx", "drb",
+                "fst_a", "lst_a", "fst_b", "lst_b", "fst_c", "lst_c",
+                "fst_drb1", "lst_drb1", "fst_dqb1", "lst_dqb1", "fst_drb345", "lst_drb345" )
+
+  # list of ethnicity
+  nms_race <- names(tbl_ref)[str_detect(names(tbl_ref), "_rank")] %>% str_remove(., "_rank")
+
+  #* end of step 2 *#
+
+  #* step 3: generate search table for known/unknown ethnicity *#
+  tbl_all <- data.frame(matrix(ncol = length(nms_keep) + 3, nrow = 0))
+  colnames(tbl_all) <- c(nms_keep, "ethnicity", "rank", "freq")
+
+  for(i in 1:length(nms_race)){
+    in_rank <- paste(nms_race[i], "rank", sep = "_")
+    in_freq <- paste(nms_race[i], "freq", sep = "_")
+    tmp <- tbl_ref %>%
+      filter(!is.na(!!as.name(in_rank))) %>%
+      mutate(ethnicity = nms_race[i]) %>%
+      select(c(all_of(nms_keep), ethnicity, all_of(in_rank), all_of(in_freq))) %>%
+      setNames(c(nms_keep,"ethnicity", "rank", "freq"))
+
+    tbl_all <- rbind(tbl_all, tmp)
+  }
+
+  tbl4eth <- tbl_all
+
+  tbl_uniq <- tbl_all %>%
+    group_by(a, c, b, drb345, drb1, dqb1) %>%
+    filter(freq == max(freq)) %>% # if duplicate then keep the record with max freq(min rank)
+    ungroup() %>%
+    data.frame()
+
+  tbl4NAeth <- tbl_uniq
+  rm(tbl_all, tbl_uniq)
+  #* end of step 1 *#
+
   #* step 2: format alleles *#
-  # throw error if there are none-: punctuation in the data
+  # throw error if there are punctuation except colon(:) in the string
   non_punc <- sum(data.frame(sapply(dat_in, str_detect, pattern = "(?!\\:)[[:punct:]]")) %>%
                     mutate(across(everything(), as.numeric)), na.rm=TRUE)
 
@@ -85,29 +128,27 @@ ImputeHaplo <- function(dat_in){
            b2 = simple_clean(b2),
            c1 = simple_clean(c1),
            c2 = simple_clean(c2),
-           drb1 = simple_clean(drb1),
-           drb2 = simple_clean(drb2),
-           dqb1 = simple_clean(dqb1),
-           dqb2 = simple_clean(dqb2),
-           drb31 = simple_clean(drb31),
-           drb32 = simple_clean(drb32),
-           drb41 = simple_clean(drb41),
-           drb42 = simple_clean(drb42),
-           drb51 = simple_clean(drb51),
-           drb52 = simple_clean(drb52))
+           drb1.1 = simple_clean(drb1), # use num.num naming comvention to match names of imputation result in later step
+           drb1.2 = simple_clean(drb2),
+           dqb1.1 = simple_clean(dqb1),
+           dqb1.2 = simple_clean(dqb2),
+           drb3.1 = simple_clean(drb31),
+           drb3.2 = simple_clean(drb32),
+           drb4.1 = simple_clean(drb41),
+           drb4.2 = simple_clean(drb42),
+           drb5.1 = simple_clean(drb51),
+           drb5.2 = simple_clean(drb52)) %>%
+    select(-c(drb1, drb2, dqb1, dqb2, drb31, drb32, drb41, drb42, drb51, drb52))
   #* end of step 2 *#
 
-  #* step 3: seprate data into impute-ready and append-ready tables *#
-  # length of allele columns
-  len <- length(names(dat_in)[!(names(dat_in) %in% c("pair_id", "ethnicity", "subject_type"))])
+  #* step 3: separate data into impute-ready and append-ready tables *#
+  # count number of NA alleles, total 16 alleles
+  hla_nm <- names(dat_in)[!(names(dat_in) %in% c("pair_id", "ethnicity", "subject_type"))]
+  dat_interm <- dat_in %>% mutate(count = rowSums(.[,hla_nm] == "" ))
 
-  # count number of NA alleles
-  dat_interm <- dat_in %>% mutate(count = rowSums(. == "" ))
-
-  # append-ready if data without enthinicity or with NA hlas
+  # append-ready if all NA hlas
   dat_4_app <- dat_interm %>%
-    filter(count == len | !(ethnicity %in% c("cau", "afa", "his", "nam", "api"))) %>%
-    select(-count) %>%
+    filter(count == 16 ) %>%
     mutate(subj = paste(paste(pair_id, subject_type, sep = "_"), ethnicity, sep = "_"),
            dat_type = paste("raw"),
            a = "",
@@ -118,13 +159,14 @@ ImputeHaplo <- function(dat_in){
            drb345 = "",
            freq = "",
            rank = "",
-           cnt_pair = "" ) %>%
-    select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, cnt_pair)
+           # cnt_uniq_ori = "",
+           # cnt_match_by_pair = "",
+           # cnt_match_by_row = "",
+           lores_all_match = "") %>%
+    select(subj, dat_type, pair_id, a, b, c, drb1, dqb1, drb345, freq, rank, lores_all_match)
 
-  # impute-ready if data with enthinicity and has at least one hla value
-  dat_4_imp <- dat_interm %>%
-    filter(count != len & ethnicity %in% c("cau", "afa", "his", "nam", "api")) %>%
-    select(-count)
+  # impute-ready if data has at least one hla value
+  dat_4_imp <- dat_interm %>% filter(count != 16 )
   #* end of step 3 *#
 
   #* step 4: FuncForCompHaplo() for each subjects in dat_4_imp table *#
@@ -135,8 +177,14 @@ ImputeHaplo <- function(dat_in){
   pb <- txtProgressBar(min = 0, max = num_subj, initial = 0, style = 3)
   for (i in 1:num_subj){
     setTxtProgressBar(pb, i)
-    # print(paste0("working on subject #", i))
-    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = raw_hap_tbl, tbl_in = dat_4_imp[i, ])
+    print(paste0("working on subject #", i))
+    if(dat_4_imp[i, ]$ethnicity == ""){
+      tbl_ref <- tbl4NAeth
+    } else{
+      tbl_ref <- tbl4eth %>% filter(ethnicity == dat_4_imp[i, ]$ethnicity)
+    }
+    hpl_tp_pairs[[i]] <- FuncForCompHaplo(tbl_raw = tbl_ref, tbl_in = dat_4_imp[i, ])
+
     Sys.sleep(time = 1)
   }
   close(pb)
@@ -157,3 +205,4 @@ ImputeHaplo <- function(dat_in){
 
   return(hpl_tp_pairs)
 }
+
