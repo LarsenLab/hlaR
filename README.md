@@ -64,22 +64,11 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 re
 
-## ToDo/Discuss CRAN 0.1.1<br>
-~~- ImputeHaplo(): error check on none ":" punctuation (br)correction: only apply to loci columns, skip check on pair_id/subject_type/ethnicity as pair_id may contain some special symbols~~<br>
-~~- CleanAllele(): incorrect logic for v1.2/v2.2 <br>
-correction: 1.line#5-57: use letters_only(); adjust statement ifelse(grepl("[^A-Za-z]+$", v1.1), v1.1, "") <br>
-code available in e_txki, hlaRLocalFunctions.R, starting from line #9 <br>
-2.remove space within string in addionn to around string~~<br>
-- ~~add alleleclean to etxki pipeline for messy or clean data, check hla_mm_May12.Rmd in etx repo~~
-- ~~haplotype final table: add a flag if the max count doesn't reach the number of unique low res antigens~~
-- ~~haplotype final table: if only 1 record imputed, what to do for the other half in the final table? keep this 1 record only, or duplicate it? (ex: 13982771, 3163)~~<br>
-~~- haplotype: additional function to deal with if max-count != count-of-low-res, the replace none-low-res with most-commom-low-res~~
-~~3. fix memory issue given too many NA hlas during imputation calcualtion (code are available in folder "4nextversion")~~
-~~4. haplotype for NA race~~
-~~5. discussion: what to do if low-res part of imputed hla?~~
-~~6. note: drb345 = "NNNN" in final table~~
-~~7. eplet mismatch: add unique-count in addition to all-count in overall table~~
-8. MM reference tables: all upper cases
+## ToDo/Discuss CRAN 0.1.2<br>
+1. hla clean: if any of hla typing ends with N or n, then set it to NA. note, this logic should be in the begining of the logic steps
+2. in imputation, in case user didn't use our hla-clean function, for each antigen, if there is NA and none-NA pair, then set both of them are none-NA typing
+3. low-res-cnt-flag bug
+4. MM reference tables: all upper cases
 
 
 
