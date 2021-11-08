@@ -352,8 +352,8 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     unite("mm_eplets", `1`:`12`, na.rm = TRUE, sep = ",", remove = FALSE) %>%
     mutate(mm_eplets = sapply(strsplit(mm_eplets, ","),
                               function(x) x = paste(unique(x), collapse = ","))) %>%
-    mutate(mm_cn_uniq = str_count(mm_eplets, ",")) %>%
-    select(subject, mm_cn_uniq)
+    mutate(mm_cnt_uniq = str_count(mm_eplets, ",")) %>%
+    select(subject, mm_cnt_uniq)
 
   re_o <- re_o %>% left_join(., re_o_uni, by = "subject")
   #* end of step 6 *#
