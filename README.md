@@ -70,8 +70,7 @@ re
 3. low-res-cnt-flag bug
 4. vignettes(add DQB1, echo to hapltbl)
 5. MM reference tables: all upper cases
-6. take off @ from Authors section in DESCRIPTION file
-7. add "Date/Publication" to the end of DESCRIPTION file
+6. add "Date/Publication" to the end of DESCRIPTION file
 
 
 
