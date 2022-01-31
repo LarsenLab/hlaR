@@ -223,7 +223,7 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     select(-pair_id) %>%
     rename(pair_id = pair_id_ori,
            haplotype_id = gene) %>%
-    # filter(mm_cnt != 0) %>% # keep mismatch eplets only
+    mutate(haplotype_id = gsub("[a-zA-Z]", "", haplotype_id)) %>%
     select(pair_id, everything())
   #* end of step 7 *#
 

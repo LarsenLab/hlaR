@@ -26,7 +26,7 @@
 #' dat<-read.csv(system.file("extdata/example","MHC_II_test.csv",package="hlaR"),sep=",",header=TRUE)
 #' re <- CalEpletMHCII(dat, ver = 2)
 
-CalEpletMHCII <- function(dat_in, ver = 3) {
+CalEpletMHCII_99 <- function(dat_in, ver = 3) {
   #* step 0: check if recipient and donor are paired *#
   num_rcpt <- length(dat_in$subject_type[dat_in$subject_type %in% c("recipient", "recip", "rcpt", "r")])
   num_don  <- length(dat_in$subject_type[dat_in$subject_type %in% c("donor", "don", "dn", "d")])
@@ -324,10 +324,10 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     select(-match_id) %>%
     select(pair_id, everything()) %>%
     left_join(., allele_detail, by = c("name", "gene")) %>% # join raw hla typing back to the output table
-    dplyr::rename(subject = name) %>%
-    select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
-    filter(!is.na(hla)) # %>%
-  # filter(mm_cnt != 0)
+    dplyr::rename(subject = name, haplotype_id = gene) %>%
+    mutate(haplotype_id = gsub("[a-zA-Z]", "",haplotype_id)) %>%
+    select(pair_id, subject, hla, haplotype_id, mm_eplets, mm_cnt) %>%
+    filter(!is.na(hla))
 
   #* step 6: overall count, all and unique *#
   # count unique mismatch eplets
@@ -352,8 +352,8 @@ CalEpletMHCII <- function(dat_in, ver = 3) {
     unite("mm_eplets", `1`:`12`, na.rm = TRUE, sep = ",", remove = FALSE) %>%
     mutate(mm_eplets = sapply(strsplit(mm_eplets, ","),
                               function(x) x = paste(unique(x), collapse = ","))) %>%
-    mutate(mm_cnt_uniq = str_count(mm_eplets, ",")) %>%
-    select(subject, mm_cnt_uniq)
+    mutate(mm_cn_uniq = str_count(mm_eplets, ",")) %>%
+    select(subject, mm_cn_uniq)
 
   re_o <- re_o %>% left_join(., re_o_uni, by = "subject")
   #* end of step 6 *#
