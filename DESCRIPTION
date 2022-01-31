@@ -1,7 +1,7 @@
 Package: hlaR
 Type: Package
 Title: Tools for HLA Data
-Version: 0.1.1
+Version: 0.1.2
 Description: A streamlined tool for eplet analysis of donor and recipient HLA (human leukocyte antigen) mismatch. Messy, low-resolution HLA typing data is cleaned, and imputed to high-resolution using the NMDP (National Marrow Donor Program) haplotype reference database <https://haplostats.org/haplostats>. High resolution data is analyzed for overall or single antigen eplet mismatch using a reference table (currently supporting 'HLAMatchMaker' <http://www.epitopes.net> versions 2 and 3). Data can enter or exit the workflow at different points depending on the user's aims and initial data quality.
 Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),
              person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("aut")),
@@ -9,7 +9,7 @@ Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut
 Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
     rmarkdown
@@ -30,3 +30,4 @@ Imports:
   readr,
   here,
   readxlsb
+Publication:in press, Human Immunology
