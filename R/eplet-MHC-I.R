@@ -48,10 +48,10 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
     setNames(paste(tbl_raw_eplet$type, tbl_raw_eplet$index, sep = "_" )) %>%
     rownames_to_column(var = "locus") %>%
     mutate(locus = ifelse(str_detect(locus, "\\*"), sub("\\*.*", "", locus), locus)) %>%
-    dplyr::filter(!locus %in% c("index", "type") ) %>%
+    filter(!locus %in% c("index", "type") ) %>%
     distinct() %>%
     reshape2::melt(id.vars = "locus") %>%
-    dplyr::filter(value != "" ) %>%
+    filter(value != "" ) %>%
     distinct() %>%
     mutate(index = as.numeric(sub(".*\\_", "", variable)),
            type = sub("\\_.*", "", variable)) %>%
@@ -218,10 +218,11 @@ CalEpletMHCI <- function(dat_in, ver = 3) {
   # add hla to the result_single table
   re_s <- re_s %>%
     left_join(., don_allele, by =c("pair_id", "gene") ) %>%
-    select(pair_id, subject, hla, mm_eplets, mm_cnt) %>%
+    select(pair_id, subject, hla, gene, mm_eplets, mm_cnt) %>%
     left_join(., id_match, by = "pair_id") %>%
     select(-pair_id) %>%
-    rename(pair_id = pair_id_ori) %>%
+    rename(pair_id = pair_id_ori,
+           haplotype_id = gene) %>%
     # filter(mm_cnt != 0) %>% # keep mismatch eplets only
     select(pair_id, everything())
   #* end of step 7 *#
