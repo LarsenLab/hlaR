@@ -26,7 +26,7 @@
 #' dat<-read.csv(system.file("extdata/example","MHC_I_test.csv",package="hlaR"),sep=",",header=TRUE)
 #' re <- CalEpletMHCI(dat_in = dat, ver = 3)
 
-CalEpletMHCI <- function(dat_in, ver = 3) {
+CalEpletMHCI <- function(dat_in, ver = 2) {
   #* step 0: check if recipient and donor are paired *#
   num_rcpt <- length(dat_in$subject_type[dat_in$subject_type %in% c("recipient", "recip", "rcpt", "r")])
   num_don  <- length(dat_in$subject_type[dat_in$subject_type %in% c("donor", "don", "dn", "d")])
