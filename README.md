@@ -72,6 +72,7 @@ re
 5. MM reference tables: all upper cases
 6. add "Date/Publication" to the end of DESCRIPTION file (in press, Human Immunology)
 7. eplet mismatch: preserve source of DQ alpha and beta, and add them if they have same source
+8. eplet mism, remember to change default version to 2
 
 
 
