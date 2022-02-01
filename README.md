@@ -65,14 +65,14 @@ re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br>
 re
 
 ## ToDo/Discuss CRAN 0.1.2<br>
-1. hla clean: if any of hla typing ends with N or n, then set it to NA. note, this logic should be in the begining of the logic steps
-2. in imputation, in case user didn't use our hla-clean function, for each antigen, if there is NA and none-NA pair, then set both of them are none-NA typing
-3. low-res-cnt-flag bug
-4. vignettes(add DQB1, echo to hapltbl)
-5. MM reference tables: all upper cases
-6. add "Date/Publication" to the end of DESCRIPTION file (in press, Human Immunology)
-7. eplet mismatch: preserve source of DQ alpha and beta, and add them if they have same source
-8. eplet mism, remember to change default version to 2
+1. ~~hla clean: if any of hla typing ends with N or n, then set it to NA. note, this logic should be in the begining of the logic steps
+2. ~~in imputation, in case user didn't use our hla-clean function, for each antigen, if there is NA and none-NA pair, then set both of them are none-NA typing
+3. ~~low-res-cnt-flag bug
+4. ~~vignettes(add DQB1, echo to hapltbl)
+5. ~~MM reference tables: all upper cases
+6. ~~add "Date/Publication" to the end of DESCRIPTION file (in press, Human Immunology)
+7. ~~eplet mismatch: preserve source of DQ alpha and beta, and add them if they have same source
+8. ~~eplet mism, remember to change default version to 2
 
 
 
