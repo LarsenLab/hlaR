@@ -41,7 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -338,18 +345,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="load-test-data-set" class="section level2">
 <h2>Load Test Data Set</h2>
-<p>A sample dataset derived from a cohort of 200 kidney transplant recipients is provided to demonstrate the <code>ImputeHaplo</code> function. The data consists of donor and recipient cleaned HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5). This data has already been cleaned using the <code>CleanAllele</code> function.</p>
+<p>A sample dataset derived from a cohort of 200 kidney transplant recipients is provided to demonstrate the <code>ImputeHaplo</code> function. The data consists of donor and recipient cleaned HLA typing data for HLA Class I (A, B, C) and HLA Class II (DRB1, DRB3/4/5, DQB1). This data has already been cleaned using the <code>CleanAllele</code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>tx_cohort_clean &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">system.file</span>(<span class="st">&quot;extdata/example&quot;</span>, <span class="st">&quot;Haplotype_test.csv&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;hlaR&quot;</span>))</span></code></pre></div>
 </div>
 <div id="generate-list-of-possible-haplotypes-and-sort-most-likely-pairs" class="section level2">
 <h2>Generate List of Possible Haplotypes and Sort Most likely Pairs</h2>
 <p>Use the <code>ImputeHaplo</code> Function to generate a list of high resolution haplotypes that fit the patient’s low resolution data. The haplotypes are sorted by a count measure, “cnt” that represents the number of high resolution antigens that match the low resolution input data. Haplotypes with the same count are arranged by descending population frequency. The function then considers all possible pairs of haplotypes. For each pair of haplotypes, the overall count of low resolution input antigens matched by the imputed high resolution data is calculated. Results are then arranged by descending count, and pairs with the same count are arranged by descending population frequency.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>haplotbl&lt;-<span class="st"> </span><span class="kw">ImputeHaplo</span>(tx_cohort_clean)</span></code></pre></div>
 </div>
 <div id="impute-high-resolution-data" class="section level2">
 <h2>Impute high-resolution data</h2>
 <p>The highest ranked pair of haplotypes is used to impute high resolution HLA alleles for the input data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># imputehires &lt;- slice (haplotbl)</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#write_csv(imputehires, &quot;tx_cohort_imputed&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># imputehires &lt;- slice (haplotbl)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#write_csv(imputehires, &quot;tx_cohort_imputed&quot;)</span></span></code></pre></div>
 </div>
 <div id="notes" class="section level2">
 <h2>Notes:</h2>

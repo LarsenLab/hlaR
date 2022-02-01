@@ -41,7 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -329,11 +336,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># library(devtools)</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># install_github(&quot;LarsenLab/hlaR&quot;)</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(hlaR)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(hlaR)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
 <div id="aims" class="section level2">
 <h2>Aims</h2>
 <p>In this vignette, we demonstrate single and overall eplet mismatch calculations for both MHCI and MHCII.</p>
