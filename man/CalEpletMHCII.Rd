@@ -4,7 +4,7 @@
 \alias{CalEpletMHCII}
 \title{Calculate class II HLA eplet mismatch.}
 \usage{
-CalEpletMHCII(dat_in, ver = 3)
+CalEpletMHCII(dat_in, ver = 2)
 }
 \arguments{
 \item{dat_in}{A dataframe of recipient and donor's high resolution MHC II data. Each recipient and donor pair are linked by are the “pair_id” column and differentiated by the “subject_type” column.}
