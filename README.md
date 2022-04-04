@@ -1,10 +1,6 @@
 ## Installation
 ### CRAN install
 install.packages("hlaR")<br>
-### github install<br>
-library(devtools)<br>
-install_github("LarsenLab/hlaR")<br>
-library(hlaR)<br> 
 
 ## Usage example
 ### Allele clean and mis-match
