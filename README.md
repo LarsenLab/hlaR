@@ -1,10 +1,15 @@
 ## Installation
 ### CRAN install
 install.packages("hlaR")<br>
+library(hlaR)
+
+## <a href="https://emory-larsenlab.shinyapps.io/hlar_shiny/" target="_blank">shiny app</a>
+https://emory-larsenlab.shinyapps.io/hlar_shiny/
 
 ## Usage example
 ### Allele clean and mis-match
 #### - clean
+library(hlaR)<br>
 library(readr)<br>
 clean <- read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
 clean1 <- CleanAllele(clean$recipient_a1, clean$recipient_a2)<br>
