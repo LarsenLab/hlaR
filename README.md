@@ -65,7 +65,10 @@ re
 
 ## ToDo CRAN 0.1.3<br>
 - add "Date/Publication" to DESCRIPTION file 
+- shiny app link
 - eplet mm calculation: add NA/NA instead of blank/0 to reulst table and a warning message to console if eplets not in the reference table
+- dr/dq risk score
+- imputation warning?
 
 
 
