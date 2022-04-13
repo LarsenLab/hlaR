@@ -72,7 +72,7 @@ re
 - dr/dq risk score (keep it in a func)
 - imputation warning
   - ~hlaR: done~
-  - shiny app: working
+  - ~shiny app: working~ donw on local, haven't push to shinyio server yet
 
 
 
