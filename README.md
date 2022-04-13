@@ -21,11 +21,11 @@ mm1 <br>
 mm2 <- EvalAlleleMism(dat$donor_b1, dat$donor_b2, dat$recipient_b1, dat$recipient_b2)<br>
 mm2<br>
 
-### haplotype
+### imputation
 dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
 re <- ImputeHaplo(dat_in = dat)<br>
 
-### single molecule level eplet mis-match
+### eplet mis-match
 #### - MHC class I
 dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
@@ -70,7 +70,9 @@ re
   - ~mhcI: done~
   - mhcII: working
 - dr/dq risk score (keep it in a func)
-- imputation warning?
+- imputation warning
+  - ~hlaR: done~
+  - shiny app: working
 
 
 
