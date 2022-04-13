@@ -64,8 +64,8 @@ re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br>
 re
 
 ## ToDo CRAN 0.1.3<br>
-- add "Date/Publication" to DESCRIPTION file 
-- shiny app link
+- ~add "Date/Publication" to DESCRIPTION file~ 
+- ~shiny app link~ 
 - eplet mm calculation: add Not Found/NA instead of blank/0 to reulst table and a warning message to console if eplets not in the reference table
   - ~mhcI: done~
   - mhcII: working
