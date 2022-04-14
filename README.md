@@ -41,7 +41,6 @@ eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
 single_detail <- eplet_mm2_v2$single_detail<br>
 overall_count <- eplet_mm2_v2$overall_count<br>
 eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
-(or simply eplet_mm2_v3 <- CalEpletMHCII_s(dat) )<br>
 single_detail <- eplet_mm2_v3$single_detail<br>
 overall_count <- eplet_mm2_v3$overall_count<br>
 
