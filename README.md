@@ -66,12 +66,13 @@ re
 - ~add "Date/Publication" to DESCRIPTION file~ 
 - ~shiny app link~ 
 - eplet mm calculation: add Not Found/NA instead of blank/0 to reulst table and a warning message to console if eplets not in the reference table
-  - ~mhcI: done~
-  - mhcII: working
-- dr/dq risk score (keep it in a func)
+  - ~mhcI~
+  - ~mhcII~
+- ~dr/dq risk score (keep it in a func)~
 - imputation warning
-  - ~hlaR: done~
+  - ~hlaR~
   - ~shiny app:~ done on local, haven't push to shinyio server yet
+- testing： mhcI, mhcII, mhcII DQ DR risk, imputation
 
 
 
