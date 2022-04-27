@@ -72,7 +72,7 @@ re
 - imputation warning
   - ~hlaR~
   - ~shiny app:~ done on local, haven't push to shinyio server yet
-- testing： mhcI, mhcII, mhcII DQ DR risk, imputation
+- testing： ~mhcI~, ~mhcII~, ~mhcII DQ DR risk~, ~imputation warning~
 
 
 
