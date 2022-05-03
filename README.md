@@ -69,6 +69,7 @@ re
   - ~mhcI~
   - ~mhcII~
 - ~dr/dq risk score (keep it in a func)~
+- dr/dq (warning message if donor or recipient doesn't have 1 each of DRB, DQa, DQb)
 - imputation warning
   - ~hlaR~
   - ~shiny app:~ done on local, haven't push to shinyio server yet
