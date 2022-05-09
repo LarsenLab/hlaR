@@ -6,14 +6,17 @@ Description: A streamlined tool for eplet analysis of donor and recipient HLA (h
 Authors@R: c(person("Joan","Zhang",email = "joan.zhang@emory.edu", role = c("aut", "cre")),
              person("Aileen","Johnson",email = "aileen.johnson@emory.edu ", role = c("aut")),
              person("Christian P","Larsen",email = "clarsen@emory.edu", role = c("cph", "aut")))
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.1.2
-Suggests: 
+Suggests:
     knitr,
     rmarkdown
-VignetteBuilder: 
+Publication: https://pubmed.ncbi.nlm.nih.gov/35101308/
+URL: https://emory-larsenlab.shinyapps.io/hlar_shiny/
+BugReports: https://github.com/LarsenLab/hlaR/issues
+VignetteBuilder:
     knitr
 Imports:
   devtools,
@@ -29,5 +32,5 @@ Imports:
   utils,
   readr,
   here,
-  readxlsb
-Publication:in press, Human Immunology
+  readxlsb,
+  janitor
