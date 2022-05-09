@@ -1,15 +1,15 @@
 ## Installation
 ### CRAN install
 install.packages("hlaR")<br>
-### github install<br>
-library(devtools)<br>
-install_github("LarsenLab/hlaR")<br>
-library(hlaR)<br> 
+library(hlaR)
+
+## <a href="https://emory-larsenlab.shinyapps.io/hlar_shiny/" target="_blank">shiny app</a>
+https://emory-larsenlab.shinyapps.io/hlar_shiny/
 
 ## Usage example
 ### Allele clean and mis-match
 #### - clean
-library(readr)<br>
+library(hlaR)<br>
 clean <- read.csv(system.file("extdata/example", "HLA_Clean_test.csv", package = "hlaR"))<br>
 clean1 <- CleanAllele(clean$recipient_a1, clean$recipient_a2)<br>
 clean2 <- CleanAllele(clean$donor_a1, clean$donor_a2)<br>
@@ -21,11 +21,11 @@ mm1 <br>
 mm2 <- EvalAlleleMism(dat$donor_b1, dat$donor_b2, dat$recipient_b1, dat$recipient_b2)<br>
 mm2<br>
 
-### haplotype
+### imputation
 dat <- read.csv(system.file("extdata/example", "Haplotype_test.csv", package = "hlaR"))<br>
 re <- ImputeHaplo(dat_in = dat)<br>
 
-### single molecule level eplet mis-match
+### eplet mis-match
 #### - MHC class I
 dat <- read.csv(system.file("extdata/example", "MHC_I_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm1_v2 <- CalEpletMHCI(dat, ver = 2)<br>
@@ -33,7 +33,6 @@ single_detail <- eplet_mm1_v2$single_detail<br>
 overall_count <- eplet_mm1_v2$overall_count<br>
 
 eplet_mm1_v3 <- CalEpletMHCI(dat, ver = 3)<br>
-(or simply eplet_mm1_v3 <- CalEpletMHCI(dat) )<br>
 single_detail <- eplet_mm1_v3$single_detail<br>
 overall_count <- eplet_mm1_v3$overall_count<br>
 #### - MHC class II
@@ -42,7 +41,6 @@ eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
 single_detail <- eplet_mm2_v2$single_detail<br>
 overall_count <- eplet_mm2_v2$overall_count<br>
 eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
-(or simply eplet_mm2_v3 <- CalEpletMHCII_s(dat) )<br>
 single_detail <- eplet_mm2_v3$single_detail<br>
 overall_count <- eplet_mm2_v3$overall_count<br>
 
@@ -64,16 +62,18 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 re
 
-## ToDo/Discuss CRAN 0.1.2<br>
-1. ~~hla clean: if any of hla typing ends with N or n, then set it to NA. note, this logic should be in the begining of the logic steps~~
-2. ~~in imputation, in case user didn't use our hla-clean function, for each antigen, if there is NA and none-NA pair, then set both of them are none-NA typing~~
-3. ~~low-res-cnt-flag bug~~
-4. ~~vignettes(add DQB1, echo to hapltbl)~~
-5. ~~MM reference tables: all upper cases~~
-6. ~~add "Date/Publication" to the end of DESCRIPTION file (in press, Human Immunology)~~
-7. ~~eplet mismatch: preserve source of DQ alpha and beta, and add them if they have same source~~
-8. ~~eplet mism, remember to change default version to 2~~
-
+## ToDo CRAN 0.1.3<br>
+- ~add "Date/Publication" to DESCRIPTION file~ 
+- ~shiny app link~ 
+- eplet mm calculation: add Not Found/NA instead of blank/0 to reulst table and a warning message to console if eplets not in the reference table
+  - ~mhcI~
+  - ~mhcII~
+- ~dr/dq risk score (keep it in a func)~
+- dr/dq (warning message if donor or recipient doesn't have 1 each of DRB, DQa, DQb)
+- imputation warning
+  - ~hlaR~
+  - ~shiny app:~ done on local, haven't push to shinyio server yet
+- testing： ~mhcI~, ~mhcII~, ~mhcII DQ DR risk~, ~imputation warning~
 
 
 
