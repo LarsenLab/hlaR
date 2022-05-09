@@ -72,18 +72,18 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
   #* end of 2a *#
 
   # 2b: sub-lookup tables, these tables are used for mis-match comparison of each locus #
-  GenerateLookup <- function(lkup_in, locus_in){
-    dat_out <- lkup_in %>%
-      filter(locus %in% locus_in) %>%
-      mutate(index = as.numeric(sub(".*\\_", "", variable)),
-             type = sub("\\_.*", "", variable)) %>%
-      select(index, type, value) %>%
-      dplyr::rename(eplet = value) %>%
-      filter(eplet != "") %>%
-      distinct()
-
-    return(dat_out)
-  }
+  # GenerateLookup <- function(lkup_in, locus_in){
+  #   dat_out <- lkup_in %>%
+  #     filter(locus %in% locus_in) %>%
+  #     mutate(index = as.numeric(sub(".*\\_", "", variable)),
+  #            type = sub("\\_.*", "", variable)) %>%
+  #     select(index, type, value) %>%
+  #     dplyr::rename(eplet = value) %>%
+  #     filter(eplet != "") %>%
+  #     distinct()
+  #
+  #   return(dat_out)
+  # }
 
   tbl_ref_dpa <- GenerateLookup(tbl_ref_A, "DPA1")
   tbl_ref_dqa <- GenerateLookup(tbl_ref_A, "DQA1")
