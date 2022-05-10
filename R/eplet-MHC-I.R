@@ -37,7 +37,7 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
   }
   #* end of step 0 *#
 
-  #* step 1: import raw eplet table *#
+  #* step 1: import eplet reference table *#
   if(ver == 2){
     tbl_raw_eplet <- read.csv(system.file("extdata/ref", "MHC_I_eplet_v2.csv", package = "hlaR"), check.names = FALSE)
   } else{
@@ -69,17 +69,33 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     select(-subject_type) %>%
     setNames(c("pair_id", nm_rec))
 
+  all_nas_rcpt <- tmp_rcpt %>%
+    filter(rec_a1=="" &  rec_a2=="" & rec_b1=="" & rec_b2=="" & rec_c1=="" &  rec_c2=="" ) %>% pull(pair_id)
+
+  if(length(all_nas_rcpt) != 0) {
+    warning(paste0("no MHC class I alleles detected for recipient(s) ", toString(all_nas_rcpt), " !"))
+    cat("\n")
+  }
+
   tmp_don <- dat_in %>%
     filter(subject_type %in% c("donor", "don", "dn", "d")) %>%
     select(-subject_type) %>%
     setNames(c("pair_id", nm_don))
+
+  all_nas_don <- tmp_don %>%
+    filter(don_a1=="" &  don_a2=="" & don_b1=="" & don_b2=="" & don_c1=="" &  don_c2=="" ) %>% pull(pair_id)
+
+  if(length(all_nas_don) != 0) {
+    warning(paste0("no MHC class I alleles detected for donor(s) ", toString(all_nas_don), " !"))
+    cat("\n")
+  }
 
   tbl_ready <- left_join(tmp_rcpt, tmp_don, by = c("pair_id")) %>%
     mutate(pair_id_ori = pair_id) %>%
     arrange(pair_id_ori) %>%
     mutate(pair_id = dense_rank(pair_id_ori))
 
-  rm(tmp_rcpt, tmp_don)
+  rm(tmp_rcpt, tmp_don, all_nas_rcpt)
 
   # create id_match table in case pari_id is not sequential in the patient table
   id_match <- tbl_ready %>%
@@ -102,17 +118,32 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
   #* step 4: pull out eplet of each allele *#
   for (i in 1:subj_num) {
     allele <- toupper(unlist(transpose(tbl_ready[i,-c(1)]), use.names = F))
-    allele <- ifelse(allele %in% names(tbl_raw_eplet), allele, NA)
+
+    # warning if input alleles are not found in Matchmaker
+    miss_allele <- allele[!(allele %in% names(tbl_raw_eplet))]
+    miss_allele <- miss_allele[miss_allele != ""]
+
+    if(length(miss_allele) >= 1){
+      warning(paste0(miss_allele, " is not found in the refernce table. Please check!\n"))
+    }
+
+    # if allele is blank, then set it to NA
+    allele <- ifelse(allele %in% c(names(tbl_raw_eplet), miss_allele),
+                     allele, NA)
 
     for (j in 1:length(allele)) {
       varname <- paste0(tmp_names[j], ".", sep = i)
-      if (!is.na(allele[j])) {
+
+      if (!is.na(allele[j]) & !(allele[j] %in% miss_allele)) {
         tmp <- tbl_raw_eplet %>%
           select(index, type, allele[j])
         tmp <- tmp %>%
           setNames(c("index", "type", varname))
         tbl_ep <- tbl_ep %>%
           left_join(., tmp, by = c("index", "type"))
+      } else if (!is.na(allele[j]) & allele[j] %in% miss_allele){
+        tbl_ep <- tbl_ep %>%
+          mutate(!!varname := "Not Found")
       } else{
         tbl_ep <- tbl_ep %>%
           mutate(!!varname := NA)
@@ -125,8 +156,9 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
   tbl_ep_mm <- tbl_ep %>%
     select(index, type)
 
-  tbl_ep_mm2 <- tbl_ep %>%
-    select(index, type)
+  tbl_ep_mm2 <- tbl_ep_mm
+
+  #  rcpt_list <- c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2)
 
   # exclude index and type, pulling data for each allele, starting from 3rd position
   st <- 3
@@ -137,18 +169,38 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     pos <- c(st:ed)
     tmp <- tbl_ep %>%
       select(all_of(pos))
+
     subj_indx <- sub(".*\\.", "", names(tmp)[1])
 
     colnames(tmp) <- c(nm_rec, nm_don)
 
+    # important : replace recipient's "Not Found" to NA to avoid incorrect mismatch calculation in later step
+    # if there are missing alleles on the same locus in both recpt and donor, this way we can make sure the donor's mm_eplet is "Not Found" instead of blank
+    nm <- names(tmp)[str_detect(names(tmp), "rec_")]
+    tmp <- tmp %>%
+      mutate_at(vars(nm),
+                list(~ifelse(. == "Not Found", "", .)))
+
     # comparison
     tmp <- tmp %>%
-      mutate(a1_mm = ifelse(don_a1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a1),
-             a2_mm = ifelse(don_a2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a2),
-             b1_mm = ifelse(don_b1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b1),
-             b2_mm = ifelse(don_b2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b2),
-             c1_mm = ifelse(don_c1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c1),
-             c2_mm = ifelse(don_c2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c2)) %>%
+      mutate(a1_mm = ifelse(don_a1 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_a1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a1)),
+             a2_mm = ifelse(don_a2 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_a2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_a2)),
+             b1_mm = ifelse(don_b1 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_b1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b1)),
+             b2_mm = ifelse(don_b2 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_b2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_b2)),
+             c1_mm = ifelse(don_c1 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_c1 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c1)),
+             c2_mm = ifelse(don_c2 %in% miss_allele,
+                            "Not Found",
+                            ifelse(don_c2 %in% c(rec_a1, rec_a2, rec_b1, rec_b2, rec_c1, rec_c2), NA, don_c2))) %>%
       select(a1_mm, a2_mm, b1_mm, b2_mm, c1_mm, c2_mm) %>%
       setNames(c(paste0("a1_mm_subj", subj_indx),
                  paste0("a2_mm_subj", subj_indx),
@@ -161,6 +213,10 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     st <- ed + 1
   }
   rm(st)
+
+  # if all of recipient alleles are NA, then the result eplets are blank, need change change to NA for mismatch count in later step
+  tbl_ep_mm <- tbl_ep_mm %>%
+    mutate_all(na_if, "")
   #* end of step 5 *#
 
   #* step 6: compare mis-match with tbl_ref table *#
@@ -205,7 +261,11 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     select(subject, pair_id, gene, mm_eplets, mm_cnt) %>%
     filter(!subject %in% c("index", "type")) %>%
     mutate(mm_cnt = ifelse((is.na(mm_eplets) | mm_eplets == "NA" | mm_eplets == "") & mm_cnt == 0, 0,
-                           ifelse((!is.na(mm_eplets) | mm_eplets != "NA" | mm_eplets != "") & mm_cnt == 0, 1, mm_cnt + 1)))
+                           ifelse((!is.na(mm_eplets) | mm_eplets != "NA" | mm_eplets != "") & mm_cnt == 0, 1, mm_cnt + 1))) %>%
+    # if it's a missing-allele then mm_eplet = "Not Found" and mm_cnt = 999
+    mutate(mm_eplets = ifelse(str_detect(mm_eplets, "Not Found"), "Not Found", mm_eplets)) %>%
+    mutate(     mm_cnt = ifelse(str_detect(mm_eplets, "Not Found"), 0, mm_cnt)) %>%
+    mutate(mm_eplets = gsub("(,)\\1+", "\\1", mm_eplets))
 
   don_allele <- tbl_ready %>%
     select(pair_id, don_a1, don_a2, don_b1, don_b2, don_c1, don_c2) %>%
@@ -223,7 +283,8 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     select(-pair_id) %>%
     rename(pair_id = pair_id_ori,
            haplotype_id = gene) %>%
-    mutate(haplotype_id = gsub("[a-zA-Z]", "", haplotype_id)) %>%
+    mutate(haplotype_id = gsub("[a-zA-Z]", "", haplotype_id),
+           mm_eplets = ifelse(str_detect(mm_eplets, "Not Found"), "Not Found", mm_eplets)) %>%
     select(pair_id, everything())
   #* end of step 7 *#
 
@@ -235,7 +296,6 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
     select(pair_id, subject, mm_cnt_tt) %>%
     distinct() %>%
     arrange(pair_id)
-
   #* end of step 8 *#
 
   #*step 9: mismatch count unique total*#
@@ -269,6 +329,13 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
 
   re_o <- re_o %>% left_join(., re_o_uni, by = "subject")
   #* end of step 9 *#
+
+  #* step 10: set mm_cnt = NA if allele is not found in matchmaker *#
+  re_s <- re_s %>%
+    rowwise() %>%
+    mutate(mm_cnt = ifelse(mm_eplets == "Not Found", NA, mm_cnt)) %>%
+    filter(!(pair_id %in% all_nas_don)) # filter out if all NAs on donor
+  #* end of step 10 *#
 
   return(list(single_detail = re_s,
               overall_count = re_o))
