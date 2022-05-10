@@ -39,10 +39,12 @@ overall_count <- eplet_mm1_v3$overall_count<br>
 dat <- read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)<br>
 eplet_mm2_v2 <- CalEpletMHCII(dat, ver = 2)<br>
 single_detail <- eplet_mm2_v2$single_detail<br>
+risk <- eplet_mm2_v2$dqdr_risk<br>
 overall_count <- eplet_mm2_v2$overall_count<br>
 eplet_mm2_v3 <- CalEpletMHCII(dat, ver = 3)<br>
 single_detail <- eplet_mm2_v3$single_detail<br>
 overall_count <- eplet_mm2_v3$overall_count<br>
+risk <- eplet_mm2_v3$dqdr_risk<br>
 
 ### other functionalities
 #### - count of mis-match
@@ -69,7 +71,7 @@ re
   - ~mhcI~
   - ~mhcII~
 - ~dr/dq risk score (keep it in a func)~
-- dr/dq (warning message if donor or recipient doesn't have 1 each of DRB, DQa, DQb)
+- ~dr/dq (warning message if donor or recipient doesn't have 1 each of DRB, DQa, DQb)~
 - imputation warning
   - ~hlaR~
   - ~shiny app:~ done on local, haven't push to shinyio server yet
