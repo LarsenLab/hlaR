@@ -32,4 +32,4 @@ utils::globalVariables(c("a", "a1", "allele","a1_mm", "a2", "a2_mm", "afa_freq",
                          ".", ":=",
                          "cnt_match_by_pair", "dqb1.1", "dqb1.2", "drb1.1", "drb1.2", "drb3.1", "drb3.2", "drb4.1",
                          "drb4.2", "drb5.1", "drb5.2", "flag", "grp", "lores_all_match", "rnum",
-                         "sum1", "max1", "rowname", "DQ", "DR"))
+                         "sum1", "max1", "rowname", "DQ", "DR", "risk"))
