@@ -1,4 +1,5 @@
 #' Basic functions
+#'
 #' GenerateLookup() called in CalEpletMHCII()
 #' @param lkup_in data table
 #' @param locus_in string

@@ -20,6 +20,6 @@ A list of data tables.
 Use high resolution HLA(Human Leukocyte Antigen) class II data to calculate class II eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from 'HLAMatchMaker', developed by Rene Dusquesnoy. Current reference tables supported are 'HLAMatchMaker' v2 and v3. Note: interlocus info only available in v3 reference tables.
 }
 \examples{
-dat<-read.csv(system.file("extdata/example","MHC_II_test.csv",package="hlaR"),sep=",",header=TRUE)
+dat <- read.csv(system.file("extdata/example","MHC_II_test.csv",package="hlaR"),sep=",",header=TRUE)
 re <- CalEpletMHCII(dat, ver = 2)
 }
