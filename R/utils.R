@@ -66,7 +66,7 @@ CalRiskScr <- function(dat_scr) {
                      DR = as.numeric(DR)) %>%
               mutate(risk = ifelse(between(DQ, 15, 31), "high",
                                    ifelse((DR >= 7 & DQ <= 14) | (DR < 7 & between(DQ, 9, 15)), "interm",
-                                          ifelse(DR < 7 & DQ < 9, "low", "unknown"))))
+                                          ifelse(DR < 7 & DQ < 9, "low", "out of bound"))))
 
   return(risk_scr)
 }
