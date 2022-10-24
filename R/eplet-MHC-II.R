@@ -479,7 +479,6 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
 
   #* step 8: calculate risk score based on DR DQ mismatch counts *#
   dqdr_risk <- list()
-  #subj_id <- unique(re_s$pair_id)[!(unique(re_s$pair_id) %in% drdq_nas_don)]
   subj_id <- unique(re_s$pair_id)
 
   # for each subject, call CalRiskScr() for risk score
