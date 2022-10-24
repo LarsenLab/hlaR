@@ -56,20 +56,7 @@ CalRiskScr <- function(dat_scr) {
     janitor::row_to_names(1) %>%
     as.data.frame()
 
-  if(dim(risk_scr)[1] == 0){
-    risk_scr <- data.frame(pair_id = NA, DQ = NA, DR = NA, risk = NA)
-  } else {
-
-    # set DQ if no DQ
-    if(!("DQ" %in% names(risk_scr))) {
-      risk_scr$DQ = 0
-    }
-
-    # set DR if no DR
-    if(!("DR" %in% names(risk_scr))) {
-      risk_scr$DR = 0
-    }
-
+  if("DQ" %in% names(risk_scr) & "DR" %in% names(risk_scr)){
     risk_scr <- risk_scr %>%
       # change data type to numeric for risk calculation
       mutate(DQ = as.numeric(DQ),
@@ -77,11 +64,13 @@ CalRiskScr <- function(dat_scr) {
       mutate(risk = ifelse(between(DQ, 15, 31), "high",
                            ifelse((DR >= 7 & DQ <= 14) | (DR < 7 & between(DQ, 9, 15)), "interm",
                                   ifelse(DR < 7 & DQ < 9, "low", "out of bound"))))
+  } else {
+    warning("DR and DQ risk score calculation require input of both DR and DQ. No score is calculated at this time.")
+    risk_scr <- data.frame(pair_id = NA, DQ = NA, DR = NA, risk = NA)
   }
 
   return(risk_scr)
 }
-
 
 #' @rdname utils
 FuncForCompHaplo <- function(tbl_raw, tbl_in) {
