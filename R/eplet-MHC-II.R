@@ -105,7 +105,7 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
 
   # warning: if recipient's missing any of dr, dqa, dqb values
   drdq_nas_rcpt <- tmp_rcpt %>%
-    filter((rec_drb1 == "" & rec_drb2 == "") | (rec_dqb1 == "" & rec_dqb2 == "") | (rec_dqa1 == "" & rec_dqa2 == "" )) %>%
+    filter((rec_drb1 == "" & rec_drb2 == "") | (rec_drw1 == "" & rec_drw2 == "") | (rec_dqb1 == "" & rec_dqb2 == "") | (rec_dqa1 == "" & rec_dqa2 == "" )) %>%
     pull(pair_id)
 
   if(length(drdq_nas_rcpt) != 0) {
@@ -479,7 +479,8 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
 
   #* step 8: calculate risk score based on DR DQ mismatch counts *#
   dqdr_risk <- list()
-  subj_id <- unique(re_s$pair_id)[!(unique(re_s$pair_id) %in% drdq_nas_don)]
+  #subj_id <- unique(re_s$pair_id)[!(unique(re_s$pair_id) %in% drdq_nas_don)]
+  subj_id <- unique(re_s$pair_id)
 
   # for each subject, call CalRiskScr() for risk score
   if (length(subj_id > 0)) {
@@ -493,7 +494,8 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
     dqdr_risk <- bind_rows(dqdr_risk) %>%
       mutate(DQ = ifelse(DQ == 0, NA, DQ),
              DR = ifelse(DR == 0, NA, DR)) %>%
-      select(pair_id, DQ, DR, risk)
+      select(pair_id, DQ, DR, risk) %>%
+      arrange(pair_id)
   } else {
     dqdr_risk = data.frame(pair_id = NA, DQ = NA, DR = NA, risk = NA)
   }
