@@ -33,12 +33,12 @@ GenerateLookup <- function(lkup_in, locus_in){
 #' @rdname utils
 CalRiskScr <- function(dat_scr) {
   risk_scr <- dat_scr %>%
-    filter(!(mm_eplets %in% c("Not Found", "", " "))) %>%
+    filter(!(mm_eplets %in% c("Not Found"))) %>%
     mutate(hla = gsub("\\*.*", "", hla),
            grp = ifelse(str_detect(hla, "DRB"), "DR",
                         ifelse(hla %in% c("DQA1", "DQB1") & haplotype_id %in% c("1"), "DQ1",
                                ifelse(hla %in% c("DQA1", "DQB1") & haplotype_id %in% c("2"), "DQ2", hla)))) %>%
-    filter(grp %in% c("DR", "DQ1", "DQ2") & mm_cnt > 0 ) %>%
+    filter(grp %in% c("DR", "DQ1", "DQ2") & mm_cnt >= 0 ) %>%
     group_by(grp) %>%
     summarise(max1 = suppressWarnings(max(mm_cnt, na.rm=TRUE)),
               sum1 = sum(mm_cnt, na.rm=TRUE)) %>%
