@@ -491,8 +491,6 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
     }
 
     dqdr_risk <- bind_rows(dqdr_risk) %>%
-      # mutate(DQ = ifelse(DQ == 0, NA, DQ),
-      #        DR = ifelse(DR == 0, NA, DR)) %>%
       select(pair_id, DQ, DR, risk) %>%
       arrange(pair_id)
   } else {
