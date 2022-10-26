@@ -64,18 +64,9 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 re
 
-## ToDo CRAN 0.1.3<br>
-- ~add "Date/Publication" to DESCRIPTION file~ 
-- ~shiny app link~ 
-- eplet mm calculation: add Not Found/NA instead of blank/0 to reulst table and a warning message to console if eplets not in the reference table
-  - ~mhcI~
-  - ~mhcII~
-- ~dr/dq risk score (keep it in a func)~
-- ~dr/dq (warning message if donor or recipient doesn't have 1 each of DRB, DQa, DQb)~
-- imputation warning
-  - ~hlaR~
-  - ~shiny app:~ done on local, haven't push to shinyio server yet
-- testing： ~mhcI~, ~mhcII~, ~mhcII DQ DR risk~, ~imputation warning~
+## ToDo CRAN 0.1.6<br>
+- eplet mm single mhc II: entry of all of alleles even mm_cnt = 0
+- add all of these small unuseful functions into utile or just remove them
 
 
 
