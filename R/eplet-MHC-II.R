@@ -9,7 +9,7 @@
 #' A list of data tables.
 #' - `single_detail`: single molecule class II MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
 #' - `overall_count`: original input data appended with total count of mismatched eplets.
-#' - `dqdr_risk`:  DR DQ risk score.
+#' - `dqdr_risk`: DR DQ risk score.
 #' @export
 #'
 #' @import
