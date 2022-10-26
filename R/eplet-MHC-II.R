@@ -9,6 +9,7 @@
 #' A list of data tables.
 #' - `single_detail`: single molecule class II MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
 #' - `overall_count`: original input data appended with total count of mismatched eplets.
+#' - `dqdr_risk`:  DR DQ risk score.
 #' @export
 #'
 #' @import
@@ -478,29 +479,26 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
   #* end of step 7 *#
 
   #* step 8: calculate risk score based on DR DQ mismatch counts *#
-  dqdr_risk <- list()
-  subj_id <- unique(re_s$pair_id)
+   dqdr_risk <- list()
+   subj_id <- unique(re_s$pair_id)
 
   # for each subject, call CalRiskScr() for risk score
-  if (length(subj_id > 0)) {
-    for (i in 1:length(subj_id)){
-      dqdr_risk[[i]] <- re_s %>%
-        filter(pair_id %in% subj_id[i]) %>%
-        CalRiskScr()
-      dqdr_risk[[i]]$pair_id <- subj_id[i]
-    }
+   if (length(subj_id > 0)) {
+     for (i in 1:length(subj_id)){
+       dqdr_risk[[i]] <- re_s %>%
+         filter(pair_id %in% subj_id[i]) %>%
+         CalRiskScore()
+       dqdr_risk[[i]]$pair_id <- subj_id[i]
+     }
 
     dqdr_risk <- bind_rows(dqdr_risk) %>%
-      select(pair_id, DQ, DR, risk) %>%
-      arrange(pair_id)
-  } else {
-    dqdr_risk = data.frame(pair_id = NA, DQ = NA, DR = NA, risk = NA)
-  }
-
-  #* end of step 8 *#
+       select(pair_id, DQ, DR, risk) %>%
+       arrange(pair_id)
+  # #* end of step 8 *#
 
   return(list(single_detail = re_s,
               overall_count = re_o,
               dqdr_risk = dqdr_risk))
+   }
 }
 
