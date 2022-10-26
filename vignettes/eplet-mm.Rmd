@@ -56,7 +56,7 @@ re_mhc1_overall <- re_mhc1$overall_count
 
 ```{r, message = FALSE}
 # use the testing data in the library
-dat_mhc2 <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE) 
+dat_mhc2 <-  read.csv(system.file("extdata/example", "MHC_II_test.csv", package = "hlaR"), sep = ",", header = TRUE)
 re_mhc2 <- CalEpletMHCII(dat_mhc2)
 re_mhc2_single <- re_mhc2$single_detail
 re_mhc2_overall <- re_mhc2$overall_count
