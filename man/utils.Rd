@@ -17,7 +17,7 @@ FuncForCompHaplo(tbl_raw, tbl_in)
 \item{lkup_in}{data table}
 
 \item{locus_in}{string
-CalRiskScr() called in CalEpletMHCII()}
+CalRiskScore() calculate DR DQ risk score, it's called in CalEpletMHCII()}
 
 \item{dat_in}{dataframe
 FuncForCompHaplo() called in ImputeHaplo()}

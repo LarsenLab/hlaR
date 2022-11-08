@@ -15,7 +15,7 @@ CalEpletMHCII(dat_in, ver = 2)
 A list of data tables.
 - `single_detail`: single molecule class II MHC eplet mismatch table, including mismatched eplet names and the count of eplets mismatched at each allele.
 - `overall_count`: original input data appended with total count of mismatched eplets.
-- `dqdr_risk`:  DR DQ risk score.
+- `dqdr_risk`: DR DQ risk score.
 }
 \description{
 Use high resolution HLA(Human Leukocyte Antigen) class II data to calculate class II eplet mismatch for a population of donors and recipients. Mismatch is calculated using logic from 'HLAMatchMaker', developed by Rene Dusquesnoy. Current reference tables supported are 'HLAMatchMaker' v2 and v3. Note: interlocus info only available in v3 reference tables.

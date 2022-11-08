@@ -482,7 +482,7 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
    dqdr_risk <- list()
    subj_id <- unique(re_s$pair_id)
 
-  # for each subject, call CalRiskScr() for risk score
+  # for each subject, call CalRiskScore() for risk score
    if (length(subj_id > 0)) {
      for (i in 1:length(subj_id)){
        dqdr_risk[[i]] <- re_s %>%
