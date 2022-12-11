@@ -24,6 +24,7 @@ Imports:
   reshape2,
   schoolmath,
   tibble,
+  tidyselect,
   stringr,
   purrr,
   tidyr,

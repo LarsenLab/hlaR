@@ -237,8 +237,8 @@ CalEpletMHCII <- function(dat_in, ver = 2) {
     select(name, gene, hla)
 
   # set blanks to NA to suit mismatch count calculation logic
-  tbl_ep_a <- tbl_ep_a %>% na_if(., "")
-  tbl_ep_b <- tbl_ep_b %>% na_if(., "")
+  tbl_ep_a <- tbl_ep_a %>% na_to_empty_string()
+  tbl_ep_b <- tbl_ep_b %>% na_to_empty_string()
 
   #* end of 3b *#
   #* end of step 3 *#
