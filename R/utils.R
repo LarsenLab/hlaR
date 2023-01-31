@@ -8,11 +8,14 @@
 #' FuncForCompHaplo() called in ImputeHaplo()
 #' @param tbl_raw data frame
 #' @param tbl_in data frame
+#' na_to_empty_string()
+#' @param df dataframe
 #' @name utils
 #' @import
 #' janitor
 #' tidyverse
 #' utils
+#' tidyselect
 NULL
 #> NULL
 
@@ -400,4 +403,10 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
   result <- rbind(raw, result)
 
   return(result)
+}
+
+#' @rdname utils
+na_to_empty_string <- function(df) {
+  # thanks to Haldey
+  mutate(df, across(tidyselect::where(is.character), ~ na_if(.x, "")))
 }
