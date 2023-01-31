@@ -5,6 +5,7 @@
 \alias{GenerateLookup}
 \alias{CalRiskScore}
 \alias{FuncForCompHaplo}
+\alias{na_to_empty_string}
 \title{Basic functions}
 \usage{
 GenerateLookup(lkup_in, locus_in)
@@ -12,6 +13,8 @@ GenerateLookup(lkup_in, locus_in)
 CalRiskScore(dat_in)
 
 FuncForCompHaplo(tbl_raw, tbl_in)
+
+na_to_empty_string(df)
 }
 \arguments{
 \item{lkup_in}{data table}
@@ -24,7 +27,10 @@ FuncForCompHaplo() called in ImputeHaplo()}
 
 \item{tbl_raw}{data frame}
 
-\item{tbl_in}{data frame}
+\item{tbl_in}{data frame
+na_to_empty_string()}
+
+\item{df}{dataframe}
 }
 \description{
 GenerateLookup() called in CalEpletMHCII()
