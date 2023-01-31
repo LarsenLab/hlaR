@@ -216,7 +216,8 @@ CalEpletMHCI <- function(dat_in, ver = 2) {
 
   # if all of recipient alleles are NA, then the result eplets are blank, need change change to NA for mismatch count in later step
   tbl_ep_mm <- tbl_ep_mm %>%
-    mutate_all(na_if, "")
+    #mutate_all(na_if, "")
+    na_to_empty_string()
   #* end of step 5 *#
 
   #* step 6: compare mis-match with tbl_ref table *#
