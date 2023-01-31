@@ -407,6 +407,6 @@ FuncForCompHaplo <- function(tbl_raw, tbl_in) {
 
 #' @rdname utils
 na_to_empty_string <- function(df) {
-  # thanks to Haldey
+  # thanks to Hadley Wickham
   mutate(df, across(tidyselect::where(is.character), ~ na_if(.x, "")))
 }
