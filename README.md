@@ -64,9 +64,9 @@ rcpt <- c("recipient.a1", "recipient.a2")<br>
 re <- CalAlleleMismFreq(dat_in = dat, nms_don = don, nms_rcpt = rcpt)<br> 
 re
 
-## ToDo CRAN 0.1.6<br>
-- eplet mm single mhc II: entry of all of alleles even mm_cnt = 0
-- add all of these small unuseful functions into utile or just remove them
+## ToDo CRAN 1.0.1<br>
+- high risk if DQ > 15 instead of betwee(15,31)
+- use regex for hal clean function
 
 
 
